@@ -9,5 +9,5 @@ struct AcaYear
 	Clas* CLC;
 	Clas* VP;
 };
-
+AcaYear createAcademicYear(int yearBegin, int yearEnd);//tạo một năm học
 #endif
