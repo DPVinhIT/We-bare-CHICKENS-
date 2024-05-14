@@ -5,9 +5,14 @@
 
 struct AcaYear
 {
+	string nienKhoa;
 	Clas* APCS;
 	Clas* CLC;
-	Clas* VP;
+	Clas* CTT;
 };
-AcaYear createAcademicYear(int yearBegin, int yearEnd);//tạo một năm học
+string iToStr(int i);
+AcaYear createAcademicYear(int yearBegin);
+void printAcaYear(AcaYear aca);
+
+
 #endif
