@@ -10,5 +10,6 @@ struct Clas
 };
 
 void readFileStudent(char fileName[], Clas& Lop, int& n);
+Clas* createClass(string file_name[], AcaYear& aca, int& sl, int idx);
 void printClass(Clas* cls,int n);
 #endif
