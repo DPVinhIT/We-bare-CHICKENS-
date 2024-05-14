@@ -2,12 +2,14 @@
 #define Student_h
 
 #include"Date.h"
+#define MAXLEN 100
 
 struct Student {
-	int studentID;
-	string firstName, lastNam, fullName;
+	string studentID;
+	string firstName, lastName, fullName;
 	string Gender;
-	long socialID;
+	Date DoB;
+	string socialID;
 };
 
 #endif
