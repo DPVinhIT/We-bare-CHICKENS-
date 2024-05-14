@@ -11,6 +11,7 @@ struct AcaYear
 	Clas* CTT;
 };
 string iToStr(int i);
+void swap(string& a, string& b);
 AcaYear createAcademicYear(int yearBegin);
 void printAcaYear(AcaYear aca);
 
