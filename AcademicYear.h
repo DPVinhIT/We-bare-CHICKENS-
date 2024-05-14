@@ -2,6 +2,7 @@
 #define AcademicYear_h
 
 #include"Class.h"
+#include "Student.h"
 
 struct AcaYear
 {
