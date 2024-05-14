@@ -1,4 +1,17 @@
 #include"Class.h"
+//chọn lớp
+int chooseClass() {
+	int n;
+	cout << "Chon loai lop hoc:\n";
+	cout << "Nhan 1 de chon APCS muon tao\n";
+	cout << "Nhan 2 de chon CLC muon tao\n";
+	cout << "Nhan 3 de chon CTT muon tao\n";
+	cout << "Nhan 0 de thoat!!!\n";
+	do {
+		cin >> n;
+	} while (n < 0 || n>3);
+	return n;
+}
 //đọc file lưu là class
 void readFileStudent(char fileName[], Clas& Lop, int& n)
 {
@@ -79,7 +92,7 @@ Clas* createClass(string file_name[], AcaYear& aca, int& sl, int idx)
 		return aca.CTT;
 	}
 }
-//do khớp chuỗi con
+//so khớp chuỗi con
 bool findSubstring(string mainString, string subString) {
 	if (mainString.find(subString) != string::npos) {
 		return true;
