@@ -2,6 +2,9 @@
 #define Date_h
 
 #include<iostream>
+#include<fstream>
+#include<string.h>
+#include<string>
 using namespace std;
 
 struct Date {
