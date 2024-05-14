@@ -118,4 +118,23 @@ void printNode(node a){
 		a=a->next;
 	}
 }
+void menu(){
+	cout<<"\nBan muon them sinh vien vao lop nao? "<<endl;
+	cout<<"\n1. 23CTT1"<<endl;
+	cout<<"\n2. 23CTT2"<<endl;
+	cout<<"\n3. 23CTT3"<<endl;
+	cout<<"\n4. 23CTT4"<<endl;
+	cout<<"\n5. 23CTT5"<<endl;
+	cout<<"\n6. 23CLC01"<<endl;
+	cout<<"\n7. 23CLC02"<<endl;
+	cout<<"\n8. 23APCS1"<<endl;
+	cout<<"\n9. 23APCS12"<<endl;
+	cout<<"\nChon 0 de thoat chuong trinh!"<<endl;
+}
+void addStudent(Student &a){
+	cout<<"\nNhap ho ten";
+	cin>>a.fullName;
+	cout<<"\nNhap MSSV: ";
+	cin>>a.studentID;
+}
 
