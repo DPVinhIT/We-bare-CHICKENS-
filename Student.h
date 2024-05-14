@@ -11,5 +11,5 @@ struct Student {
 	Date DoB;
 	string socialID;
 };
-
+void printStudent(Student* st, int n);
 #endif
