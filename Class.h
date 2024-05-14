@@ -9,4 +9,6 @@ struct Clas
 	Student* sinhVien;
 };
 
+void readFileStudent(char fileName[], Clas& Lop, int& n);
+
 #endif
