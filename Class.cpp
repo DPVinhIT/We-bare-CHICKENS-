@@ -36,3 +36,16 @@ void readFileStudent(char fileName[], Clas& Lop, int& n)
 	fin.close();
 	cout << "Doc file thanh cong" << endl;
 }
+
+void printClass(Clas* cls, int n)
+{
+	if (cls == NULL) {
+		return;
+	}
+	for (int i = 0; i < n; i++)
+	{
+		cout <<"Lop: "<< cls[i].nameClass << endl;
+		printStudent(cls[i].sinhVien, 5);
+		cout << endl;
+	}
+}
