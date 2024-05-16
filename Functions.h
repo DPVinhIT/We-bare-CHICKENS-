@@ -12,6 +12,8 @@ void printStudent(Student* st, int n);
 node makeNode(Student sv);
 void addNode(node &a, node newNode);
 void printNode(node a);
-void menu();
+void menu1();
+void menu2();
+void menu3();
 void addStudent(Student &a);
 #endif

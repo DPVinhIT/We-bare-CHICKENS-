@@ -20,23 +20,101 @@ int main() {
 	Clas* a= createClass(file_name, aca, sl, n1);
 	Clas cls1;
 	if(n1==1){
-	printClass(a, 2);	
-	}         
-	else if(n1==2){
-		printClass(a, 2);
-	}           
-	else{
-	    printClass(a, 5);
-	}
+	cout<<"\n"<<a[0].nameClass<<endl;
+	cout<<"------------"<<endl;
 	for(int i = 0; i<5; i++){
-		node tmp = makeNode(aca.CTT[0].sinhVien[i]);
+		node tmp = makeNode(a[0].sinhVien[i]);
+		addNode(APCS1, tmp);
+	}
+	printNode(APCS1);
+	cout<<"\n"<<a[1].nameClass<<endl;
+	cout<<"------------"<<endl;
+	for(int i = 0; i<5; i++){
+		node tmp = makeNode(a[1].sinhVien[i]);
+		addNode(APCS2, tmp);
+	}
+	printNode(APCS2);
+	}
+	else if(n1==2){
+	cout<<"\n"<<a[0].nameClass<<endl;
+	cout<<"------------"<<endl;
+	for(int i = 0; i<5; i++){
+		node tmp = makeNode(a[0].sinhVien[i]);
+		addNode(CLC01, tmp);
+	}
+	printNode(CLC01);
+	cout<<"\n"<<a[1].nameClass<<endl;
+	cout<<"------------"<<endl;
+	for(int i = 0; i<5; i++){
+		node tmp = makeNode(a[1].sinhVien[i]);
+		addNode(CLC02, tmp);
+	}
+	printNode(CLC02);
+	}
+	else{
+	cout<<"\n"<<a[0].nameClass<<endl;
+	cout<<"------------"<<endl;
+	for(int i = 0; i<5; i++){
+		node tmp = makeNode(a[0].sinhVien[i]);
 		addNode(CTT1, tmp);
 	}
-	Student sv1;
-	addStudent(sv1);
-	node tmp2 = makeNode(sv1);
-	addNode(CTT1, tmp2);
 	printNode(CTT1);
+	cout<<"\n"<<a[1].nameClass<<endl;
+	cout<<"------------"<<endl;
+	for(int i = 0; i<5; i++){
+		node tmp = makeNode(a[1].sinhVien[i]);
+		addNode(CTT2, tmp);
+	}
+	printNode(CTT2);
+	cout<<"\n"<<a[2].nameClass<<endl;
+	cout<<"------------"<<endl;
+	for(int i = 0; i<5; i++){
+		node tmp = makeNode(a[2].sinhVien[i]);
+		addNode(CTT3, tmp);
+	}
+	printNode(CTT3);
+	cout<<"\n"<<a[3].nameClass<<endl;
+	cout<<"------------"<<endl;
+	for(int i = 0; i<5; i++){
+		node tmp = makeNode(a[3].sinhVien[i]);
+		addNode(CTT4, tmp);
+	}
+	printNode(CTT4);
+	cout<<"\n"<<a[4].nameClass<<endl;
+	cout<<"------------"<<endl;
+	for(int i = 0; i<5; i++){
+		node tmp = makeNode(a[4].sinhVien[i]);
+		addNode(CTT5, tmp);
+	}
+	printNode(CTT5);
+	}
+	Student sv1;
+	node tmp2 = makeNode(sv1);
+	int choice2;
+	if(n1==1){
+		menu3();
+		cin>>choice2;
+		switch(choice2){
+			case 1:{
+				addNode(APCS1, tmp2);
+				cout<<"\nSau khi them sinh vien moi vao danh sach "<<a[0].nameClass<<endl;
+				printNode(APCS1);
+				break;
+			}
+			case 2:{
+				addNode(APCS2, tmp2);
+				cout<<"\nSau khi them sinh vien moi vao danh sach "<<a[1].nameClass<<endl;
+				printNode(APCS2);
+				break;
+			}
+			
+			
+		}
+		addNode(CTT1, tmp2);
+	}
+	
+
+	//printNode(CTT1);
 	//menu();         
 	//int choice2; cin>>choice2;
 	//switch(choice2){
@@ -48,3 +126,4 @@ int main() {
 	return 0;
 }
 
+ 

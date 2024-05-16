@@ -83,15 +83,13 @@ void printClass(Clas* cls, int n)
 }
 void printStudent(Student* st, int n)
 {
-	string ho;
-	string ten;
 	string dem;
 	for (int i = 0; i < n; i++)
 	{
-		ho = st[i].fullName.substr(0, st[i].fullName.find_first_of(" "));
+		st[i].firstName = st[i].fullName.substr(0, st[i].fullName.find_first_of(" "));
 		dem = st[i].fullName.substr(st[i].fullName.find_first_of(" "), st[i].fullName.find_last_of(" "));
-		ten = dem.substr(dem.find_last_of(" "), dem.length());
-		cout << st[i].fullName << " "<<ho<<""<<ten<<endl;
+		st[i].lastName = dem.substr(dem.find_last_of(" "), dem.length());
+		cout << st[i].fullName << " "<<st[i].firstName<<""<<st[i].lastName<<endl;
 		cout << st[i].studentID << endl;
 		cout << st[i].socialID << endl;
 		cout << st[i].Gender << endl;
@@ -118,17 +116,24 @@ void printNode(node a){
 		a=a->next;
 	}
 }
-void menu(){
+void menu1(){
 	cout<<"\nBan muon them sinh vien vao lop nao? "<<endl;
 	cout<<"\n1. 23CTT1"<<endl;
 	cout<<"\n2. 23CTT2"<<endl;
 	cout<<"\n3. 23CTT3"<<endl;
 	cout<<"\n4. 23CTT4"<<endl;
 	cout<<"\n5. 23CTT5"<<endl;
-	cout<<"\n6. 23CLC01"<<endl;
-	cout<<"\n7. 23CLC02"<<endl;
-	cout<<"\n8. 23APCS1"<<endl;
-	cout<<"\n9. 23APCS12"<<endl;
+}
+void menu2(){
+	cout<<"\nBan muon them sinh vien vao lop nao? "<<endl;
+	cout<<"\n1. 23CLC01"<<endl;
+	cout<<"\n2. 23CLC02"<<endl;
+	cout<<"\nChon 0 de thoat chuong trinh!"<<endl;
+}
+void menu3(){
+	cout<<"\nBan muon them sinh vien vao lop nao? "<<endl;
+	cout<<"\n1. 23APCS1"<<endl;
+	cout<<"\n2. 23APCS12"<<endl;
 	cout<<"\nChon 0 de thoat chuong trinh!"<<endl;
 }
 void addStudent(Student &a){
