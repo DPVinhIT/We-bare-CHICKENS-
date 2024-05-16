@@ -167,17 +167,6 @@ int main() {
 				break;
 			}
 	}
-	
-
-	//printNode(CTT1);
-	//menu();         
-	//int choice2; cin>>choice2;
-	//switch(choice2){
-		//case 1:{
-			//break;
-		//}
-	//}
-
 	return 0;
 }
 }
