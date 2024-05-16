@@ -154,7 +154,6 @@ void inputAStudent(Student& hs) {
 	cin >> hs.Gender;
 	cout << "Nhap ngay sinh: \n";
 	inputDate(hs.DoB);
-	cout << "Nhap so can CCCD/CMND: \n";
+	cout << "Nhap so CCCD/CMND: \n";
 	cin >> hs.socialID;
 }
-
