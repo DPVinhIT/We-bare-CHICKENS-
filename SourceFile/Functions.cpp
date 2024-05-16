@@ -86,7 +86,6 @@ void printClass(Clas* cls, int n)
 }
 void printStudent(Student*& st, int n)
 {
-	string dem;
 	for (int i = 0; i < n; i++)
 	{
 		cout << st[i].fullName << " " << st[i].firstName << " " << st[i].lastName << endl;
@@ -112,7 +111,6 @@ void addNodeSV(node& a, node newNode) {
 }
 void printNode(node a) {
 	while (a != NULL) {
-		string dem;
 		cout << a->sv.fullName << " " << a->sv.studentID << " " << a->sv.socialID << " " << a->sv.Gender << " "
 			<< a->sv.firstName << " " << a->sv.lastName << " " << a->sv.DoB.day << "/" << a->sv.DoB.month << "/" << a->sv.DoB.year << endl;
 		a = a->next;
