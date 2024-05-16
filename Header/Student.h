@@ -11,8 +11,11 @@ struct Student {
 	Date DoB;
 	string socialID;
 };
-struct Node{
+struct Node {
 	Student sv;
 	Node* next;
+};
+struct ListNode {
+	Node* Head;
 };
 #endif
