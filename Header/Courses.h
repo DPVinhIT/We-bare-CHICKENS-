@@ -1,7 +1,7 @@
 #ifndef Courses_h
 #define Courses_h
 
-#include "AcademicYear.h"
+#include "Class.h"
 
 struct calendar
 {
