@@ -136,10 +136,25 @@ void menu3(){
 	cout<<"\n2. 23APCS12"<<endl;
 	cout<<"\nChon 0 de thoat chuong trinh!"<<endl;
 }
-void addStudent(Student &a){
-	cout<<"\nNhap ho ten";
-	cin>>a.fullName;
-	cout<<"\nNhap MSSV: ";
-	cin>>a.studentID;
+void inputDate(Date& d) {
+	cout << "Nhap ngay: \n";
+	cin >> d.day;
+	cout << "Nhap thang: \n";
+	cin >> d.month;
+	cout << "Nhap nam: \n";
+	cin >> d.year;
+}
+void inputAStudent(Student& hs) {
+	cout << "Nhap MSSV: \n";
+	cin >> hs.studentID;
+	cout << "Nhap ho ten: \n";
+	cin.ignore();
+	getline(cin, hs.fullName);
+	cout << "Nhap gioi tinh: \n";
+	cin >> hs.Gender;
+	cout << "Nhap ngay sinh: \n";
+	inputDate(hs.DoB);
+	cout << "Nhap so can CCCD/CMND: \n";
+	cin >> hs.socialID;
 }
 

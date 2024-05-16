@@ -89,6 +89,8 @@ int main() {
 	printNode(CTT5);
 	}
 	Student sv1;
+	cout<<"\nNhap thong tin sinh vien can them: "<<endl;
+	inputAStudent(sv1);
 	node tmp2 = makeNode(sv1);
 	int choice2;
 	if(n1==1){
@@ -97,20 +99,73 @@ int main() {
 		switch(choice2){
 			case 1:{
 				addNode(APCS1, tmp2);
-				cout<<"\nSau khi them sinh vien moi vao danh sach "<<a[0].nameClass<<endl;
+				cout<<"\nSau khi them sinh vien moi vao danh sach: "<<a[0].nameClass<<endl;
 				printNode(APCS1);
 				break;
 			}
 			case 2:{
 				addNode(APCS2, tmp2);
-				cout<<"\nSau khi them sinh vien moi vao danh sach "<<a[1].nameClass<<endl;
+				cout<<"\nSau khi them sinh vien moi vao danh sach: "<<a[1].nameClass<<endl;
 				printNode(APCS2);
 				break;
 			}
 			
 			
 		}
-		addNode(CTT1, tmp2);
+	}
+	else if(n1==2){
+		menu2();
+		cin>>choice2;
+		switch(choice2){
+			case 1:{
+				addNode(CLC01, tmp2);
+				cout<<"\nSau khi them sinh vien moi vao danh sach: "<<a[0].nameClass<<endl;
+				printNode(CLC01);
+				break;
+			}
+			case 2:{
+				addNode(CLC02, tmp2);
+				cout<<"\nSau khi them sinh vien moi vao danh sach: "<<a[1].nameClass<<endl;
+				printNode(CLC02);
+				break;
+			}
+			
+			
+		}
+	}else{
+		menu1();
+		cin>>choice2;
+		switch(choice2){
+			case 1:{
+				addNode(CTT1, tmp2);
+				cout<<"\nSau khi them sinh vien moi vao danh sach: "<<a[0].nameClass<<endl;
+				printNode(CTT1);
+				break;
+			}
+			case 2:{
+				addNode(CTT2, tmp2);
+				cout<<"\nSau khi them sinh vien moi vao danh sach: "<<a[1].nameClass<<endl;
+				printNode(CTT2);
+				break;
+			}
+			case 3:{
+				addNode(CTT3, tmp2);
+				cout<<"\nSau khi them sinh vien moi vao danh sach: "<<a[2].nameClass<<endl;
+				printNode(CTT3);
+				break;
+			}
+			case 4:{
+				addNode(CTT4, tmp2);
+				cout<<"\nSau khi them sinh vien moi vao danh sach: "<<a[3].nameClass<<endl;
+				printNode(CTT4);
+				break;
+			}
+			case 5:{
+				addNode(CTT5, tmp2);
+				cout<<"\nSau khi them sinh vien moi vao danh sach: "<<a[4].nameClass<<endl;
+				printNode(CTT5);
+				break;
+			}
 	}
 	
 
@@ -124,6 +179,7 @@ int main() {
 	//}
 
 	return 0;
+}
 }
 
  

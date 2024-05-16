@@ -15,5 +15,6 @@ void printNode(node a);
 void menu1();
 void menu2();
 void menu3();
-void addStudent(Student &a);
+void inputDate(Date& d);
+void inputAStudent(Student& hs);
 #endif
