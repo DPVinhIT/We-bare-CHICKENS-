@@ -158,42 +158,40 @@ void inputAStudent(Student& hs) {
 	cin >> hs.socialID;
 	splitName(hs);
 }
-//void InputCourse(Course& cou) {
-//	cout << "Nhap ID khoa hoc: ";
-//	cin >> cou.courseID;
-//	cin.ignore();
-//	cout << "Nhap ten khoa hoc: ";
-//	getline(cin, cou.courseName);
-//	cout << "Nhap ten giao vien: ";
-//	getline(cin, cou.teacher);
-//	cout << "Nhap so tin chi: ";
-//	cin >> cou.acaCrd;
-//	cout << "Nhap so luong hoc sinh toi da: ";
-//	cin >> cou.maxStudent;
-//	string Day[6] = { "MON","TUE","WED","THU","FRI","SAT" };
-//	string Time[4] = { "S1:7h30","S2:9h30","S3:13h30","S4:15h30" };
-//	cout << "Chon lich hoc\n";
-//	int chonLich;
-//	int chonCa;
-//	do {
-//		cout << "Nhan 2 de chon THU HAI\n";
-//		cout << "Nhan 3 de chon THU Ba\n";
-//		cout << "Nhan 4 de chon THU TU\n";
-//		cout << "Nhan 5 de chon THU NAM\n";
-//		cout << "Nhan 6 de chon THU SAU\n";
-//		cout << "Nhan 7 de chon THU BAY\n";
-//		//cout << "Nhan 1 de THOAT!!!\n";
-//		cin >> chonLich;
-//	} while (chonLich < 2 || chonLich > 7);
-//
-//	cou.cld.Day = Day[chonLich - 2];
-//	do {
-//		cout << "Nhan 1 de chon ca S1: 7h30\n";
-//		cout << "Nhan 2 de chon ca S2: 9h30\n";
-//		cout << "Nhan 3 de chon ca S3: 13h30\n";
-//		cout << "Nhan 4 de chon ca S4: 15h30\n";
-//		//cout << "Nhan 1 de THOAT!!!\n";
-//		cin >> chonCa;
-//	} while (chonCa < 1 || chonCa > 4);
-//	cou.cld.Time = Time[chonCa - 1];
-//}
+void InputCourse(Course& cou) {
+	cout << "Nhap ID khoa hoc: ";
+	cin >> cou.courseID;
+	cin.ignore();
+	cout << "Nhap ten khoa hoc: ";
+	getline(cin, cou.courseName);
+	cout << "Nhap ten giao vien: ";
+	getline(cin, cou.teacher);
+	cout << "Nhap so tin chi: ";
+	cin >> cou.acaCrd;
+	cout << "Nhap so luong hoc sinh toi da: ";
+	cin >> cou.maxStudent;
+	string Day[6] = { "MON","TUE","WED","THU","FRI","SAT" };
+	string Time[4] = { "S1:7h30","S2:9h30","S3:13h30","S4:15h30" };
+	cout << "Chon lich hoc\n";
+	int chonLich;
+	int chonCa;
+	do {
+		cout << "Nhan 2 de chon THU HAI\n";
+		cout << "Nhan 3 de chon THU Ba\n";
+		cout << "Nhan 4 de chon THU TU\n";
+		cout << "Nhan 5 de chon THU NAM\n";
+		cout << "Nhan 6 de chon THU SAU\n";
+		cout << "Nhan 7 de chon THU BAY\n";
+		cin >> chonLich;
+	} while (chonLich < 2 || chonLich > 7);
+
+	cou.cld.Day = Day[chonLich - 2];
+	do {
+		cout << "Nhan 1 de chon ca S1: 7h30\n";
+		cout << "Nhan 2 de chon ca S2: 9h30\n";
+		cout << "Nhan 3 de chon ca S3: 13h30\n";
+		cout << "Nhan 4 de chon ca S4: 15h30\n";
+		cin >> chonCa;
+	} while (chonCa < 1 || chonCa > 4);
+	cou.cld.Time = Time[chonCa - 1];
+}
