@@ -262,17 +262,10 @@ void readStudentCour(string fileName, Course& cour)
 		cout << "Mo file khong thanh cong" << endl;
 		return;
 	}
-	Student temp;
 	string temp1;
-	int n = 0;
-	while (!fin.eof())
-	{
-		getline(fin, temp1);
-		n++;
-	}
 	fin.seekg(0, ios::beg);
-	for(int i=0;i<n-1;i++)
-	{
+	while(!fin.eof()){
+		Student temp;
 		getline(fin, temp.studentID, ';');
 		getline(fin, temp.fullName, ';');
 		getline(fin, temp.Gender, ';');
@@ -301,6 +294,8 @@ void printCour(Course cou)
 	Node* temp = cou.sv.Head;
 	while (temp != NULL)
 	{
-		printNode(temp);
+		cout << temp->sv.fullName << '\n';
+		temp = temp->next;
+	//	printNode(temp);
 	}
 }
