@@ -32,20 +32,6 @@ int main() {
 	Clas* a = createClass(file_name, aca, sl, n1, n);
 	Clas cls1;
 	if (n1 == 1) {
-		/*cout << "\n" << a[0].nameClass << endl;
-		cout << "------------" << endl;
-		for (int i = 0; i < 5; i++) {
-			node tmp = makeNode(a[0].sinhVien[i]);
-			addNodeSV(APCS1, tmp);
-		}
-		printNode(APCS1);
-		cout << "\n" << a[1].nameClass << endl;
-		cout << "------------" << endl;
-		for (int i = 0; i < 5; i++) {
-			node tmp = makeNode(a[1].sinhVien[i]);
-			addNodeSV(APCS2, tmp);
-		}
-		printNode(APCS2);*/
 		for (int i = 0; i < 2; i++)
 		{
 			cout << a[i].nameClass << endl;
@@ -60,20 +46,6 @@ int main() {
 		}
 	}
 	else if (n1 == 2) {
-		//cout << "\n" << a[0].nameClass << endl;
-		//cout << "------------" << endl;
-		//for (int i = 0; i < 5; i++) {
-		//	node tmp = makeNode(a[0].sinhVien[i]);
-		//	addNodeSV(CLC01, tmp);
-		//}
-		//printNode(CLC01);
-		//cout << "\n" << a[1].nameClass << endl;
-		//cout << "------------" << endl;
-		//for (int i = 0; i < 5; i++) {
-		//	node tmp = makeNode(a[1].sinhVien[i]);
-		//	addNodeSV(CLC02, tmp);
-		//}
-		//printNode(CLC02);
 		for (int i = 2; i < 4; i++)
 		{
 			cout << a[i - 2].nameClass << endl;
@@ -88,41 +60,6 @@ int main() {
 		}
 	}
 	else {
-		//cout << "\n" << a[0].nameClass << endl;
-		//cout << "------------" << endl;
-		//for (int i = 0; i < 5; i++) {
-		//	node tmp = makeNode(a[0].sinhVien[i]);
-		//	addNodeSV(CTT1, tmp);
-		//}
-		//printNode(CTT1);
-		//cout << "\n" << a[1].nameClass << endl;
-		//cout << "------------" << endl;
-		//for (int i = 0; i < 5; i++) {
-		//	node tmp = makeNode(a[1].sinhVien[i]);
-		//	addNodeSV(CTT2, tmp);
-		//}
-		//printNode(CTT2);
-		//cout << "\n" << a[2].nameClass << endl;
-		//cout << "------------" << endl;
-		//for (int i = 0; i < 5; i++) {
-		//	node tmp = makeNode(a[2].sinhVien[i]);
-		//	addNodeSV(CTT3, tmp);
-		//}
-		//printNode(CTT3);
-		//cout << "\n" << a[3].nameClass << endl;
-		//cout << "------------" << endl;
-		//for (int i = 0; i < 5; i++) {
-		//	node tmp = makeNode(a[3].sinhVien[i]);
-		//	addNodeSV(CTT4, tmp);
-		//}
-		//printNode(CTT4);
-		//cout << "\n" << a[4].nameClass << endl;
-		//cout << "------------" << endl;
-		//for (int i = 0; i < 5; i++) {
-		//	node tmp = makeNode(a[4].sinhVien[i]);
-		//	addNodeSV(CTT5, tmp);
-		//}
-		//printNode(CTT5);
 		for (int i = 4; i < 9; i++)
 		{
 			cout << a[i - 4].nameClass << endl;
@@ -149,7 +86,7 @@ int main() {
 		if (choice2 >= 1 && choice2 <= sl)
 		{
 			addNodeSV(lst[choice2 - 1].Head, tmp2);
-			cout << "\nSau khi them sinh vien moi vao danh sach " << a[choice2-1].nameClass << ":" << endl;
+			cout << "\nSau khi them sinh vien moi vao danh sach " << a[choice2 - 1].nameClass << ":" << endl;
 			printNode(lst[choice2 - 1].Head);
 		}
 	}
@@ -157,11 +94,11 @@ int main() {
 	{
 		menu2();
 		cin >> choice2;
-		if (choice2>=1 && choice2<=sl)
+		if (choice2 >= 1 && choice2 <= sl)
 		{
-			addNodeSV(lst[choice2 - 1+2].Head, tmp2);
+			addNodeSV(lst[choice2 - 1 + 2].Head, tmp2);
 			cout << "\nSau khi them sinh vien moi vao danh sach " << a[choice2 - 1].nameClass << ":" << endl;
-			printNode(lst[choice2 - 1+2].Head);
+			printNode(lst[choice2 - 1 + 2].Head);
 		}
 	}
 	else
@@ -175,80 +112,53 @@ int main() {
 			printNode(lst[choice2 - 1 + 4].Head);
 		}
 	}
+	int hk;
+	Semester* smt = new Semester[3];
 
-	//if (n1 == 1) {
-	//	menu3();
-	//	cin >> choice2;
-	//	switch (choice2) {
-	//	case 1: {
-	//		addNodeSV(APCS1, tmp2);
-	//		cout << "\nSau khi them sinh vien moi vao danh sach " << a[0].nameClass << ":" << endl;
-	//		printNode(APCS1);
-	//		break;
-	//	}
-	//	case 2: {
-	//		addNodeSV(APCS2, tmp2);
-	//		cout << "\nSau khi them sinh vien moi vao danh sach " << a[1].nameClass << ":" << endl;
-	//		printNode(APCS2);
-	//		break;
-	//	}
-	//	}
-	//}
-	//else if (n1 == 2) {
-	//	menu2();
-	//	cin >> choice2;
-	//	switch (choice2) {
-	//	case 1: {
-	//		addNodeSV(CLC01, tmp2);
-	//		cout << "\nSau khi them sinh vien moi vao danh sach " << a[0].nameClass << ":" << endl;
-	//		printNode(CLC01);
-	//		break;
-	//	}
-	//	case 2: {
-	//		addNodeSV(CLC02, tmp2);
-	//		cout << "\nSau khi them sinh vien moi vao danh sach " << a[1].nameClass << ":" << endl;
-	//		printNode(CLC02);
-	//		break;
-	//	}
-	//	}
-	//}
-	//else {
-	//	menu1();
-	//	cin >> choice2;
-	//	switch (choice2) {
-	//	case 1: {
-	//		addNodeSV(CTT1, tmp2);
-	//		cout << "\nSau khi them sinh vien moi vao danh sach " << a[0].nameClass << ":" << endl;
-	//		printNode(CTT1);
-	//		break;
-	//	}
-	//	case 2: {
-	//		addNodeSV(CTT2, tmp2);
-	//		cout << "\nSau khi them sinh vien moi vao danh sach " << a[1].nameClass << ":" << endl;
-	//		printNode(CTT2);
-	//		break;
-	//	}
-	//	case 3: {
-	//		addNodeSV(CTT3, tmp2);
-	//		cout << "\nSau khi them sinh vien moi vao danh sach " << a[2].nameClass << ":" << endl;
-	//		printNode(CTT3);
-	//		break;
-	//	}
-	//	case 4: {
-	//		addNodeSV(CTT4, tmp2);
-	//		cout << "\nSau khi them sinh vien moi vao danh sach " << a[3].nameClass << ":" << endl;
-	//		printNode(CTT4);
-	//		break;
-	//	}
-	//	case 5: {
-	//		addNodeSV(CTT5, tmp2);
-	//		cout << "\nSau khi them sinh vien moi vao danh sach " << a[4].nameClass << ":" << endl;
-	//		printNode(CTT5);
-	//		break;
-	//	}
-	//	}
-	//}
+	cout << "\n---------------------" << endl;
+	switch (chooseSemester()) {
+	case 1: {
+		smt[0].cou = new Course[9];
+		nhap3HK(smt, 1);
+		xuat3HK(smt, 1);
+		for (int i = 0; i < 9; i++)
+		{
+			readStudentCour(file_name[i], smt[0].cou[i]);
+		}
+		for (int i = 0; i < 9; i++)
+		{
+			printCour(smt[0].cou[i]);
+		}
+		break;
+	}
+	case 2: {
+		smt[1].cou = new Course[9];
+		nhap3HK(smt, 2);
+		xuat3HK(smt, 2);
+		for (int i = 0; i < 9; i++)
+		{
+			readStudentCour(file_name[i], smt[1].cou[i]);
+		}
+		for (int i = 0; i < 9; i++)
+		{
+			printCour(smt[1].cou[i]);
+		}
+		break;
+	}
+	case 3: {
+		smt[2].cou = new Course[9];
+		nhap3HK(smt, 3);
+		xuat3HK(smt, 3);
+		for (int i = 0; i < 9; i++)
+		{
+			readStudentCour(file_name[i], smt[2].cou[i]);
+		}
+		for (int i = 0; i < 9; i++)
+		{
+			printCour(smt[2].cou[i]);
+		}
+		break;
+	}
+	}
 	return 0;
 }
-
-
