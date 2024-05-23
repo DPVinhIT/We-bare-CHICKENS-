@@ -101,8 +101,13 @@ node makeNode(Student sv) {
 	return tmp;
 }
 void addNodeSV(node& a, node newNode) {
+	if (newNode == NULL)
+	{
+		return;
+	}
 	if (a == NULL) {
 		a = newNode;
+		a->next = NULL;
 	}
 	else {
 		newNode->next = a;
@@ -137,24 +142,19 @@ void menu3() {
 	cout << "\nChon 0 de thoat chuong trinh!" << endl;
 }
 void inputDate(Date& d) {
-	cout << "Nhap ngay: \n";
-	cin >> d.day;
-	cout << "Nhap thang: \n";
-	cin >> d.month;
-	cout << "Nhap nam: \n";
-	cin >> d.year;
+	cout << "Nhap Ngay Sinh:";
+	cin >> d.day >> d.month >> d.year;
 }
 void inputAStudent(Student& hs) {
-	cout << "Nhap MSSV: \n";
+	cout << "Nhap MSSV: ";
 	cin >> hs.studentID;
-	cout << "Nhap ho ten: \n";
+	cout << "Nhap ho ten: ";
 	cin.ignore();
 	getline(cin, hs.fullName);
-	cout << "Nhap gioi tinh: \n";
+	cout << "Nhap gioi tinh: ";
 	cin >> hs.Gender;
-	cout << "Nhap ngay sinh: \n";
 	inputDate(hs.DoB);
-	cout << "Nhap so CCCD/CMND: \n";
+	cout << "Nhap so CCCD/CMND: ";
 	cin >> hs.socialID;
 	splitName(hs);
 }
@@ -177,7 +177,7 @@ void InputCourse(Course& cou) {
 	int chonCa;
 	do {
 		cout << "Nhan 2 de chon THU HAI\n";
-		cout << "Nhan 3 de chon THU Ba\n";
+		cout << "Nhan 3 de chon THU BA\n";
 		cout << "Nhan 4 de chon THU TU\n";
 		cout << "Nhan 5 de chon THU NAM\n";
 		cout << "Nhan 6 de chon THU SAU\n";
@@ -194,4 +194,113 @@ void InputCourse(Course& cou) {
 		cin >> chonCa;
 	} while (chonCa < 1 || chonCa > 4);
 	cou.cld.Time = Time[chonCa - 1];
+}
+void nhapDate(Semester& smt) {
+	cout << "Nhap ngay bat dau: ";
+	cin >> smt.begin.day >> smt.begin.month >> smt.begin.year;
+	cout << "Nhap ngay ket thuc: ";
+	cin >> smt.end.day >> smt.end.month >> smt.end.year;
+}
+void xuatDate(Semester& smt) {
+	cout << " " << smt.begin.day << "/" << smt.begin.month << "/" << smt.begin.year << " - " << smt.end.day << "/" << smt.end.month << "/" << smt.end.year << endl;
+}
+void nhap3HK(Semester* smt, int i) {
+	cout << "\nHoc ky " << i << ": " << endl;
+	nhapDate(smt[i-1]);
+	cout << "Nhap cac khoa hoc: " << endl;
+	for (int j = 0; j < 9; j++)
+	{
+		smt[i - 1].cou[j].sv.Head = new Node;
+		cout << "Khoa hoc thu " << j + 1 << ": \n";
+		InputCourse(smt[i - 1].cou[j]);
+	}
+}
+void xuat3HK(Semester* smt, int i) {
+	cout << "\n\n--------------------" << endl << endl;
+	cout << "Hoc ky " << i << ":";
+	xuatDate(smt[i-1]);
+}
+int chooseSemester() {
+	int n;
+	cout << "Chon hoc ky muon tao:\n";
+	cout << "Nhan 1 de tao hoc ky 1\n";
+	cout << "Nhan 2 de tao hoc ky 2\n";
+	cout << "Nhan 3 de tao hoc ky 3\n";
+	cout << "Nhan 0 de thoat!!!\n";
+	do {
+		cin >> n;
+	} while (n < 0 || n>3);
+	return n;
+}
+nodecs makeNode1(Course x) {
+	nodecs tmp = new N_Course();
+	tmp->crs = x;
+	tmp->next = NULL;
+	return tmp;
+}
+//void addNodeCourse(nodecs &a, Course crs){
+	//nodecs tmp = makeNode(crs);
+//	if(a==NULL){
+	//	a = tmp;
+	//}
+	//tmp->next = a;
+//	a = tmp;
+//}
+
+void addStudentCour(Course& cour, Student sv)
+{
+	node p = makeNode(sv);
+	addNodeSV(cour.sv.Head,p);
+}
+
+void readStudentCour(string fileName, Course& cour)
+{
+	ifstream fin;
+	fin.open(fileName);
+	if (!fin.is_open())
+	{
+		cout << "Mo file khong thanh cong" << endl;
+		return;
+	}
+	Student temp;
+	string temp1;
+	int n = 0;
+	while (!fin.eof())
+	{
+		getline(fin, temp1);
+		n++;
+	}
+	fin.seekg(0, ios::beg);
+	for(int i=0;i<n-1;i++)
+	{
+		getline(fin, temp.studentID, ';');
+		getline(fin, temp.fullName, ';');
+		getline(fin, temp.Gender, ';');
+		fin.ignore();
+		fin >> temp.DoB.day;
+		fin.ignore();
+		fin >> temp.DoB.month;
+		fin.ignore();
+		fin >> temp.DoB.year;
+		fin.ignore();
+		getline(fin, temp.socialID, '\n');
+		splitName(temp);
+		addStudentCour(cour, temp);
+	}
+	fin.close();
+}
+
+void printCour(Course cou)
+{
+	cout <<"Ten khoa hoc: "<< cou.courseName << endl;
+	cout <<"ID: "<< cou.courseID << endl;
+	cout << "Giao vien: " << cou.teacher << endl;
+	cout <<"So luong toi da: "<< cou.maxStudent << endl;
+	cout << "So tin chi: " << cou.acaCrd << endl;
+	cout << "Ngay hoc: " << cou.cld.Day<<endl<<"Thoi gian: " << cou.cld.Time << endl;
+	Node* temp = cou.sv.Head;
+	while (temp != NULL)
+	{
+		printNode(temp);
+	}
 }
