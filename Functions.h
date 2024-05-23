@@ -17,8 +17,8 @@ void menu2();
 void menu3();
 void inputDate(Date& d);
 void inputAStudent(Student& hs);
-void nhap3HK(Semester *smt, int n);
-void xuat3HK(Semester *smt, int n);
+void nhap3HK(Semester *smt, int i);
+void xuat3HK(Semester *smt, int i);
 int chooseSemester();
 //void addNodeC(node& a, node newNode);
 #endif

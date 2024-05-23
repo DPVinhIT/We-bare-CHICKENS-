@@ -199,18 +199,14 @@ void nhapDate(Semester &smt){
 void xuatDate(Semester &smt){
 	cout<<" "<<smt.begin.day<<"/"<<smt.begin.month<<"/"<<smt.begin.year<<" - "<<smt.end.day<<"/"<<smt.end.month<<"/"<<smt.end.year<<endl;
 }
-void nhap3HK(Semester *smt, int n){
-	for(int i=0; i<n; i++){
+void nhap3HK(Semester *smt, int i){
 		cout<<"\nHoc ky "<<i+1<<": "<<endl;
 		nhapDate(smt[i]);
-	}
 }
-void xuat3HK(Semester *smt, int n){
+void xuat3HK(Semester *smt, int i){
 	cout<<"\n\n--------------------"<<endl<<endl;
-	for(int i=0; i<n; i++){
 		cout<<"Hoc ky "<<i+1<<":" ;
 		xuatDate(smt[i]);
-	}
 }
 int chooseSemester() {
 	int n;
@@ -230,11 +226,11 @@ nodecs makeNode1(Course x){
 	tmp->next = NULL;
 	return tmp;
 }
-void addNodeCourse(nodecs &a, Course crs){
-	nodecs tmp = makeNode(crs);
-	if(a==NULL){
-		a = tmp;
-	}
-	tmp->next = a;
-	a = tmp;
-}
+//void addNodeCourse(nodecs &a, Course crs){
+	//nodecs tmp = makeNode(crs);
+//	if(a==NULL){
+	//	a = tmp;
+	//}
+	//tmp->next = a;
+//	a = tmp;
+//}
