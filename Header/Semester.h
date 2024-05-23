@@ -5,7 +5,6 @@
 
 struct Semester {
 	Course* cou;
-	int year;
 	Date begin;
 	Date end;
 };
