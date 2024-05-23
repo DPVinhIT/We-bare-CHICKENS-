@@ -22,7 +22,7 @@ int main() {
 	lst[8].Head = CTT5;
 	createAcademicYear(2023);
 	string file_name[] = { "23CTT1.csv", "23CTT2.csv", "23CTT3.csv", "23CTT4.csv", "23CTT5.csv", "23CLC01.csv", "23CLC02.csv", "23APCS1.csv", "23APCS2.csv" };
-	int n1 = chooseClass();
+	/*int n1 = chooseClass();
 	AcaYear aca;
 	aca.CTT = new Clas[5];
 	aca.CLC = new Clas[2];
@@ -112,6 +112,7 @@ int main() {
 			printNode(lst[choice2 - 1 + 4].Head);
 		}
 	}
+	*/
 	int hk;
 	Semester* smt = new Semester[3];
 
@@ -121,8 +122,12 @@ int main() {
 		smt[0].cou = new Course[9];
 		nhap3HK(smt, 1);
 		xuat3HK(smt, 1);
+		smt[0].cou->sv.Head = new Node;
+		smt[0].cou->sv.Head = NULL;
 		for (int i = 0; i < 9; i++)
 		{
+			smt[0].cou[i].sv.Head = new Node;
+			smt[0].cou[i].sv.Head = NULL;
 			readStudentCour(file_name[i], smt[0].cou[i]);
 		}
 		for (int i = 0; i < 9; i++)
@@ -134,9 +139,11 @@ int main() {
 	case 2: {
 		smt[1].cou = new Course[9];
 		nhap3HK(smt, 2);
-		xuat3HK(smt, 2);
+		//xuat3HK(smt, 2);
 		for (int i = 0; i < 9; i++)
 		{
+			smt[1].cou[i].sv.Head = new Node;
+			smt[1].cou[i].sv.Head = NULL;
 			readStudentCour(file_name[i], smt[1].cou[i]);
 		}
 		for (int i = 0; i < 9; i++)
@@ -148,9 +155,11 @@ int main() {
 	case 3: {
 		smt[2].cou = new Course[9];
 		nhap3HK(smt, 3);
-		xuat3HK(smt, 3);
+		//xuat3HK(smt, 3);
 		for (int i = 0; i < 9; i++)
 		{
+			smt[2].cou[i].sv.Head = new Node;
+			smt[2].cou[i].sv.Head = NULL;
 			readStudentCour(file_name[i], smt[2].cou[i]);
 		}
 		for (int i = 0; i < 9; i++)
