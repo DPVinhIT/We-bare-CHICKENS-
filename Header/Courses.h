@@ -13,10 +13,16 @@ struct Course
 {
 	string courseID;
 	string courseName;
-	Clas cls;
+	ListNode sv;
 	string teacher;
 	int acaCrd;
 	int maxStudent;
 	calendar cld;
 };
+struct N_Course {
+	Course crs;
+	N_Course* next;
+};
+
+typedef struct N_Course* nodecs;
 #endif
