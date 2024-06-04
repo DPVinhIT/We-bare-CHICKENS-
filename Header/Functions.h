@@ -8,6 +8,8 @@ NodeClass* createNodeClass(Clas cls);
 void addNodeStudent(ListStudent& lst,NodeStudent* st);
 void addNodeClass(ListClass& lcls,NodeClass* cls);
 void readFileStudent(string fileName[], ListClass& lcls);
+Student inputStudent();
+void InputCourse(Course& cou);
 void printStudent(Student st);
 void printListStudent(ListStudent lst);
 void printClass(Clas cls);
@@ -17,5 +19,10 @@ void printListCourse(ListCourse lcrs);
 void printSemester(Semester smt);
 void printListSemester(ListSeme lsmt);
 void printAca(Academy aca);
-
+void removeFirst(ListStudent& lst);
+void removeLast(ListStudent& lst);
+int getSize(ListStudent lst);
+void removeStudent(ListStudent& lst, int pos);
+void removeStudent_MSSV(ListStudent& lst);
+void updateCourse(Course& crs);
 #endif
