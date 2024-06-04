@@ -2,6 +2,18 @@
 #define Functions_h
 
 #include"Struct.h"
+
+//Ham in
+void printStudent(Student st);
+void printListStudent(ListStudent lst);
+void printClass(Clas cls);
+void printListClass(ListClass lcls);
+void printCourse(Course crs);
+void printListCourse(ListCourse lcrs);
+void printSemester(Semester smt);
+void printListSemester(ListSeme lsmt);
+void printAca(Academy aca);
+
 typedef struct Node* node;
 void splitName(Student& st);
 void readFileStudent(string fileName, Clas& Lop, int& n);
