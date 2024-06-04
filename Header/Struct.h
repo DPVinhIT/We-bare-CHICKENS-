@@ -1,6 +1,5 @@
-﻿#ifndef Struct_h
+#ifndef Struct_h
 #define Struct_h
-
 #include<iostream>
 #include<fstream>
 #include<string.h>
@@ -11,7 +10,7 @@ using namespace std;
 struct Date {
 	int day, month, year;
 };
-//Sinh viên
+
 struct Student {
 	string studentID;
 	string firstName, lastName, fullName;
@@ -20,56 +19,71 @@ struct Student {
 	string socialID;
 };
 
-struct Node {
+struct NodeStudent {
 	Student sv;
-	Node* next;
+	NodeStudent* Next;
 };
-struct ListSinhVien
+//Danh sach sinh vien
+struct ListStudent
 {
-	Node* Head;
+	NodeStudent* Head;
+	ListStudent() : Head(NULL) {}
 };
-//Lớp
 struct Clas
 {
 	string nameClass;
-	Student* sinhVien;
+	ListStudent lst;
 };
-//Năm học
-struct AcaYear
-{
-	Semester* sem = new Semester[3];
-	Clas* APCS;
-	Clas* CLC;
-	Clas* CTT;
+struct NodeClass {
+	Clas cls;
+	NodeClass* Next;
 };
-
-
-
-//Lịch học
-struct calendar
+//Danh sach lop
+struct ListClass {
+	NodeClass* Head;
+	ListClass() : Head(NULL) {}
+};
+struct Calendar
 {
 	string Day;
 	string Time;
 };
-//Khóa học
 struct Course
 {
 	string courseID;
 	string courseName;
-	ListSinhVien sv;
+	ListStudent sv;
 	string teacher;
 	int acaCrd;
 	int maxStudent;
-	calendar cld;
+	Calendar cld;
 };
-struct N_Course {
+struct NodeCourse {
 	Course crs;
-	N_Course* next;
+	NodeCourse* Next;
+};
+//Danh sach khoa hoc
+struct ListCourse {
+	NodeCourse* Head;
+	ListCourse() : Head(NULL) {}
 };
 struct Semester {
-	Course* cou;
+	ListCourse lcrs;
 	Date begin;
 	Date end;
 };
-
+struct NodeSeme
+{
+	Semester smt;
+	NodeSeme* Next;
+};
+//Danh sach hoc ky
+struct ListSeme {
+	NodeSeme* Head;
+	ListSeme() :Head(NULL) {}
+};
+struct Academy {
+	ListSeme lsm;
+	int begin, end;
+};
 #endif
