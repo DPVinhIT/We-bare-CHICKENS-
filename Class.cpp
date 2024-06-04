@@ -1,4 +1,4 @@
-#include"Class.h"
+﻿#include"Functions.h"
 
 void splitName(Student& st)
 {
