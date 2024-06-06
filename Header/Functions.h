@@ -2,7 +2,9 @@
 #define Functions_h
 
 #include"Struct.h"
-
+void createAca(Academy acd);
+int chooseClass();
+int chooseSemester();
 void splitName(Student& st);
 NodeStudent* createNodeStudent(Student sv);
 NodeClass* createNodeClass(Clas cls);
@@ -20,8 +22,6 @@ void printListCourse(ListCourse lcrs);
 void printSemester(Semester smt);
 void printListSemester(ListSeme lsmt);
 void printAca(Academy aca);
-void printListStudentScore(Course crs);
-void printClassScore(Clas cls);
 void removeFirst(ListStudent& lst);
 void removeLast(ListStudent& lst);
 int getSize(ListStudent lst);
@@ -29,7 +29,8 @@ void removeStudent(ListStudent& lst, int pos);
 void removeStudent_MSSV(ListStudent& lst);
 void updateCourse(Course& crs);
 void writeCoure(string fileName, Course cour);
-NodePScore* createPersonalScore(PersonalScore ps);
-void addNodePScore(ScoreBoard& sb, NodePScore* ps);
-void readScoreBoard(string fileName, ScoreBoard& sb);
+void printListStudentScore(Course crs);
+void printListCourseScore(Course crs);
+void outputScore(Course a);
+int PrintScore();
 #endif
