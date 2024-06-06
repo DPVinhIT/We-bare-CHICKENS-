@@ -1,5 +1,40 @@
 #include "Functions.h"
-
+void createAca(Academy acd){
+	cout<<"\nNhap nam bat dau: ";
+	cin>>acd.begin;
+	cout<<"\nNhap nam ket thuc: ";
+	cin>>acd.end;
+	cout<<"\nNam hoc: "<<acd.begin<<" - "<<acd.end<<endl;
+}
+int chooseClass(){
+	int n;
+	cout<<"Chon lop ban muon them sinh vien: \n";
+	cout<<"1. 23CTT1\n";
+	cout<<"1. 23CTT2\n";
+	cout<<"1. 23CTT3\n";
+	cout<<"1. 23CTT4\n";
+	cout<<"1. 23CTT5\n";
+	cout<<"1. 23CLC01\n";
+	cout<<"1. 23CLC02\n";
+	cout<<"1. 23APCS1\n";
+	cout<<"1. 23APCS2\n";
+	do {
+		cin >> n;
+	} while (n < 0 || n>9);
+	return n;
+}
+int chooseSemester(){
+	int n;
+	cout << "Chon hoc ky muon tao:\n";
+	cout << "Nhan 1 de tao hoc ky 1\n";
+	cout << "Nhan 2 de tao hoc ky 2\n";
+	cout << "Nhan 3 de tao hoc ky 3\n";
+	cout << "Nhan 0 de thoat!!!\n";
+	do {
+		cin >> n;
+	} while (n < 0 || n>3);
+	return n;
+}
 void splitName(Student& st)
 {
 	int first, last;
@@ -238,30 +273,6 @@ void printAca(Academy aca) {
 	cout << "Nam hoc: " << aca.begin << '-' << aca.end << endl;
 	printListSemester(aca.lsm);
 }
-void printListStudentScore(Course crs) {
-	cout << "Khoa hoc: " << crs.courseName << endl;
-	NodeStudent* lstScr = crs.sv.Head;
-	cout << "----------------------------------------------------------------------------------------------\n";
-	cout << "| " << setw(5) << left << "STT" << "| " << setw(12) << left << "MSSV" << "| " << setw(25) << left << "Full name" << "| " << setw(14) << left << "Regular Mark" << "| " << setw(9) << "Midterm" << "| " << setw(7) << "Final" << "| " << setw(7) << "Total" << "|" << endl;
-	cout << "----------------------------------------------------------------------------------------------\n";
-	while (lstScr != NULL) {
-		cout << "| " << setw(5) << left << lstScr->sv.STT << "| " << setw(12) << left << lstScr->sv.studentID << "| " << setw(25) << left << lstScr->sv.fullName << "| " << setw(14) << left << lstScr->sv.regularMark << "| " << setw(9) << lstScr->sv.midtermMark << "| " << setw(7) << lstScr->sv.finalMark << "| " << setw(7) << lstScr->sv.totalMark << "|" << endl;
-		lstScr = lstScr->Next;
-	}
-	cout << "----------------------------------------------------------------------------------------------\n";
-}
-void printClassScore(Clas cls) {
-	cout << "Lop: " << cls.nameClass << endl;
-	NodeStudent* lstScr = cls.lst.Head;
-	cout << "----------------------------------------------------------------------------------------------\n";
-	cout << "| " << setw(5) << left << "STT" << "| " << setw(12) << left << "MSSV" << "| " << setw(25) << left << "Full name" << "| " << setw(14) << left << "Regular Mark" << "| " << setw(9) << "Midterm" << "| " << setw(7) << "Final" << "| " << setw(7) << "Total" << "|" << endl;
-	cout << "----------------------------------------------------------------------------------------------\n";
-	while (lstScr != NULL) {
-		cout << "| " << setw(5) << left << lstScr->sv.STT << "| " << setw(12) << left << lstScr->sv.studentID << "| " << setw(25) << left << lstScr->sv.fullName << "| " << setw(14) << left << lstScr->sv.regularMark << "| " << setw(9) << lstScr->sv.midtermMark << "| " << setw(7) << lstScr->sv.finalMark << "| " << setw(7) << lstScr->sv.totalMark << "|" << endl;
-		lstScr = lstScr->Next;
-	}
-	cout << "----------------------------------------------------------------------------------------------\n";
-}
 
 //
 //remove student
@@ -288,35 +299,6 @@ int getSize(ListStudent lst) {
 		tmp = tmp->Next;
 	}
 	return cnt;
-}
-
-void removeStudent(ListStudent& lst, int pos) {
-	NodeStudent* tmp = lst.Head;
-	if (pos == 1) {
-		removeFirst(lst);
-		return;
-	}
-	int n = getSize(lst);
-	if (pos == n) {
-		removeLast(lst);
-		return;
-	}
-	for (int i = 1; i < pos - 1; i++) {
-		tmp = tmp->Next;
-	}
-	tmp->Next = tmp->Next->Next;
-}
-void removeStudent_MSSV(ListStudent& lst) {
-	string MSSV;
-	int n = getSize(lst);
-	NodeStudent* tmp = lst.Head;
-	cout << "\nSinh vien ban muon xoa co MSSV la: ";
-	cin >> MSSV;
-	for (int i = 1; i <= n; i++) {
-		if (tmp->sv.studentID == MSSV) {
-			removeStudent(lst, i);
-		}
-	}
 }
 //cap nhat khoa hoc
 void updateCourse(Course& crs) {
@@ -447,54 +429,148 @@ void writeCoure(string fileName, Course cour)
 	}
 	fout.close();
 }
-NodePScore* createPersonalScore(PersonalScore ps)
-{
-	NodePScore* p = new NodePScore;
-	p->PScore = ps;
-	p->Next = NULL;
-	return p;
+void removeStudent(ListStudent& lst, int pos) {
+    int n = getSize(lst);
+    if (pos < 1 || pos > n) {
+        cout << "Vi tri khong hop le!\n";
+        return;
+    }
+
+    NodeStudent* tmp = lst.Head;
+    if (pos == 1) {
+        removeFirst(lst);
+        return;
+    }
+
+    if (pos == n) {
+        removeLast(lst);
+        return;
+    }
+
+    for (int i = 1; i < pos - 1; i++) {
+        tmp = tmp->Next;
+    }
+    
+    NodeStudent* nodeToDelete = tmp->Next;
+    tmp->Next = nodeToDelete->Next;
+    delete nodeToDelete;
 }
-void addNodePScore(ScoreBoard& sb, NodePScore* ps)
-{
-	if (sb.Head == NULL)
-	{
-		sb.Head = ps;
-		sb.Head->Next = NULL;
-		return;
-	}
-	NodePScore* temp = sb.Head;
-	while (temp->Next != NULL)
-	{
-		temp = temp->Next;
-	}
-	temp->Next = ps;
+void removeStudent_MSSV(ListStudent& lst) {
+    string MSSV;
+    cout << "\nSinh vien ban muon xoa co MSSV la: ";
+    cin >> MSSV;
+    NodeStudent* tmp = lst.Head;
+    int pos = 1;
+
+    while (tmp != nullptr) {
+        if (tmp->sv.studentID == MSSV) {
+            removeStudent(lst, pos);
+            return;
+        }
+        tmp = tmp->Next;
+        pos++;
+    }
+
+    cout << "Khong tim thay sinh vien co MSSV: " << MSSV << endl;
 }
-void readScoreBoard(string fileName, ScoreBoard& sb)
-{
-	sb.Head = new NodePScore;
-	ifstream fin;
-	fin.open(fileName);
-	if (!fin.is_open())
-	{
-		cout << "Mo file khong thanh cong" << endl;
-		return;
-	}
-	while (!fin.eof())
-	{
-		PersonalScore ps;
-		fin >> ps.stt;
-		fin.ignore();
-		getline(fin,ps.studentID, ';');
-		getline(fin, ps.fullName, ';');
-		fin >> ps.totalMark;
-		fin.ignore();
-		fin >> ps.finalMark;
-		fin.ignore();
-		fin >> ps.midtermMark;
-		fin.ignore();
-		fin >> ps.regularMark;
-		fin.ignore();
-		addNodePScore(sb, createPersonalScore(ps));
-	}
-	fin.close();
+void inputPersonScore(Student &psc){
+	cout<<"\nSTT: "; 
+	cin>>psc.STT;
+	cout<<"\nMSSV: ";
+	cin>>psc.studentID;
+	cout<<"\nFull Name: ";
+	getline(cin, psc.fullName);
+	cout<<"\nRegular Mark: ";
+	cin>>psc.regularMark;
+	cout<<"\nMidterm Mark: ";
+	cin>>psc.midtermMark;
+	cout<<"\nFinal Mark: ";
+	cin>>psc.finalMark;
+	cout<<"\nTotal Mark: ";
+	cin>>psc.totalMark;
 }
+void printListStudentScore(Course crs) {
+	NodeStudent* lstScr = crs.sv.Head;
+	cout << "----------------------------------------------------------------------------------------------\n";
+	cout << "| " << setw(5) << left << "STT" << "| " << setw(12) << left << "MSSV" << "| " << setw(25) << left << "Full name" << "| " << setw(14) << left << "Regular Mark" << "| " << setw(9) << "Midterm" << "| " << setw(7) << "Final" << "| " << setw(7) << "Total" << "|" << endl;
+	cout << "----------------------------------------------------------------------------------------------\n";
+	while (lstScr != NULL) {
+		cout << "| " << setw(5) << left << lstScr->sv.STT << "| " << setw(12) << left << lstScr->sv.studentID << "| " << setw(25) << left << lstScr->sv.fullName << "| " << setw(14) << left << lstScr->sv.regularMark << "| " << setw(9) << lstScr->sv.midtermMark << "| " << setw(7) << lstScr->sv.finalMark << "| " << setw(7) << lstScr->sv.totalMark << "|" << endl;
+		lstScr = lstScr->Next;
+	}
+}
+void printListCourseScore(Course crs) {
+	cout << "Khoa hoc: " << crs.courseName << endl;
+	NodeStudent* lstScr = crs.sv.Head;
+	cout << "----------------------------------------------------------------------------------------------\n";
+	cout << "| " << setw(5) << left << "STT" << "| " << setw(12) << left << "MSSV" << "| " << setw(25) << left << "Full name" << "| " << setw(14) << left << "Regular Mark" << "| " << setw(9) << "Midterm" << "| " << setw(7) << "Final" << "| " << setw(7) << "Total" << "|" << endl;
+	cout << "----------------------------------------------------------------------------------------------\n";
+	while (lstScr != NULL) {
+		cout << "| " << setw(5) << left << lstScr->sv.STT << "| " << setw(12) << left << lstScr->sv.studentID << "| " << setw(25) << left << lstScr->sv.fullName << "| " << setw(14) << left << lstScr->sv.regularMark << "| " << setw(9) << lstScr->sv.midtermMark << "| " << setw(7) << lstScr->sv.finalMark << "| " << setw(7) << lstScr->sv.totalMark << "|" << endl;
+		lstScr = lstScr->Next;
+	}
+}
+void printClassScore(Clas cls) {
+	cout << "Lop: " << cls.nameClass << endl;
+	NodeStudent* lstScr = cls.lst.Head;
+	cout << "----------------------------------------------------------------------------------------------\n";
+	cout << "| " << setw(5) << left << "STT" << "| " << setw(12) << left << "MSSV" << "| " << setw(25) << left << "Full name" << "| " << setw(14) << left << "Regular Mark" << "| " << setw(9) << "Midterm" << "| " << setw(7) << "Final" << "| " << setw(7) << "Total" << "|" << endl;
+	cout << "----------------------------------------------------------------------------------------------\n";
+	while (lstScr != NULL) {
+		cout << "| " << setw(5) << left << lstScr->sv.STT << "| " << setw(12) << left << lstScr->sv.studentID << "| " << setw(25) << left << lstScr->sv.fullName << "| " << setw(14) << left << lstScr->sv.regularMark << "| " << setw(9) << lstScr->sv.midtermMark << "| " << setw(7) << lstScr->sv.finalMark << "| " << setw(7) << lstScr->sv.totalMark << "|" << endl;
+		lstScr = lstScr->Next;
+	}
+}
+void PersonalScore(ListCourse lcs){
+	string MSSV;
+	cout<<"\nNhap MSSV cua sinh vien ban muon xem diem: ";
+	cin>>MSSV;
+	NodeCourse* tmp = lcs.Head;
+	while(tmp != NULL){
+		if(tmp->crs.sv.Head->sv.studentID == MSSV){
+			printListStudentScore(tmp->crs);
+		}
+		tmp=tmp->Next;
+	}
+}
+int PrintScore(){
+	int n;
+	cout<<"Chon lop ban muon xem diem: \n";
+	cout<<"1. 23CTT1\n";
+	cout<<"2. 23CTT2\n";
+	cout<<"3. 23CTT3\n";
+	cout<<"4. 23CTT4\n";
+	cout<<"5. 23CTT5\n";
+	cout<<"6. 23CLC01\n";
+	cout<<"7. 23CLC02\n";
+	cout<<"8. 23APCS1\n";
+	cout<<"9. 23APCS2\n";
+	do {
+		cin >> n;
+	} while (n < 0 || n>9);	
+	return n;
+}
+void printScoreClass(ListCourse lcr, ListClass lcs){
+	int n = PrintScore();
+	NodeCourse* tmp = lcr.Head;
+	NodeClass* tmp1 = lcs.Head;
+	for(int i = 1; i<n; i++){
+		tmp1=tmp1->Next;
+	}
+	cout<<tmp1->cls.nameClass<<endl;
+	NodeStudent* tmp3 = tmp1->cls.lst.Head;
+	for(NodeCourse* i = tmp; i!=NULL; i=i->Next){
+		for(NodeStudent* j = tmp3; j!=NULL; j=j->Next){
+			if(i->crs.sv.Head->sv.studentID == tmp3->sv.studentID){
+			cout<<"Khoa hoc da tham gia: "<<i->crs.courseName<<endl;
+			cout<<"MSSV: "<< i->crs.sv.Head->sv.studentID<<endl;
+			cout<<"FullName: "<< i->crs.sv.Head->sv.fullName<<endl;
+			cout<<"Total Mark: "<<i->crs.sv.Head->sv.totalMark<<endl;
+			}
+		}
+	}
+
+	
+}
+
+
