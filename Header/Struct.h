@@ -12,11 +12,16 @@ struct Date {
 };
 
 struct Student {
+	int STT;
 	string studentID;
 	string firstName, lastName, fullName;
 	string Gender;
 	Date DoB;
 	string socialID;
+	double totalMark;
+	double finalMark;
+	double midtermMark;
+	double regularMark;
 };
 
 struct NodeStudent {
