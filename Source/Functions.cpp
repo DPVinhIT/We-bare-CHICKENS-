@@ -238,6 +238,30 @@ void printAca(Academy aca) {
 	cout << "Nam hoc: " << aca.begin << '-' << aca.end << endl;
 	printListSemester(aca.lsm);
 }
+void printListStudentScore(Course crs) {
+	cout << "Khoa hoc: " << crs.courseName << endl;
+	NodeStudent* lstScr = crs.sv.Head;
+	cout << "----------------------------------------------------------------------------------------------\n";
+	cout << "| " << setw(5) << left << "STT" << "| " << setw(12) << left << "MSSV" << "| " << setw(25) << left << "Full name" << "| " << setw(14) << left << "Regular Mark" << "| " << setw(9) << "Midterm" << "| " << setw(7) << "Final" << "| " << setw(7) << "Total" << "|" << endl;
+	cout << "----------------------------------------------------------------------------------------------\n";
+	while (lstScr != NULL) {
+		cout << "| " << setw(5) << left << lstScr->sv.STT << "| " << setw(12) << left << lstScr->sv.studentID << "| " << setw(25) << left << lstScr->sv.fullName << "| " << setw(14) << left << lstScr->sv.regularMark << "| " << setw(9) << lstScr->sv.midtermMark << "| " << setw(7) << lstScr->sv.finalMark << "| " << setw(7) << lstScr->sv.totalMark << "|" << endl;
+		lstScr = lstScr->Next;
+	}
+	cout << "----------------------------------------------------------------------------------------------\n";
+}
+void printClassScore(Clas cls) {
+	cout << "Lop: " << cls.nameClass << endl;
+	NodeStudent* lstScr = cls.lst.Head;
+	cout << "----------------------------------------------------------------------------------------------\n";
+	cout << "| " << setw(5) << left << "STT" << "| " << setw(12) << left << "MSSV" << "| " << setw(25) << left << "Full name" << "| " << setw(14) << left << "Regular Mark" << "| " << setw(9) << "Midterm" << "| " << setw(7) << "Final" << "| " << setw(7) << "Total" << "|" << endl;
+	cout << "----------------------------------------------------------------------------------------------\n";
+	while (lstScr != NULL) {
+		cout << "| " << setw(5) << left << lstScr->sv.STT << "| " << setw(12) << left << lstScr->sv.studentID << "| " << setw(25) << left << lstScr->sv.fullName << "| " << setw(14) << left << lstScr->sv.regularMark << "| " << setw(9) << lstScr->sv.midtermMark << "| " << setw(7) << lstScr->sv.finalMark << "| " << setw(7) << lstScr->sv.totalMark << "|" << endl;
+		lstScr = lstScr->Next;
+	}
+	cout << "----------------------------------------------------------------------------------------------\n";
+}
 
 //
 //remove student
