@@ -1,5 +1,17 @@
 #include "Functions.h"
 
+void splitName(Student& st)
+{
+	int first, last;
+	if (st.fullName.find(" ") == string::npos)
+	{
+		return;
+	}
+	first = st.fullName.find(" ");
+	last = st.fullName.find_last_of(" ");
+	st.lastName = st.fullName.substr(0, first);
+	st.firstName = st.fullName.substr(last + 1);
+}
 NodeStudent* createNodeStudent(Student sv)
 {
 	NodeStudent* p = new NodeStudent;
@@ -380,4 +392,85 @@ void updateCourse(Course& crs) {
 		break;
 	}
 	}
+}
+void writeCoure(string fileName, Course cour)
+{
+	ofstream fout;
+	fout.open(fileName);
+	if (!fout.is_open())
+	{
+		cout << "Tao file khong thanh cong" << endl;
+		return;
+	}
+	NodeStudent* st = cour.sv.Head;
+	int i = 1;
+	while (st != NULL)
+	{
+		fout << i << ";";
+		fout << st->sv.studentID << ";";
+		fout << st->sv.fullName << ";";
+		fout << st->sv.Gender << ";";
+		fout << st->sv.DoB.day << "/";
+		fout << st->sv.DoB.month << "/";
+		fout << st->sv.DoB.year << ";";
+		fout << st->sv.socialID;
+		if (st->Next != NULL)
+		{
+			fout << endl;
+		}
+		st = st->Next;
+		i++;
+	}
+	fout.close();
+}
+NodePScore* createPersonalScore(PersonalScore ps)
+{
+	NodePScore* p = new NodePScore;
+	p->PScore = ps;
+	p->Next = NULL;
+	return p;
+}
+void addNodePScore(ScoreBoard& sb, NodePScore* ps)
+{
+	if (sb.Head == NULL)
+	{
+		sb.Head = ps;
+		sb.Head->Next = NULL;
+		return;
+	}
+	NodePScore* temp = sb.Head;
+	while (temp->Next != NULL)
+	{
+		temp = temp->Next;
+	}
+	temp->Next = ps;
+}
+void readScoreBoard(string fileName, ScoreBoard& sb)
+{
+	sb.Head = new NodePScore;
+	ifstream fin;
+	fin.open(fileName);
+	if (!fin.is_open())
+	{
+		cout << "Mo file khong thanh cong" << endl;
+		return;
+	}
+	while (!fin.eof())
+	{
+		PersonalScore ps;
+		fin >> ps.stt;
+		fin.ignore();
+		getline(fin,ps.studentID, ';');
+		getline(fin, ps.fullName, ';');
+		fin >> ps.totalMark;
+		fin.ignore();
+		fin >> ps.finalMark;
+		fin.ignore();
+		fin >> ps.midtermMark;
+		fin.ignore();
+		fin >> ps.regularMark;
+		fin.ignore();
+		addNodePScore(sb, createPersonalScore(ps));
+	}
+	fin.close();
 }
