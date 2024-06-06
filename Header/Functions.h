@@ -20,6 +20,8 @@ void printListCourse(ListCourse lcrs);
 void printSemester(Semester smt);
 void printListSemester(ListSeme lsmt);
 void printAca(Academy aca);
+void printListStudentScore(Course crs);
+void printClassScore(Clas cls);
 void removeFirst(ListStudent& lst);
 void removeLast(ListStudent& lst);
 int getSize(ListStudent lst);
