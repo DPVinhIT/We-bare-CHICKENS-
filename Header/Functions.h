@@ -3,6 +3,7 @@
 
 #include"Struct.h"
 
+void splitName(Student& st);
 NodeStudent* createNodeStudent(Student sv);
 NodeClass* createNodeClass(Clas cls);
 void addNodeStudent(ListStudent& lst,NodeStudent* st);
@@ -25,4 +26,8 @@ int getSize(ListStudent lst);
 void removeStudent(ListStudent& lst, int pos);
 void removeStudent_MSSV(ListStudent& lst);
 void updateCourse(Course& crs);
+void writeCoure(string fileName, Course cour);
+NodePScore* createPersonalScore(PersonalScore ps);
+void addNodePScore(ScoreBoard& sb, NodePScore* ps);
+void readScoreBoard(string fileName, ScoreBoard& sb);
 #endif
