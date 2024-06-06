@@ -86,4 +86,24 @@ struct Academy {
 	ListSeme lsm;
 	int begin, end;
 };
+//Diem ca nhan
+struct PersonalScore
+{
+	int stt;
+	string studentID;
+	string fullName;
+	double totalMark;
+	double finalMark;
+	double midtermMark;
+	double regularMark;
+};
+struct NodePScore
+{
+	PersonalScore PScore;
+	NodePScore* Next;
+};
+struct ScoreBoard
+{
+	NodePScore* Head;
+};
 #endif
