@@ -5,12 +5,13 @@
 #include<string.h>
 #include<string>
 #define MAXLEN 100
+#include<iomanip>
+#include<cstring>
 using namespace std;
 
 struct Date {
 	int day, month, year;
 };
-
 struct Student {
 	int STT;
 	string studentID;
@@ -91,24 +92,16 @@ struct Academy {
 	ListSeme lsm;
 	int begin, end;
 };
-//Diem ca nhan
-struct PersonalScore
-{
-	int stt;
-	string studentID;
-	string fullName;
-	double totalMark;
-	double finalMark;
-	double midtermMark;
-	double regularMark;
+struct Account{
+    string username;
+    string password;
 };
-struct NodePScore
-{
-	PersonalScore PScore;
-	NodePScore* Next;
+struct NodeAccount{
+	Account acc;
+	NodeAccount* Next;
 };
-struct ScoreBoard
-{
-	NodePScore* Head;
+struct ListAccount{
+	NodeAccount* Head;
+	ListAccount():Head(NULL){}
 };
 #endif

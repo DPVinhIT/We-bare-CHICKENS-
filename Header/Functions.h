@@ -33,4 +33,9 @@ void printListStudentScore(Course crs);
 void printListCourseScore(Course crs);
 void outputScore(Course a);
 int PrintScore();
+NodeAccount* createNodeAccount(Account acc);
+void addNodeAccount(ListAccount& lac, NodeAccount* acc);
+void UploadAccount(string fileName, ListAccount& acc);
+void printListAccount(ListAccount lac);
+void Login(ListAccount lac);
 #endif
