@@ -104,13 +104,20 @@ void readFileStudent(string fileName[], ListClass& lcls)
 		}
 		ListStudent lst;
 		lst.Head = NULL;
+		int tmp = 1;
 		while (!fin.eof())
 		{
 			Student st;
-			getline(fin, st.studentID, ';');
-			getline(fin, st.fullName, ';');
-			getline(fin, st.Gender, ';');
+			fin >> st.STT;
+			if (st.STT != tmp) {
+				break;
+				fin.close();
+			}
+			tmp++;
 			fin.ignore();
+			getline(fin, st.studentID, ',');
+			getline(fin, st.fullName, ',');
+			getline(fin, st.Gender, ',');
 			fin >> st.DoB.day;
 			fin.ignore();
 			fin >> st.DoB.month;
@@ -122,12 +129,13 @@ void readFileStudent(string fileName[], ListClass& lcls)
 		}
 		Clas cls;
 		cls.nameClass = fileName[i].substr(0, fileName[i].find_first_of('.'));
-		cls.lst .Head=new NodeStudent;
+		cls.lst.Head = new NodeStudent;
 		cls.lst = lst;
 		addNodeClass(lcls, createNodeClass(cls));
 	}
 
 }
+
 //Ham nhap
 Student inputStudent() {
 	Student st;
@@ -569,8 +577,79 @@ void printScoreClass(ListCourse lcr, ListClass lcs){
 			}
 		}
 	}
-
-	
+}
+NodeAccount* createNodeAccount(Account acc){
+	NodeAccount* p = new NodeAccount;
+	p->acc=acc;
+	p->Next=NULL;
+	return p;
+}
+void addNodeAccount(ListAccount& lac,NodeAccount* acc){
+	if (lac.Head == NULL)
+	{
+		lac.Head = acc;
+		lac.Head->Next = NULL;
+		return;
+	}
+	NodeAccount* temp = lac.Head;
+	while (temp->Next != NULL)
+	{
+		temp = temp->Next;
+	}
+	temp->Next = acc;
+}
+void UploadAccount(string fileName, ListAccount& lac) {
+    ifstream fin(fileName);
+    if (!fin) {
+        cout << "\nKhong the mo file " << fileName << endl;
+        return;
+    }
+    string line;
+    while (getline(fin, line)) {
+        Account acc;
+        stringstream ss(line);
+        getline(ss, acc.username,',');
+        getline(ss, acc.password,',');
+        addNodeAccount(lac, createNodeAccount(acc));
+    }
+    fin.close();
 }
 
+void printListAccount(ListAccount lac){
+	NodeAccount* tmp = lac.Head;
+	while(tmp!=NULL){
+		cout<<tmp->acc.username<<endl;
+		cout<<tmp->acc.password<<endl;
+		tmp=tmp->Next;
+	}
+}
+void Login(ListAccount lac){
+    int find = 0;
+    while (true){
+    	cout <<"LOGIN"<<endl;
+        string user, pass;
+        cout <<"Username:";
+        cin >> user;
+ 		cout <<"Password:";
+        cin.ignore();
+        cin >> pass;
+        NodeAccount* tmp = lac.Head;
+        while(tmp!=NULL){
+        	if(tmp->acc.username==user && tmp->acc.password==pass){
+        		find = 1;
+        		break;
+			}
+			tmp=tmp->Next;
+		}
+        if (find != 0){
+            cout <<"Login successfully!";
+        }
+        else {
+            cout <<"Invalid username or password!";
+        }
+        sleep(1);
+        system("cls");
+        if (find != 0) break;
+    }
+}
 
