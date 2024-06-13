@@ -1,13 +1,19 @@
 #ifndef Struct_h
 #define Struct_h
+#define MAXLEN 100
 #include<iostream>
 #include<fstream>
 #include<string.h>
 #include<string>
-#define MAXLEN 100
-#include<iomanip>
 #include<cstring>
+#include<iomanip>
+#include <fcntl.h>
+#include <io.h>
+#include <sstream>
+#include<windows.h>
 using namespace std;
+#define _CRT_SECURE_NO_DEPRECATE
+#define _CRT_SECURE_NO_WARNINGS
 
 struct Date {
 	int day, month, year;
