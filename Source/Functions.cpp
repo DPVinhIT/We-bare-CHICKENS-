@@ -652,4 +652,24 @@ void Login(ListAccount lac){
         if (find != 0) break;
     }
 }
-
+void printInforOfCrs(Course crs) {
+	cout << "Khoa hoc: " << crs.courseName << endl;
+	cout << "ID: " << crs.courseID << endl;
+	cout << "Giao vien: " << crs.teacher << endl;
+	cout << "So hoc sinh toi da: " << crs.maxStudent;
+	cout << "Lich hoc: " << crs.cld.Day << '/' << crs.cld.Time << endl;
+}
+void printTheStudentCourses(string mssv, ListCourse lstCrs) {
+	NodeCourse* nCrs = lstCrs.Head;
+	while (nCrs != NULL) {
+		NodeStudent* nStd = nCrs->crs.sv.Head;
+		while (nStd != NULL) {
+			if (nStd->sv.studentID == mssv) {
+				printInforOfCrs(nCrs->crs);
+				cout << "---------------------------------\n";
+			}
+			nStd = nStd->Next;
+		}
+		nStd = nStd->Next;
+	}
+}
