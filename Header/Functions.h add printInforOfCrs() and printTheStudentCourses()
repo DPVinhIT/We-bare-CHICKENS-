@@ -38,4 +38,6 @@ void addNodeAccount(ListAccount& lac, NodeAccount* acc);
 void UploadAccount(string fileName, ListAccount& acc);
 void printListAccount(ListAccount lac);
 void Login(ListAccount lac);
+void printInforOfCrs(Course crs);
+void printTheStudentCourses(string mssv, ListCourse lstCrs);
 #endif
