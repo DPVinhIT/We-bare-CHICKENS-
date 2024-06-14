@@ -627,7 +627,7 @@ bool Login(ListAccount lac, string user, string pass){
         	find = true;
         	return find;
 		}
-			tmp=tmp->Next;
+		tmp=tmp->Next;
 	}
-		return find;
+	return find;
 }
