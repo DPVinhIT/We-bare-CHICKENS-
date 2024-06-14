@@ -1,7 +1,7 @@
-﻿#ifndef DoHoa_h
+#ifndef DoHoa_h
 #define DoHoa_h
 #include"Struct.h"
-#define KEY_NONE	-1
+#define KEY_NONE -1
 
 void SetColor(int backgound_color, int text_color);
 
@@ -40,23 +40,25 @@ void SetConsoleBackgroundColor(int bgColor);
 //Lấy kích thước cửa sổ hiện tại
 void getConsoleSize(int& width, int& height);
 
-void menuLogin(string& userName, string& passWord, ListClass lcls);
+void menuLogin(ListClass lcls, ListAccount LStaff, ListAccount LStudent);
 
 void menuStaff(ListClass lcls);
 
 void displayStudent(ListStudent lst, int& index, int n);
 
-int soDong(int index, int n);
+void board(int x, int y, int w, int maxLine, int index, int quantity, int ax[], int n);
+
+int soDong(int index, int n, int maxline);
 
 void menuStudent();
 
-int optionDaChon(int x, int y, int sl);
+int optionDaChon(int x, int y, int w, int h, int sl);
 
 void muiTen(int x, int y, int w);
 
 void xoaMuiTen(int x, int y, int w);
 
-void thanh_sang(int x, int y, int w, int h, int b_color, int t_color, string nd);
+void removeText(int x, int y, int w, int h, int b_color, int t_color);
 
 void textcolor(int x);
 
