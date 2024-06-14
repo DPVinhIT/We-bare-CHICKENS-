@@ -281,9 +281,6 @@ void printAca(Academy aca) {
 	cout << "Nam hoc: " << aca.begin << '-' << aca.end << endl;
 	printListSemester(aca.lsm);
 }
-
-//
-//remove student
 void removeFirst(ListStudent& lst) {
 	NodeStudent* tmp = lst.Head;
 	if (tmp == NULL) {
@@ -308,7 +305,6 @@ int getSize(ListStudent lst) {
 	}
 	return cnt;
 }
-//cap nhat khoa hoc
 void updateCourse(Course& crs) {
 	int choose;
 	do {
@@ -623,53 +619,15 @@ void printListAccount(ListAccount lac){
 		tmp=tmp->Next;
 	}
 }
-void Login(ListAccount lac){
-    int find = 0;
-    while (true){
-    	cout <<"LOGIN"<<endl;
-        string user, pass;
-        cout <<"Username:";
-        cin >> user;
- 		cout <<"Password:";
-        cin.ignore();
-        cin >> pass;
-        NodeAccount* tmp = lac.Head;
-        while(tmp!=NULL){
-        	if(tmp->acc.username==user && tmp->acc.password==pass){
-        		find = 1;
-        		break;
-			}
+bool Login(ListAccount lac, string user, string pass){
+    bool find = false;
+    NodeAccount* tmp = lac.Head;
+    while(tmp!=NULL){
+        if(tmp->acc.username==user && tmp->acc.password==pass){
+        	find = true;
+        	return find;
+		}
 			tmp=tmp->Next;
-		}
-        if (find != 0){
-            cout <<"Login successfully!";
-        }
-        else {
-            cout <<"Invalid username or password!";
-        }
-        sleep(1);
-        system("cls");
-        if (find != 0) break;
-    }
-}
-void printInforOfCrs(Course crs) {
-	cout << "Khoa hoc: " << crs.courseName << endl;
-	cout << "ID: " << crs.courseID << endl;
-	cout << "Giao vien: " << crs.teacher << endl;
-	cout << "So hoc sinh toi da: " << crs.maxStudent;
-	cout << "Lich hoc: " << crs.cld.Day << '/' << crs.cld.Time << endl;
-}
-void printTheStudentCourses(string mssv, ListCourse lstCrs) {
-	NodeCourse* nCrs = lstCrs.Head;
-	while (nCrs != NULL) {
-		NodeStudent* nStd = nCrs->crs.sv.Head;
-		while (nStd != NULL) {
-			if (nStd->sv.studentID == mssv) {
-				printInforOfCrs(nCrs->crs);
-				cout << "---------------------------------\n";
-			}
-			nStd = nStd->Next;
-		}
-		nStd = nStd->Next;
 	}
+		return find;
 }
