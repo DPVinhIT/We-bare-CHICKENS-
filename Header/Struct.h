@@ -101,7 +101,9 @@ struct Academy {
 	int begin, end;
 };
 struct Account {
-
+	string fullName;
+	Date born;
+	string gender;
 	string username;
 	string password;
 };
