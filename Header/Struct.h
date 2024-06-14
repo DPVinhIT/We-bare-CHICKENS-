@@ -1,16 +1,18 @@
 #ifndef Struct_h
 #define Struct_h
+
 #define MAXLEN 100
 #include<iostream>
+#include<windows.h>
 #include<fstream>
-#include<string.h>
+#include<stdio.h>
+#include<conio.h>
 #include<string>
-#include<cstring>
+#include<string.h>
 #include<iomanip>
 #include <fcntl.h>
 #include <io.h>
 #include <sstream>
-#include<windows.h>
 using namespace std;
 #define _CRT_SECURE_NO_DEPRECATE
 #define _CRT_SECURE_NO_WARNINGS
@@ -98,16 +100,17 @@ struct Academy {
 	ListSeme lsm;
 	int begin, end;
 };
-struct Account{
-    string username;
-    string password;
+struct Account {
+
+	string username;
+	string password;
 };
-struct NodeAccount{
+struct NodeAccount {
 	Account acc;
 	NodeAccount* Next;
 };
-struct ListAccount{
+struct ListAccount {
 	NodeAccount* Head;
-	ListAccount():Head(NULL){}
+	ListAccount() :Head(NULL) {}
 };
 #endif
