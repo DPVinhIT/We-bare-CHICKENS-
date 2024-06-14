@@ -1,29 +1,29 @@
 #include "Functions.h"
-void createAca(Academy acd){
-	cout<<"\nNhap nam bat dau: ";
-	cin>>acd.begin;
-	cout<<"\nNhap nam ket thuc: ";
-	cin>>acd.end;
-	cout<<"\nNam hoc: "<<acd.begin<<" - "<<acd.end<<endl;
+void createAca(Academy acd) {
+	cout << "\nNhap nam bat dau: ";
+	cin >> acd.begin;
+	cout << "\nNhap nam ket thuc: ";
+	cin >> acd.end;
+	cout << "\nNam hoc: " << acd.begin << " - " << acd.end << endl;
 }
-int chooseClass(){
+int chooseClass() {
 	int n;
-	cout<<"Chon lop ban muon them sinh vien: \n";
-	cout<<"1. 23CTT1\n";
-	cout<<"1. 23CTT2\n";
-	cout<<"1. 23CTT3\n";
-	cout<<"1. 23CTT4\n";
-	cout<<"1. 23CTT5\n";
-	cout<<"1. 23CLC01\n";
-	cout<<"1. 23CLC02\n";
-	cout<<"1. 23APCS1\n";
-	cout<<"1. 23APCS2\n";
+	cout << "Chon lop ban muon them sinh vien: \n";
+	cout << "1. 23CTT1\n";
+	cout << "1. 23CTT2\n";
+	cout << "1. 23CTT3\n";
+	cout << "1. 23CTT4\n";
+	cout << "1. 23CTT5\n";
+	cout << "1. 23CLC01\n";
+	cout << "1. 23CLC02\n";
+	cout << "1. 23APCS1\n";
+	cout << "1. 23APCS2\n";
 	do {
 		cin >> n;
 	} while (n < 0 || n>9);
 	return n;
 }
-int chooseSemester(){
+int chooseSemester() {
 	int n;
 	cout << "Chon hoc ky muon tao:\n";
 	cout << "Nhan 1 de tao hoc ky 1\n";
@@ -143,7 +143,7 @@ Student inputStudent() {
 	cin >> st.studentID;
 	cin.ignore();
 	cout << "Nhap ho va ten: ";
-	getline(cin,st.fullName);
+	getline(cin, st.fullName);
 	cout << "Nhap gioi tinh: ";
 	cin >> st.Gender;
 	cout << "Nhap ngay sinh: \n";
@@ -281,6 +281,9 @@ void printAca(Academy aca) {
 	cout << "Nam hoc: " << aca.begin << '-' << aca.end << endl;
 	printListSemester(aca.lsm);
 }
+
+//
+//remove student
 void removeFirst(ListStudent& lst) {
 	NodeStudent* tmp = lst.Head;
 	if (tmp == NULL) {
@@ -305,6 +308,7 @@ int getSize(ListStudent lst) {
 	}
 	return cnt;
 }
+//cap nhat khoa hoc
 void updateCourse(Course& crs) {
 	int choose;
 	do {
@@ -434,64 +438,64 @@ void writeCoure(string fileName, Course cour)
 	fout.close();
 }
 void removeStudent(ListStudent& lst, int pos) {
-    int n = getSize(lst);
-    if (pos < 1 || pos > n) {
-        cout << "Vi tri khong hop le!\n";
-        return;
-    }
+	int n = getSize(lst);
+	if (pos < 1 || pos > n) {
+		cout << "Vi tri khong hop le!\n";
+		return;
+	}
 
-    NodeStudent* tmp = lst.Head;
-    if (pos == 1) {
-        removeFirst(lst);
-        return;
-    }
+	NodeStudent* tmp = lst.Head;
+	if (pos == 1) {
+		removeFirst(lst);
+		return;
+	}
 
-    if (pos == n) {
-        removeLast(lst);
-        return;
-    }
+	if (pos == n) {
+		removeLast(lst);
+		return;
+	}
 
-    for (int i = 1; i < pos - 1; i++) {
-        tmp = tmp->Next;
-    }
-    
-    NodeStudent* nodeToDelete = tmp->Next;
-    tmp->Next = nodeToDelete->Next;
-    delete nodeToDelete;
+	for (int i = 1; i < pos - 1; i++) {
+		tmp = tmp->Next;
+	}
+
+	NodeStudent* nodeToDelete = tmp->Next;
+	tmp->Next = nodeToDelete->Next;
+	delete nodeToDelete;
 }
 void removeStudent_MSSV(ListStudent& lst) {
-    string MSSV;
-    cout << "\nSinh vien ban muon xoa co MSSV la: ";
-    cin >> MSSV;
-    NodeStudent* tmp = lst.Head;
-    int pos = 1;
+	string MSSV;
+	cout << "\nSinh vien ban muon xoa co MSSV la: ";
+	cin >> MSSV;
+	NodeStudent* tmp = lst.Head;
+	int pos = 1;
 
-    while (tmp != nullptr) {
-        if (tmp->sv.studentID == MSSV) {
-            removeStudent(lst, pos);
-            return;
-        }
-        tmp = tmp->Next;
-        pos++;
-    }
+	while (tmp != nullptr) {
+		if (tmp->sv.studentID == MSSV) {
+			removeStudent(lst, pos);
+			return;
+		}
+		tmp = tmp->Next;
+		pos++;
+	}
 
-    cout << "Khong tim thay sinh vien co MSSV: " << MSSV << endl;
+	cout << "Khong tim thay sinh vien co MSSV: " << MSSV << endl;
 }
-void inputPersonScore(Student &psc){
-	cout<<"\nSTT: "; 
-	cin>>psc.STT;
-	cout<<"\nMSSV: ";
-	cin>>psc.studentID;
-	cout<<"\nFull Name: ";
+void inputPersonScore(Student& psc) {
+	cout << "\nSTT: ";
+	cin >> psc.STT;
+	cout << "\nMSSV: ";
+	cin >> psc.studentID;
+	cout << "\nFull Name: ";
 	getline(cin, psc.fullName);
-	cout<<"\nRegular Mark: ";
-	cin>>psc.regularMark;
-	cout<<"\nMidterm Mark: ";
-	cin>>psc.midtermMark;
-	cout<<"\nFinal Mark: ";
-	cin>>psc.finalMark;
-	cout<<"\nTotal Mark: ";
-	cin>>psc.totalMark;
+	cout << "\nRegular Mark: ";
+	cin >> psc.regularMark;
+	cout << "\nMidterm Mark: ";
+	cin >> psc.midtermMark;
+	cout << "\nFinal Mark: ";
+	cin >> psc.finalMark;
+	cout << "\nTotal Mark: ";
+	cin >> psc.totalMark;
 }
 void printListStudentScore(Course crs) {
 	NodeStudent* lstScr = crs.sv.Head;
@@ -525,62 +529,62 @@ void printClassScore(Clas cls) {
 		lstScr = lstScr->Next;
 	}
 }
-void PersonalScore(ListCourse lcs){
+void PersonalScore(ListCourse lcs) {
 	string MSSV;
-	cout<<"\nNhap MSSV cua sinh vien ban muon xem diem: ";
-	cin>>MSSV;
+	cout << "\nNhap MSSV cua sinh vien ban muon xem diem: ";
+	cin >> MSSV;
 	NodeCourse* tmp = lcs.Head;
-	while(tmp != NULL){
-		if(tmp->crs.sv.Head->sv.studentID == MSSV){
+	while (tmp != NULL) {
+		if (tmp->crs.sv.Head->sv.studentID == MSSV) {
 			printListStudentScore(tmp->crs);
 		}
-		tmp=tmp->Next;
+		tmp = tmp->Next;
 	}
 }
-int PrintScore(){
+int PrintScore() {
 	int n;
-	cout<<"Chon lop ban muon xem diem: \n";
-	cout<<"1. 23CTT1\n";
-	cout<<"2. 23CTT2\n";
-	cout<<"3. 23CTT3\n";
-	cout<<"4. 23CTT4\n";
-	cout<<"5. 23CTT5\n";
-	cout<<"6. 23CLC01\n";
-	cout<<"7. 23CLC02\n";
-	cout<<"8. 23APCS1\n";
-	cout<<"9. 23APCS2\n";
+	cout << "Chon lop ban muon xem diem: \n";
+	cout << "1. 23CTT1\n";
+	cout << "2. 23CTT2\n";
+	cout << "3. 23CTT3\n";
+	cout << "4. 23CTT4\n";
+	cout << "5. 23CTT5\n";
+	cout << "6. 23CLC01\n";
+	cout << "7. 23CLC02\n";
+	cout << "8. 23APCS1\n";
+	cout << "9. 23APCS2\n";
 	do {
 		cin >> n;
-	} while (n < 0 || n>9);	
+	} while (n < 0 || n>9);
 	return n;
 }
-void printScoreClass(ListCourse lcr, ListClass lcs){
+void printScoreClass(ListCourse lcr, ListClass lcs) {
 	int n = PrintScore();
 	NodeCourse* tmp = lcr.Head;
 	NodeClass* tmp1 = lcs.Head;
-	for(int i = 1; i<n; i++){
-		tmp1=tmp1->Next;
+	for (int i = 1; i < n; i++) {
+		tmp1 = tmp1->Next;
 	}
-	cout<<tmp1->cls.nameClass<<endl;
+	cout << tmp1->cls.nameClass << endl;
 	NodeStudent* tmp3 = tmp1->cls.lst.Head;
-	for(NodeCourse* i = tmp; i!=NULL; i=i->Next){
-		for(NodeStudent* j = tmp3; j!=NULL; j=j->Next){
-			if(i->crs.sv.Head->sv.studentID == tmp3->sv.studentID){
-			cout<<"Khoa hoc da tham gia: "<<i->crs.courseName<<endl;
-			cout<<"MSSV: "<< i->crs.sv.Head->sv.studentID<<endl;
-			cout<<"FullName: "<< i->crs.sv.Head->sv.fullName<<endl;
-			cout<<"Total Mark: "<<i->crs.sv.Head->sv.totalMark<<endl;
+	for (NodeCourse* i = tmp; i != NULL; i = i->Next) {
+		for (NodeStudent* j = tmp3; j != NULL; j = j->Next) {
+			if (i->crs.sv.Head->sv.studentID == tmp3->sv.studentID) {
+				cout << "Khoa hoc da tham gia: " << i->crs.courseName << endl;
+				cout << "MSSV: " << i->crs.sv.Head->sv.studentID << endl;
+				cout << "FullName: " << i->crs.sv.Head->sv.fullName << endl;
+				cout << "Total Mark: " << i->crs.sv.Head->sv.totalMark << endl;
 			}
 		}
 	}
 }
-NodeAccount* createNodeAccount(Account acc){
+NodeAccount* createNodeAccount(Account acc) {
 	NodeAccount* p = new NodeAccount;
-	p->acc=acc;
-	p->Next=NULL;
+	p->acc = acc;
+	p->Next = NULL;
 	return p;
 }
-void addNodeAccount(ListAccount& lac,NodeAccount* acc){
+void addNodeAccount(ListAccount& lac, NodeAccount* acc) {
 	if (lac.Head == NULL)
 	{
 		lac.Head = acc;
@@ -595,39 +599,61 @@ void addNodeAccount(ListAccount& lac,NodeAccount* acc){
 	temp->Next = acc;
 }
 void UploadAccount(string fileName, ListAccount& lac) {
-    ifstream fin(fileName);
-    if (!fin) {
-        cout << "\nKhong the mo file " << fileName << endl;
-        return;
-    }
-    string line;
-    while (getline(fin, line)) {
-        Account acc;
-        stringstream ss(line);
-        getline(ss, acc.username,',');
-        getline(ss, acc.password,',');
-        addNodeAccount(lac, createNodeAccount(acc));
-    }
-    fin.close();
+	ifstream fin(fileName);
+	if (!fin) {
+		cout << "\nKhong the mo file " << fileName << endl;
+		return;
+	}
+	string line;
+	while (getline(fin, line)) {
+		Account acc;
+		stringstream ss(line);
+		getline(ss, acc.username, ',');
+		getline(ss, acc.password, ',');
+		addNodeAccount(lac, createNodeAccount(acc));
+	}
+	fin.close();
 }
 
-void printListAccount(ListAccount lac){
+void printListAccount(ListAccount lac) {
 	NodeAccount* tmp = lac.Head;
-	while(tmp!=NULL){
-		cout<<tmp->acc.username<<endl;
-		cout<<tmp->acc.password<<endl;
-		tmp=tmp->Next;
+	while (tmp != NULL) {
+		cout << tmp->acc.username << endl;
+		cout << tmp->acc.password << endl;
+		tmp = tmp->Next;
 	}
 }
-bool Login(ListAccount lac, string user, string pass){
-    bool find = false;
-    NodeAccount* tmp = lac.Head;
-    while(tmp!=NULL){
-        if(tmp->acc.username==user && tmp->acc.password==pass){
-        	find = true;
-        	return find;
+bool Login(ListAccount lac, string user, string pass)
+{
+	bool find = false;
+	NodeAccount* tmp = lac.Head;
+	while (tmp != NULL) {
+		if (tmp->acc.username == user && tmp->acc.password == pass) {
+			find = true;
+			return find;
 		}
-		tmp=tmp->Next;
+		tmp = tmp->Next;
 	}
 	return find;
+}
+void printInforOfCrs(Course crs) {
+	cout << "Khoa hoc: " << crs.courseName << endl;
+	cout << "ID: " << crs.courseID << endl;
+	cout << "Giao vien: " << crs.teacher << endl;
+	cout << "So hoc sinh toi da: " << crs.maxStudent;
+	cout << "Lich hoc: " << crs.cld.Day << '/' << crs.cld.Time << endl;
+}
+void printTheStudentCourses(string mssv, ListCourse lstCrs) {
+	NodeCourse* nCrs = lstCrs.Head;
+	while (nCrs != NULL) {
+		NodeStudent* nStd = nCrs->crs.sv.Head;
+		while (nStd != NULL) {
+			if (nStd->sv.studentID == mssv) {
+				printInforOfCrs(nCrs->crs);
+				cout << "---------------------------------\n";
+			}
+			nStd = nStd->Next;
+		}
+		nStd = nStd->Next;
+	}
 }
