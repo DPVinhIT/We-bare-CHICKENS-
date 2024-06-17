@@ -40,13 +40,25 @@ void SetConsoleBackgroundColor(int bgColor);
 //Lấy kích thước cửa sổ hiện tại
 void getConsoleSize(int& width, int& height);
 
-void menuLogin(ListClass lcls, ListAccount LStaff, ListAccount LStudent);
+void menuLogin(ListClass &lcls, ListAccount LStaff, ListAccount LStudent);
 
-void menuStaff(ListClass lcls);
+void inputStudent(Clas& cls);
 
-void displayStudent(ListStudent lst, int& index, int n);
+void khungLon();
 
-void board(int x, int y, int w, int maxLine, int index, int quantity, int ax[], int n);
+void khungNho();
+
+void menuStaff(ListClass& lcls);
+
+void Staff2_2();
+
+void BeginSchoolYear2_6(ListClass& lcls);
+
+void displayStudent(NodeClass* cls, int index, int n);
+
+void ViewStudenOfClass(NodeClass* cls, int& index, int n);
+
+void board(int x, int y, int w, int maxLine, int numLine, int ax[], int n);
 
 int soDong(int index, int n, int maxline);
 
