@@ -1,5 +1,6 @@
 #ifndef Functions_h
 #define Functions_h
+
 #include"Struct.h"
 void createAca(Academy acd);
 int chooseClass();
@@ -36,13 +37,17 @@ NodeAccount* createNodeAccount(Account acc);
 void addNodeAccount(ListAccount& lac, NodeAccount* acc);
 void UploadAccount(string fileName, ListAccount& acc);
 void printListAccount(ListAccount lac);
-bool Login(ListAccount lac, Account &acc);
+bool Login(ListAccount lac, string user, string pass);
 void printInforOfCrs(Course crs);
 void printTheStudentCourses(string mssv, ListCourse lstCrs);
-void chosseLogin(int &n);
-bool LoginAccount(int n, ListAccount &lac, Account acc);
-void outputBoard(int n, int &m);
-int BoardRole_Staff();
-void BoardRole_Student(int &n);
-void OptionStudent(ListAccount lac, int m, Account t);
+
+int countStudent(ListStudent lStd);
+
+int countClass(ListClass lCls);
+
+NodeStudent* findStudentByPos(ListStudent lStd, int pos);
+
+NodeClass* findClassByName(ListClass lcls, string name);
+
+
 #endif
