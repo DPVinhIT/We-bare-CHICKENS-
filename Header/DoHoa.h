@@ -48,23 +48,35 @@ void khungLon();
 
 void khungNho();
 
-void menuStaff(ListClass& lcls);
+void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt);
 
-void Staff2_2();
+void Staff2_2(ListClass& lcls);
 
 void BeginSchoolYear2_6(ListClass& lcls);
+
+void BeginSemester(ListSeme& lsm);
 
 void displayStudent(NodeClass* cls, int index, int n);
 
 void ViewStudenOfClass(NodeClass* cls, int& index, int n);
 
+void displayClass(ListClass lcls, int index, int n);
+
+void ViewListOfClass(ListClass lcls, int& index, int n);
+
+void displayCourse(ListCourse lcrs, int index, int n);
+
+void ViewListOfCourse(ListCourse lcrs, int& index, int n);
+
 void board(int x, int y, int w, int maxLine, int numLine, int ax[], int n);
 
 int soDong(int index, int n, int maxline);
 
-void menuStudent();
+void menuStudent(Account& acc);
 
 int optionDaChon(int x, int y, int w, int h, int sl);
+
+int optionDaChon1(int x, int y, int w, int h, int sl);
 
 void muiTen(int x, int y, int w);
 
