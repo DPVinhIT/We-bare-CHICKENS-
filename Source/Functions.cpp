@@ -1,4 +1,25 @@
 #include "Functions.h"
+
+bool laNgayHopLe(Date t) 
+{
+	if (t.year < 0 || t.month < 1 || t.month > 12)
+		return false;
+
+	switch (t.month) {
+	case 4:
+	case 6:
+	case 9:
+	case 11:
+		return (t.day >= 1 && t.day <= 30);
+	case 2:
+		if ((t.year % 4 == 0 && t.year % 100 != 0) || (t.year % 400 == 0))
+			return (t.day >= 1 && t.day <= 29);
+		else
+			return (t.day >= 1 && t.day <= 28);
+	default:
+		return (t.day >= 1 && t.day <= 31);
+	}
+}
 void createAca(Academy acd) {
 	cout << "\nNhap nam bat dau: ";
 	cin >> acd.begin;
@@ -611,6 +632,14 @@ void UploadAccount(string fileName, ListAccount& lac) {
 		stringstream ss(line);
 		getline(ss, acc.username, ',');
 		getline(ss, acc.password, ',');
+		getline(ss, acc.fullName, ',');
+		ss >> acc.born.day;
+		ss.ignore();
+		ss >> acc.born.month;
+		ss.ignore();
+		ss >> acc.born.year;
+		ss.ignore();
+		getline(ss, acc.gender, '\n');
 		addNodeAccount(lac, createNodeAccount(acc));
 	}
 	fin.close();
@@ -624,18 +653,16 @@ void printListAccount(ListAccount lac) {
 		tmp = tmp->Next;
 	}
 }
-bool Login(ListAccount lac, string user, string pass)
+NodeAccount* Login(ListAccount lac, string user, string pass)
 {
-	bool find = false;
 	NodeAccount* tmp = lac.Head;
 	while (tmp != NULL) {
 		if (tmp->acc.username == user && tmp->acc.password == pass) {
-			find = true;
-			return find;
+			return tmp;
 		}
 		tmp = tmp->Next;
 	}
-	return find;
+	return NULL;
 }
 void printInforOfCrs(Course crs) {
 	cout << "Khoa hoc: " << crs.courseName << endl;
@@ -699,6 +726,20 @@ NodeStudent* findStudentByPos(ListStudent lStd, int pos)
 	return nStd;
 }
 
+NodeClass* findClassByPos(ListClass lcls, int pos)
+{
+	if (pos > countClass(lcls))
+	{
+		return NULL;
+	}
+	NodeClass* temp = lcls.Head;
+	for (int i = 1; i < pos; i++)
+	{
+		temp = temp->Next;
+	}
+	return temp;
+}
+
 NodeClass* findClassByName(ListClass lcls, string name)
 {
 	if (lcls.Head == NULL)
@@ -715,4 +756,90 @@ NodeClass* findClassByName(ListClass lcls, string name)
 		temp = temp->Next;
 	}
 	return NULL;
+}
+
+void readFileCSV(string fileName, Clas& cls,bool &check)
+{
+	ifstream fin;
+	fin.open(fileName);
+	if (!fin.is_open())
+	{
+		check = false;
+		return;
+	}
+	while (!fin.eof())
+	{
+		Student st;
+		fin >> st.STT;
+		fin.ignore();
+		getline(fin, st.studentID, ',');
+		getline(fin, st.fullName, ',');
+		getline(fin, st.Gender, ',');
+		fin >> st.DoB.day;
+		fin.ignore();
+		fin >> st.DoB.month;
+		fin.ignore();
+		fin >> st.DoB.year;
+		fin.ignore();
+		getline(fin, st.socialID, '\n');
+		splitName(st);
+		addNodeStudent(cls.lst, createNodeStudent(st));
+	}
+	fin.close();
+}
+
+ListClass lstClsInAYear(ListClass lst, int year)
+{
+	ListClass lClasInYear;
+	lClasInYear.Head = NULL;
+	NodeClass* lCls = lClasInYear.Head;
+	NodeClass* tmp = lst.Head;
+	while (tmp != NULL) {
+		if (tmp->cls.nameClass[1] == '4' - year) {
+			addNodeClass(lClasInYear, createNodeClass(tmp->cls));
+		}
+		tmp = tmp->Next;
+	}
+	return lClasInYear;
+}
+
+int check_Seme(Semester smt, Date cur) 
+{
+	if (cur.day == smt.begin.day && cur.month == smt.begin.month && cur.year == smt.begin.year) return -1;
+	else if (cur.day == smt.end.day && cur.month == smt.end.month && cur.year == smt.end.year) return 1;
+	else return 0;
+}
+
+void changePassword(Account& acc) {
+	string newPassword;
+	cout << "Nhap mat moi: \n";
+	cin >> newPassword;
+	while (newPassword == acc.password) {
+		cout << "Mat khau moi trung voi mat khau cu\n";
+		cout << "Nhap mat moi: \n";
+		cin >> newPassword;
+	}
+	acc.password = newPassword;
+}
+void changePasswordInListAccount(ListAccount& lAcc, Account Acc) {
+	changePassword(Acc);
+	NodeAccount* nAcc = lAcc.Head;
+	while (nAcc != NULL) {
+		if (nAcc->acc.username == Acc.username) {
+			nAcc->acc = Acc;
+			break;
+		}
+		nAcc = nAcc->Next;
+	}
+}
+
+int countCourse(ListCourse lCrs)
+{
+	int cnt = 0;
+	NodeCourse* tmp = lCrs.Head;
+	while (tmp != NULL) {
+		cnt++;
+		tmp = tmp->Next;
+	}
+	return cnt;
 }
