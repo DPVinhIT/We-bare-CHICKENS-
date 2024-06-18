@@ -2,6 +2,7 @@
 #define Functions_h
 
 #include"Struct.h"
+bool laNgayHopLe(Date t);
 void createAca(Academy acd);
 int chooseClass();
 int chooseSemester();
@@ -37,7 +38,7 @@ NodeAccount* createNodeAccount(Account acc);
 void addNodeAccount(ListAccount& lac, NodeAccount* acc);
 void UploadAccount(string fileName, ListAccount& acc);
 void printListAccount(ListAccount lac);
-bool Login(ListAccount lac, string user, string pass);
+NodeAccount* Login(ListAccount lac, string user, string pass);
 void printInforOfCrs(Course crs);
 void printTheStudentCourses(string mssv, ListCourse lstCrs);
 
@@ -47,7 +48,16 @@ int countClass(ListClass lCls);
 
 NodeStudent* findStudentByPos(ListStudent lStd, int pos);
 
+NodeClass* findClassByPos(ListClass lcls, int pos);
+
 NodeClass* findClassByName(ListClass lcls, string name);
 
+void readFileCSV(string fileName, Clas& cls, bool &check);
+
+ListClass lstClsInAYear(ListClass lst, int year);
+
+int check_Seme(Semester smt, Date cur);
+
+int countCourse(ListCourse lCrs);
 
 #endif
