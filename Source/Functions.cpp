@@ -843,3 +843,221 @@ int countCourse(ListCourse lCrs)
 	}
 	return cnt;
 }
+
+NodeCourse* findCourseByPos(ListCourse lcrs, int pos)
+{
+	if (pos > countCourse(lcrs)) {
+		return NULL;
+	}
+	NodeCourse* temp = lcrs.Head;
+	for (int i = 1; i < pos; i++) {
+		temp=temp->Next;
+	}
+	return temp;
+}
+
+NodeSeme* createNodeSeme(Semester sms)
+{
+	NodeSeme* tmp = new NodeSeme();
+	tmp->smt = sms;
+	tmp->Next = NULL;
+	return tmp;
+}
+void addNodeSeme(ListSeme& lsm, NodeSeme* ns)
+{
+	if (lsm.Head == NULL)
+	{
+		lsm.Head = ns;
+		lsm.Head->Next = NULL;
+		return;
+	}
+	NodeSeme* tmp = lsm.Head;
+	while (tmp->Next != NULL)
+	{
+		tmp = tmp->Next;
+	}
+	tmp->Next = ns;
+}
+
+NodeCourse* createNodeCourse(Course crs)
+{
+	NodeCourse* tmp = new NodeCourse;
+	tmp->crs = crs;
+	tmp->Next = NULL;
+	return tmp;
+}
+
+NodeCourse* findCourseByID(ListCourse lcrs,string courseID)
+{
+	NodeCourse* temp = lcrs.Head;
+	if (lcrs.Head == NULL)
+	{
+		return NULL;
+	}
+	while (temp != NULL)
+	{
+		if (temp->crs.courseID == courseID)
+		{
+			return temp;
+		}
+		temp = temp->Next;
+	}
+	return NULL;
+}
+
+void addNodeCourse(ListCourse& lcrs, NodeCourse* crs)
+{
+	if (lcrs.Head == NULL)
+	{
+		lcrs.Head = crs;
+		lcrs.Head->Next = NULL;
+		return;
+	}
+	NodeCourse* temp = lcrs.Head;
+	while (temp->Next != NULL)
+	{
+		temp = temp->Next;
+	}
+	temp->Next = crs;
+}
+
+NodeStudent* check_Course_and_MSSV(ListCourse lcr, string IDcourse, string MSSV) 
+{
+	NodeCourse* tmp1 = lcr.Head;
+	while (tmp1 != NULL) {
+		if (tmp1->crs.courseID == IDcourse) {
+			NodeStudent* tmp2 = tmp1->crs.sv.Head;
+			while (tmp2 != NULL) {
+				if (tmp2->sv.studentID == MSSV) {
+					return tmp2;
+				}
+				tmp2 = tmp2->Next;
+			}
+		}
+		tmp1 = tmp1->Next;
+	}
+	return NULL;
+}
+
+void removeStudentOfCourse(ListCourse& lcrs, string courseID, string studentID)
+{
+	NodeStudent* dele = check_Course_and_MSSV(lcrs, courseID, studentID);
+	if (dele == NULL)
+	{
+		return;
+	}
+	NodeCourse* crs = findCourseByID(lcrs, courseID);
+	NodeStudent* temp = crs->crs.sv.Head;
+	if (temp == dele)
+	{
+		temp = temp->Next;
+		crs->crs.sv.Head = temp;
+		delete dele;
+		return;
+	}
+	while (temp->Next != NULL)
+	{
+		if (temp->Next == dele)
+		{
+			break;
+		}
+		temp = temp->Next;
+	}
+	temp->Next = dele->Next;
+	delete dele;
+	dele= NULL;
+}
+
+void inputScore_Student(ListCourse& lcr, string IDcourse, string MSSV) 
+{
+	NodeStudent* tmp = check_Course_and_MSSV(lcr, IDcourse, MSSV);
+	if (tmp == NULL) {
+		return;
+	}
+	cin >> tmp->sv.regularMark >> tmp->sv.midtermMark >> tmp->sv.finalMark >> tmp->sv.totalMark;
+}
+void removeFirst(ListCourse& lcr) 
+{
+	NodeCourse* tmp = lcr.Head;
+	if (tmp == NULL) {
+		return;
+	}
+	lcr.Head = lcr.Head->Next;
+	delete tmp;
+}
+void removeLast(ListCourse& lcr) 
+{
+	NodeCourse* tmp = lcr.Head;
+	NodeCourse* tmp1 = lcr.Head;
+	if (tmp == NULL) return;
+	while (tmp->Next!= NULL) {
+		tmp1 = tmp;
+		tmp = tmp->Next;
+	}
+	delete tmp;
+	tmp1->Next = NULL;
+}
+void removeCourse(ListCourse& lcr, int pos)
+{
+	int n = countCourse(lcr);
+	if (pos < 1 || pos > n) {
+		cout << "Vi tri khong hop le!\n";
+		return;
+	}
+	NodeCourse* tmp = lcr.Head;
+	if (pos == 1) {
+		removeFirst(lcr);
+		return;
+	}
+
+	if (pos == n) {
+		removeLast(lcr);
+		return;
+	}
+	for (int i = 1; i < pos-1; i++) {
+		tmp = tmp->Next;
+	}
+	NodeCourse* nodeToDelete = tmp->Next;
+	tmp->Next = nodeToDelete->Next;
+	delete nodeToDelete;
+}
+void removeCourse_IDCourse(ListCourse& lcr, string IDcourse) 
+{
+	NodeCourse* tmp = lcr.Head;
+	int pos = 1;
+
+	while (tmp != NULL) {
+		if (tmp->crs.courseID == IDcourse) {
+			removeCourse(lcr, pos);
+			return;
+		}
+		tmp = tmp->Next;
+		pos++;
+	}
+	cout << "Khong tim thay khoa hoc co ID: " << IDcourse << endl;
+}
+
+//void changePassword(Account& acc) 
+//{
+//	string newPassword;
+//	cout << "Nhap mat moi: \n";
+//	cin >> newPassword;
+//	while (newPassword == acc.password) {
+//		cout << "Mat khau moi trung voi mat khau cu\n";
+//		cout << "Nhap mat moi: \n";
+//		cin >> newPassword;
+//	}
+//	acc.password = newPassword;
+//}
+//void changePasswordInListAccount(ListAccount& lAcc, Account Acc) 
+//{
+//	changePassword(Acc);
+//	NodeAccount* nAcc = lAcc.Head;
+//	while (nAcc != NULL) {
+//		if (nAcc->acc.username == Acc.username) {
+//			nAcc->acc = Acc;
+//			break;
+//		}
+//		nAcc = nAcc->Next;
+//	}
+//}
