@@ -60,4 +60,34 @@ int check_Seme(Semester smt, Date cur);
 
 int countCourse(ListCourse lCrs);
 
+NodeCourse* findCourseByPos(ListCourse lcrs, int pos);
+
+NodeCourse* findCourseByID(ListCourse lcrs, string courseID);
+
+NodeSeme* createNodeSeme(Semester sms);
+
+void addNodeSeme(ListSeme& lsm, NodeSeme* ns);	
+
+NodeCourse* createNodeCourse(Course crs);
+
+void addNodeCourse(ListCourse& lcrs, NodeCourse* crs);
+
+NodeStudent* check_Course_and_MSSV(ListCourse lcr, string IDcourse, string MSSV);
+
+void removeStudentOfCourse(ListCourse& lcrs, string courseID, string studentID);
+
+void inputScore_Student(ListCourse& lcr, string IDcourse, string MSSV);
+
+void removeFirst(ListCourse& lcr);
+
+void removeLast(ListCourse& lcr);
+
+void removeCourse(ListCourse& lcr, int pos);
+
+void removeCourse_IDCourse(ListCourse& lcr, string IDcourse);
+
+void changePassword(Account& acc);
+
+void changePasswordInListAccount(ListAccount& lAcc, Account Acc);
+
 #endif
