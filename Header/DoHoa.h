@@ -42,7 +42,7 @@ void getConsoleSize(int& width, int& height);
 
 void menuLogin(ListClass &lcls, ListAccount LStaff, ListAccount LStudent);
 
-void inputStudent(Clas& cls);
+void inputStudent(ListStudent& lst);
 
 void khungLon();
 
@@ -54,11 +54,11 @@ void Staff2_2(ListClass& lcls);
 
 void BeginSchoolYear2_6(ListClass& lcls);
 
-void BeginSemester(ListSeme& lsm);
+void BeginSemester(ListSeme& lsm, bool& check);
 
-void displayStudent(NodeClass* cls, int index, int n);
+void displayStudent(ListStudent lst, int index, int n);
 
-void ViewStudenOfClass(NodeClass* cls, int& index, int n);
+void ViewStudenOfClass(ListStudent cls, int& index, int n);
 
 void displayClass(ListClass lcls, int index, int n);
 
@@ -74,7 +74,7 @@ int soDong(int index, int n, int maxline);
 
 void menuStudent(Account& acc);
 
-int optionDaChon(int x, int y, int w, int h, int sl);
+void optionDaChon(int x, int y, int w, int h, int sl, int& op);
 
 int optionDaChon1(int x, int y, int w, int h, int sl);
 
