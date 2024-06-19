@@ -71,6 +71,7 @@ int inputKey()
 	return KEY_NONE;
 }
 //Tạo box
+
 void box(int x, int y, int w, int h, int b_color, int t_color, string text)
 {
 	SetConsoleOutputCP(437);
@@ -339,7 +340,8 @@ void menuLogin(ListClass& lcls, ListAccount LStaff, ListAccount LStudent)
 		box(82, 24, 35, 2, 15, 0, "LOGIN");
 		box(82, 28, 35, 2, 15, 0, "About Us");
 		box(82, 32, 35, 2, 15, 0, "End");
-		int op = optionDaChon(82, 24, 35, 4, 3);
+		int op = 0;
+		optionDaChon(82, 24, 35, 4, 3, op);
 		bool kt = false;
 		if (op == 1)
 		{
@@ -394,6 +396,7 @@ void menuLogin(ListClass& lcls, ListAccount LStaff, ListAccount LStudent)
 				GoTo(73, 28); cout << "Password: ";
 				boxNoText(whereX(), 27, 62 - strlen("Password: "), 2, 15, 0);
 				ShowCur(true);
+				SetColor(15, 0);
 				GoTo(73 + strlen("User Name : "), 24); getline(cin, userName, '\n');
 				GoTo(73 + strlen("Password:  "), 28); getline(cin, passWord, '\n');
 				string a[] = { "Login Successful !","Login Failed !" };
@@ -495,9 +498,9 @@ void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt)
 	ShowCur(false);
 	ListStudent lst = lcls.Head->cls.lst;
 
+	bool check = true;
 	while (true)
 	{
-		bool check = true;
 		removeText(16, 10, 179, 38, 15, 15);
 		image(84, 11, "imageStaff.txt", 15, 9);
 		khungNho();
@@ -521,8 +524,9 @@ void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt)
 		}
 		box(92, 40, 25, 2, 15, 0, "7. Change The Date");
 		box(92, 43, 25, 2, 15, 0, "8. LOG OUT");
-		int index = 0, n = 6;
-		int op = optionDaChon(92, 22, 25, 3, 8);
+		int index = 0;
+		int op = 0;
+		optionDaChon(92, 22, 25, 3, 8, op);
 		removeText(72, 17, 64, 31, 15, 15);//xóa option
 		if (op == 1)
 		{
@@ -576,15 +580,38 @@ void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt)
 				removeText(71, 10, 5, 7, 15, 15);//xóa | login
 				removeText(134, 10, 5, 7, 15, 15);//xóa | login
 				int n = 0;
-				ViewStudenOfClass(cls, n, countStudent(cls->cls.lst));
+				ViewStudenOfClass(cls->cls.lst, index, countStudent(cls->cls.lst));
 			}
 
+		}
+		else if (op == 5)
+		{
+			if (smt.Head == NULL)
+			{
+				continue;
+			}
+			removeText(72, 17, 64, 31, 15, 15);//xóa option
+			GoTo(73, 18);
+			SetColor(15, 0);
+			cout << "Course ID: ";
+			string courseID;
+			cin >> courseID;
+			NodeCourse* cour = findCourseByID(smt.Head->smt.lcrs, courseID);
+			if (cour == NULL)
+			{
+				cout << "NULL";
+			}
+			else
+			{
+
+				ViewStudenOfClass(cour->crs.sv, index, countStudent(cour->crs.sv));
+			}
 		}
 		else if (op == 6)
 		{
 			//check năm học coi tạo chưa :v rồi chạy hàm này xong gán check=true
 			//BeginSchoolYear2_6(lcls);
-			BeginSemester(smt);
+			BeginSemester(smt,check);
 		}
 		else if (op == 8)
 		{
@@ -609,7 +636,8 @@ void Staff2_2(ListClass& lcls)
 		box(74, 28, 25, 2, 15, 0, "Third Year");
 		box(74, 31, 25, 2, 15, 0, "Fourth Year");
 		box(74, 34, 25, 2, 15, 0, "Quit");
-		int op = optionDaChon(74, 22, 25, 3, 5);
+		int op = 0;
+		optionDaChon(74, 22, 25, 3, 5, op);
 		if (op == 1)
 		{
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
@@ -700,7 +728,8 @@ void BeginSchoolYear2_6(ListClass& lcls)
 		box(74, 22, 30, 2, 15, 0, "1.Add Class Of First Year");
 		box(74, 25, 30, 2, 15, 0, "2.View Class Of First Year");
 		box(74, 28, 30, 2, 15, 0, "3.Quit");
-		int op = optionDaChon(74, 22, 30, 3, 3);
+		int op = 0;
+		optionDaChon(74, 22, 30, 3, 3, op);
 		if (op == 1)
 		{
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
@@ -721,7 +750,8 @@ void BeginSchoolYear2_6(ListClass& lcls)
 			ShowCur(false);
 			box(74, 25, 25, 2, 15, 0, "Manual Input");
 			box(74, 28, 25, 2, 15, 0, "Input File CSV");
-			int opt = optionDaChon(74, 25, 25, 3, 2);
+			int opt = 0;
+			optionDaChon(74, 25, 25, 3, 2, opt);
 			if (opt == 1)
 			{
 				removeText(71, 10, 5, 7, 15, 15);//xóa | login
@@ -729,10 +759,12 @@ void BeginSchoolYear2_6(ListClass& lcls)
 				removeText(40, 17, 129, 31, 15, 15);//xóa option
 				khungLon();
 				SetColor(15, 0);
+				GoTo(82, 22);
+				cout << "Class: " << cls.nameClass;
 				ShowCur(true);
 				GoTo(82, 22);
 
-				inputStudent(cls);
+				inputStudent(cls.lst);
 
 				addNodeClass(lcls, createNodeClass(cls));
 				string xuat = "ADD Student successful !";
@@ -806,19 +838,19 @@ void BeginSchoolYear2_6(ListClass& lcls)
 	}
 }
 
-void BeginSemester(ListSeme& lsm)
+//xém xong (còn bug :3)
+void BeginSemester(ListSeme& lsm, bool& check)
 {
-	bool check = true;
 	Semester smt;
 	while (true)
 	{
-		int op;
+		int op = 0;
 		if (check)
 		{
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
 			box(92, 22, 25, 2, 15, 0, "1. Create Semester ");
 			box(92, 25, 25, 2, 15, 0, "2. Quit");
-			op = optionDaChon(92, 22, 25, 3, 2);
+			optionDaChon(92, 22, 25, 3, 2, op);
 			if (op == 1)
 			{
 				removeText(72, 17, 64, 31, 15, 15);//xóa option
@@ -848,7 +880,7 @@ void BeginSemester(ListSeme& lsm)
 				}
 				else
 				{
-					//addNodeSeme(lsm, createNodeSeme(smt));
+					addNodeSeme(lsm, createNodeSeme(smt));
 					GoTo(92, 22);
 					string announce = "Date Hop le";
 					for (int i = 0; i < announce.length(); i++)
@@ -867,15 +899,16 @@ void BeginSemester(ListSeme& lsm)
 		}
 		else
 		{
-			removeText(72, 17, 64, 31, 15, 15);//xóa option
+			removeText(16, 10, 179, 38, 15, 15);
+			image(84, 11, "imageStaff.txt", 15, 9);
+			khungNho();
 			box(92, 22, 25, 2, 15, 0, "1. ADD Course");
 			box(92, 25, 25, 2, 15, 0, "2. List of course");
 			box(92, 28, 25, 2, 15, 0, "3. Remove Course");
 			box(92, 31, 25, 2, 15, 0, "4. ADD Student to course");
 			box(92, 34, 25, 2, 15, 0, "5. Remove Student");
 			box(92, 37, 25, 2, 15, 0, "6. Quit");
-			op = optionDaChon(92, 22, 25, 3, 6);
-			cin.ignore();
+			optionDaChon(92, 22, 25, 3, 6, op);
 			SetColor(15, 0);
 			if (op == 6)
 			{
@@ -884,16 +917,13 @@ void BeginSemester(ListSeme& lsm)
 			else if (op == 1)
 			{
 				removeText(72, 17, 64, 31, 15, 15);//xóa option
-				//removeText(40, 17, 129, 30, 15, 15);
-				//removeText(71, 10, 5, 7, 15, 15);//xóa | login
-				//removeText(134, 10, 5, 7, 15, 15);//xóa | login
-				//khungLon();
 				SetColor(15, 0);
 				ShowCur(true);
 				Course cour;
 				GoTo(73, 18);
 				cout << "Course ID: ";
-				getline(cin, cour.courseID);
+				cin >> cour.courseID;
+				cin.ignore();
 				GoTo(100, 18);
 				cout << cour.courseID;
 				GoTo(73, 19);
@@ -913,7 +943,7 @@ void BeginSemester(ListSeme& lsm)
 				cin >> cour.maxStudent;
 				GoTo(73, 24);
 				cout << "Choose Day of Week: ";
-				string* dayofweek =new string[6] { "MON","TUE","WED","THU","FRI","SAT" };
+				string* dayofweek = new string[6]{ "MON","TUE","WED","THU","FRI","SAT" };
 				box(74, 25, 4, 2, 15, 0, "MON");
 				box(81, 25, 4, 2, 15, 0, "TUE");
 				box(88, 25, 4, 2, 15, 0, "WED");
@@ -924,17 +954,74 @@ void BeginSemester(ListSeme& lsm)
 				cour.cld.Day = dayofweek[dow - 1];
 				GoTo(73, 28);
 				cout << "Choose session: ";
-				string* session =new string[4] { "S1 (07:30)","S2 (09:30)","S3 (13:30)","S4 (15:30)" };
+				string* session = new string[4]{ "S1 (07:30)","S2 (09:30)","S3 (13:30)","S4 (15:30)" };
 				box(74, 29, 11, 2, 15, 0, "S1 (07:30)");
 				box(88, 29, 11, 2, 15, 0, "S2 (09:30)");
 				box(102, 29, 11, 2, 15, 0, "S3 (13:30)");
 				box(116, 29, 11, 2, 15, 0, "S4 (15:30)");
 				int sess = optionDaChon1(74, 29, 11, 3, 4);
 				cour.cld.Time = session[sess - 1];
+				addNodeCourse(lsm.Head->smt.lcrs, createNodeCourse(cour));
 				_getch();
 			}
 			else if (op == 2)
 			{
+				removeText(72, 17, 64, 31, 15, 15);//xóa option
+				int index = 0;
+				if (lsm.Head->smt.lcrs.Head == NULL)
+				{
+					GoTo(82, 31);
+					SetColor(15, 0);
+					cout << "Courses not exist";
+					ShowCur(false);
+					box(82, 32, 35, 2, 15, 0, "Quit");
+					muiTen(82, 32, 35);
+					_getch();
+				}
+				else
+				{
+					removeText(71, 10, 5, 7, 15, 15);//xóa | login
+					removeText(134, 10, 5, 7, 15, 15);//xóa | login
+					removeText(71, 17, 66, 31, 15, 15);//xóa khung nho
+					khungLon();
+					ViewListOfCourse(lsm.Head->smt.lcrs, index, countCourse(lsm.Head->smt.lcrs));
+				}
+			}
+			else if (op == 3)
+			{
+				removeText(72, 17, 64, 31, 15, 15);//xóa option
+				SetColor(15, 0);
+				GoTo(73, 18);
+				cout << "Course ID: ";
+				string courseID;
+				cin >> courseID;
+				cout << courseID;
+				removeCourse_IDCourse(lsm.Head->smt.lcrs, courseID);
+			}
+			else if (op == 4)
+			{
+				removeText(72, 17, 64, 31, 15, 15);//xóa option
+				GoTo(73, 18);
+				SetColor(15, 0);
+				cout << "Course ID: ";
+				string courseID;
+				cin >> courseID;
+				NodeCourse* temp = findCourseByID(lsm.Head->smt.lcrs, courseID);
+				if (temp != NULL)
+					inputStudent(temp->crs.sv);
+				else
+					cout << "NULL";
+			}
+			else if (op == 5)
+			{
+				cout << "Course ID: ";
+				string courseID;
+				cin >> courseID;
+				cin.ignore();
+				cout << "Student ID: ";
+				string stID;
+				getline(cin, stID);
+				removeStudentOfCourse(smt.lcrs, courseID, stID);
 
 			}
 		}
@@ -942,11 +1029,9 @@ void BeginSemester(ListSeme& lsm)
 
 }
 
-void inputStudent(Clas& cls)
+void inputStudent(ListStudent& lst)
 {
 	SetColor(15, 0);
-	GoTo(48, 18);
-	cout << "Class: " << cls.nameClass;
 	GoTo(48, 19);
 	cout << "Input number of students for class: ";
 	ShowCur(true);
@@ -1001,7 +1086,7 @@ void inputStudent(Clas& cls)
 			cin.ignore();
 			getline(cin, st.socialID);
 			splitName(st);
-			addNodeStudent(cls.lst, createNodeStudent(st));
+			addNodeStudent(lst, createNodeStudent(st));
 			index++;
 		}
 		if (index >= n)
@@ -1078,14 +1163,11 @@ void khungNho()
 }
 
 //max 13 dòng
-void displayStudent(NodeClass* cls, int index, int n)
+void displayStudent(ListStudent lst, int index, int n)
 {
 	SetConsoleOutputCP(437);
 	khungLon();
 	boxNoTextFC(56, 18, 98, 29, 15, 15);
-	SetColor(15, 0);
-	GoTo(96, 18);
-	cout << "VIEW CLASS: " << cls->cls.nameClass;
 	SetConsoleOutputCP(437);
 	SetColor(15, 0);
 	GoTo(47, 19);
@@ -1114,7 +1196,7 @@ void displayStudent(NodeClass* cls, int index, int n)
 	{
 		dong++;
 	}
-	NodeStudent* temp = findStudentByPos(cls->cls.lst, index);
+	NodeStudent* temp = findStudentByPos(lst, index);
 	for (int i = 1; i <= dong; i++)
 	{
 		if (temp == NULL)
@@ -1178,7 +1260,7 @@ void displayStudent(NodeClass* cls, int index, int n)
 }
 
 // 72:lên ; 80:xuống ; 75:trái ; 77:phải
-void ViewStudenOfClass(NodeClass* cls, int& index, int n)
+void ViewStudenOfClass(ListStudent cls, int& index, int n)
 {
 	ShowCur(false);
 	bool kt = true;
@@ -1356,9 +1438,9 @@ void ViewListOfClass(ListClass lcls, int& index, int n)
 void displayCourse(ListCourse lcrs, int index, int n)
 {
 	SetColor(15, 0);
-	int a[8] = {41,45,61,92,103,134,145,157 };
+	int a[8] = { 41,45,58,89,100,133,140,152 };
 	int dong = soDong(index, n, 12);
-	board(41, 19, 138, 12, dong, a, 8);
+	board(41, 19, 128, 12, dong, a, 8);
 	GoTo(a[0] + 1, 20); cout << "STT";
 	GoTo(a[1] + 1, 20); cout << "CourseID";
 	GoTo(a[2] + 1, 20); cout << "Course name";
@@ -1371,11 +1453,123 @@ void displayCourse(ListCourse lcrs, int index, int n)
 	{
 		dong++;
 	}
+	NodeCourse* crs = findCourseByPos(lcrs, index);
+	for (int i = 1; i <= dong; i++)
+	{
+		if (crs == NULL)
+		{
+			break;
+		}
+		int stt = index + i;
+		if (index > 0)
+		{
+			stt = index + i - 1;
+		}
+		GoTo(a[0] + 1, 20 + i * 2);
+		cout << stt;
+		GoTo(a[1] + 1, 20 + i * 2);
+		cout << crs->crs.courseID;
+		GoTo(a[2] + 1, 20 + i * 2);
+		cout << crs->crs.courseName;
+		GoTo(a[3] + 1, 20 + i * 2);
+		cout << crs->crs.className;
+		GoTo(a[4] + 1, 20 + i * 2);
+		cout << crs->crs.teacher;
+		GoTo(a[5] + 1, 20 + i * 2);
+		cout << crs->crs.acaCrd;
+		GoTo(a[6] + 1, 20 + i * 2);
+		cout << crs->crs.maxStudent;
+		GoTo(a[7] + 1, 20 + i * 2);
+		cout << crs->crs.cld.Day << " - " << crs->crs.cld.Time;
+		crs = crs->Next;
+	}
+	int maxPage = (n + 12 - 1) / 12;
+	int curPage = (index + 12 - 1) / 12;
+	if (index == 0)
+	{
+		curPage = 1;
+	}
+
+	if (maxPage == 1)
+	{
+		GoTo(104, 46);
+		cout << 0;
+	}
+	else if (curPage == 1)
+	{
+		GoTo(104, 46);
+		cout << 1;
+		cout << " ";
+		cout << char(175);
+	}
+	else if (curPage == maxPage)
+	{
+		GoTo(102, 46);
+		cout << char(174) << " ";
+		cout << curPage;
+	}
+	else
+	{
+		GoTo(102, 46);
+		cout << char(174) << " " << curPage << " " << char(175);
+	}
+
+	GoTo(103, 47);
+	cout << "BACK";
+	muiTen(102, 46, 5);
 }
 
 void ViewListOfCourse(ListCourse lcrs, int& index, int n)
 {
-
+	ShowCur(false);
+	bool kt = true;
+	while (true)
+	{
+		if (kt == true)
+		{
+			removeText(40, 18, 129, 30, 15, 15);
+			displayCourse(lcrs, index, n);
+			kt = false;
+		}
+		if (_kbhit())
+		{
+			char c = _getch();
+			if (c == -32)
+			{
+				if (n > 12)
+				{
+					kt = true;
+					c = _getch();
+					if (c == 75)
+					{
+						if (index > 13)
+						{
+							index -= 12;
+						}
+						else if (index == 13)
+						{
+							index -= 13;
+						}
+					}
+					else if (c == 77)
+					{
+						if (index == 0)
+						{
+							index += 13;
+						}
+						else if (index < (n - n % 12) && (n - index >= 12))
+						{
+							index += 12;
+						}
+					}
+				}
+			}
+			else if (c == 13)
+			{
+				break;
+			}
+		}
+	}
 }
 
 //Mảng a là tọa độ các cột từ trái qua phải của bảng, không có cột cuối cùng bên phải :v
@@ -1463,7 +1657,8 @@ void menuStudent(Account& acc)
 		box(74, 22, 25, 2, 15, 0, "1. User Account");
 		box(74, 25, 25, 2, 15, 0, "2. Registered Courses");
 		box(74, 28, 25, 2, 15, 0, "3. Log Out");
-		int op = optionDaChon(74, 22, 25, 3, 3);
+		int op = 0;
+		optionDaChon(74, 22, 25, 3, 3, op);
 		if (op == 1)
 		{
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
@@ -1516,7 +1711,7 @@ void menuStudent(Account& acc)
 }
 
 // 72:lên ; 80:xuống ; 75:trái ; 77:phải
-int optionDaChon(int x, int y, int w, int h, int sl)
+void optionDaChon(int x, int y, int w, int h, int sl, int& op)
 {
 	ShowCur(false);
 	int xp = x; int yp = y;
@@ -1564,12 +1759,12 @@ int optionDaChon(int x, int y, int w, int h, int sl)
 			}
 			else if (c == 13)
 			{
-				break;
+				SetColor(15, 0);
+				op = (yp - y) / h + 1;
+				return;
 			}
 		}
 	}
-	SetColor(15, 0);
-	return (yp - y) / h + 1;
 }
 
 int optionDaChon1(int x, int y, int w, int h, int sl)
