@@ -1,6 +1,10 @@
 #include"DoHoa.h"
 #include"Functions.h"
 
+//Date CurTime;
+//ListAccount LStaff;
+//ListAccount LStudent;
+
 //	0 = Black		8 = Gray
 //	1 = Blue		9 = Light Blue
 //	2 = Green		10 = Light Green
@@ -15,6 +19,30 @@ void SetColor(int backgound_color, int text_color)
 
 	int color_code = backgound_color * 16 + text_color;
 	SetConsoleTextAttribute(hStdout, color_code);
+}
+
+void SetWindowSize(SHORT width, SHORT height)
+{
+	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	SMALL_RECT WindowSize;
+	WindowSize.Top = 0;
+	WindowSize.Left = 0;
+	WindowSize.Right = width;
+	WindowSize.Bottom = height;
+
+	SetConsoleWindowInfo(hStdout, 1, &WindowSize);
+}
+
+void SetScreenBufferSize(SHORT width, SHORT height)
+{
+	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	COORD NewSize;
+	NewSize.X = width;
+	NewSize.Y = height;
+
+	SetConsoleScreenBufferSize(hStdout, NewSize);
 }
 
 void GoTo(SHORT posX, SHORT posY)
@@ -289,8 +317,13 @@ void getConsoleSize(int& width, int& height)
 }
 
 // 72:lên ; 80:xuống ; 75:trái ; 77:phải
-void menuLogin(ListClass& lcls, ListAccount LStaff, ListAccount LStudent)
+void menuLogin(ListClass& lcls)
 {
+	LStaff.Head = NULL;
+	UploadAccount("STAFF.csv", LStaff);
+	LStudent.Head = NULL;
+	UploadAccount("ACCOUNT.csv", LStudent);
+
 	string userName, passWord;
 	Account acc;
 	ListCourse lcour;
@@ -343,8 +376,9 @@ void menuLogin(ListClass& lcls, ListAccount LStaff, ListAccount LStudent)
 		int op = 0;
 		optionDaChon(82, 24, 35, 4, 3, op);
 		bool kt = false;
-		if (op == 1)
+		switch (op)
 		{
+		case 1: {
 			while (kt != true)
 			{
 				check = 1;
@@ -448,9 +482,9 @@ void menuLogin(ListClass& lcls, ListAccount LStaff, ListAccount LStudent)
 					}
 				}
 			}
+			break;
 		}
-		else if (op == 2)
-		{
+		case 2: {
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
 			SetColor(15, 0);
 			GoTo(82, 29);
@@ -467,10 +501,11 @@ void menuLogin(ListClass& lcls, ListAccount LStaff, ListAccount LStudent)
 					}
 				}
 			}
+			break;
 		}
-		else if (op == 3)
-		{
+		case 3: {
 			return;
+		}
 		}
 		if (kt == true)
 		{
@@ -484,14 +519,11 @@ void menuLogin(ListClass& lcls, ListAccount LStaff, ListAccount LStudent)
 			}
 		}
 	}
-
 }
 
 void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt)
 {
 	//MAX 8 OPTION
-	//removeText(40, 10, 130, 7, 15, 15);//xóa login
-	//removeText(40, 17, 118, 31, 15, 15);//xóa option
 	removeText(72, 10, 64, 7, 15, 15);//xóa login
 	removeText(72, 17, 64, 31, 15, 15);//xóa option
 
@@ -499,22 +531,40 @@ void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt)
 	ListStudent lst = lcls.Head->cls.lst;
 
 	bool check = true;
-	while (true)
+	int op = 0;
+
+	while (op != 8)
 	{
 		removeText(16, 10, 179, 38, 15, 15);
 		image(84, 11, "imageStaff.txt", 15, 9);
 		khungNho();
 		SetColor(15, 0);
 		GoTo(74, 18); cout << "User: "; cout << acc.username;
-		GoTo(74, 19); cout << "Date: 15/6/2024";
-		GoTo(74, 20); cout << "Academy: 2024-2025";
-		GoTo(74, 21); cout << "Semester: 1";
+		GoTo(74, 19); cout << "Date: " << CurTime.day << "/" << CurTime.month << "/" << CurTime.year;
+		GoTo(74, 20); cout << "Academy: ";
+		if (ListAcademy.Head != NULL)
+		{
+			cout << ListAcademy.Head->acm.begin << "-" << ListAcademy.Head->acm.end;
+		}
+		else
+		{
+			cout << "NONE";
+		}
+		GoTo(74, 21); cout << "Semester: ";
+		if (smt.Head != NULL)
+		{
+			cout << smt.Head->smt.STT;
+		}
+		else
+		{
+			cout << "NONE";
+		}
 		box(92, 22, 25, 2, 15, 0, "1. User Account ");
 		box(92, 25, 25, 2, 15, 0, "2. List Of Classes");
 		box(92, 28, 25, 2, 15, 0, "3. List Of Student");
 		box(92, 31, 25, 2, 15, 0, "4. Courses Information");
 		box(92, 34, 25, 2, 15, 0, "5. StudentList of Course");
-		if (check)
+		if (CurTime.day == 1 && CurTime.month == 9 && check == true)
 		{
 			box(92, 37, 25, 2, 15, 0, "6. Create Academy");
 		}
@@ -525,40 +575,90 @@ void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt)
 		box(92, 40, 25, 2, 15, 0, "7. Change The Date");
 		box(92, 43, 25, 2, 15, 0, "8. LOG OUT");
 		int index = 0;
-		int op = 0;
 		optionDaChon(92, 22, 25, 3, 8, op);
 		removeText(72, 17, 64, 31, 15, 15);//xóa option
-		if (op == 1)
+		switch (op)
 		{
+		case 1: {
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
 			SetColor(15, 0);
-			GoTo(82, 29);
+			GoTo(82, 20);
 			cout << "User name: " << acc.username;
-			GoTo(82, 30);
+			GoTo(82, 21);
 			cout << "Name: " << acc.fullName;
-			GoTo(82, 31);
+			GoTo(82, 22);
 			cout << "Gender: " << acc.gender;
-			GoTo(82, 32);
+			GoTo(82, 23);
 			cout << "Date of birth: " << acc.born.day << "/" << acc.born.month << "/" << acc.born.year;
-			box(82, 35, 35, 2, 15, 0, "Quit");
-			muiTen(82, 35, 35);
-			while (true) {
-				if (_kbhit())
-				{
-					char c = _getch();
-					if (c == 13)
+			box(82, 25, 25, 2, 15, 0, "Change Password");
+			box(82, 28, 25, 2, 15, 0, "Quit");
+			int opt = 0;
+			optionDaChon(82, 25, 25, 3, 2, opt);
+			switch (opt)
+			{
+			case 1:
+			{
+				removeText(72, 17, 64, 31, 15, 15);//xóa option
+				SetColor(15, 0);
+				string pass;
+				ShowCur(true);
+				do {
+					GoTo(82, 21);
+					cout << "Input curent password: ";
+					int x = whereX();
+					cout << "                     ";
+					GoTo(x, 21);
+					getline(cin, pass);
+					if (pass != acc.password)
 					{
-						break;
+						string announce = "Wrong password";
+						GoTo(82, 25);
+						for (int i = 0; i < announce.length(); i++)
+						{
+							cout << announce[i];
+							Sleep(50);
+						}
 					}
+					else
+					{
+						GoTo(82, 25);
+						cout << "                                 ";
+						string announce = "Correct password";
+						GoTo(82, 25);
+						for (int i = 0; i < announce.length(); i++)
+						{
+							cout << announce[i];
+							Sleep(50);
+						}
+					}
+				} while (pass != acc.password);
+				GoTo(82, 22);
+				cout << "Input new password: ";
+				getline(cin, pass);
+				acc.password = pass;
+				changePasswordInListAccount(LStaff, acc);
+				GoTo(82, 25);
+				cout << "                                 ";
+				string announce = "Change password successfull";
+				GoTo(82, 25);
+				for (int i = 0; i < announce.length(); i++)
+				{
+					cout << announce[i];
+					Sleep(50);
 				}
+				_getch();
+				break;
 			}
+			case 2:
+				break;
+			}
+			break;
 		}
-		else if (op == 2)
-		{
+		case 2: {
 			Staff2_2(lcls);
+			break;
 		}
-		else if (op == 3)
-		{
+		case 3: {
 			GoTo(82, 29);
 			SetColor(15, 0);
 			cout << "Name Class: ";
@@ -582,10 +682,18 @@ void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt)
 				int n = 0;
 				ViewStudenOfClass(cls->cls.lst, index, countStudent(cls->cls.lst));
 			}
-
+			break;
 		}
-		else if (op == 5)
-		{
+		case 4: {
+			if (smt.Head == NULL || ListAcademy.Head == NULL)
+			{
+				continue;
+			}
+			removeText(72, 17, 64, 31, 15, 15);//xóa option
+			SetColor(15, 0);
+			ViewListOfCourse(smt.Head->smt.lcrs, index, countCourse(smt.Head->smt.lcrs));
+		}
+		case 5: {
 			if (smt.Head == NULL)
 			{
 				continue;
@@ -599,6 +707,7 @@ void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt)
 			NodeCourse* cour = findCourseByID(smt.Head->smt.lcrs, courseID);
 			if (cour == NULL)
 			{
+				GoTo(73, 25);
 				cout << "NULL";
 			}
 			else
@@ -606,16 +715,93 @@ void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt)
 
 				ViewStudenOfClass(cour->crs.sv, index, countStudent(cour->crs.sv));
 			}
-		}
-		else if (op == 6)
-		{
-			//check năm học coi tạo chưa :v rồi chạy hàm này xong gán check=true
-			//BeginSchoolYear2_6(lcls);
-			BeginSemester(smt,check);
-		}
-		else if (op == 8)
-		{
 			break;
+		}
+		case 6: {
+			removeText(72, 17, 64, 31, 15, 15);//xóa option
+			SetColor(15, 0);
+			if (check)
+			{
+				BeginSchoolYear(lcls);
+				check = false;
+			}
+			else
+			{
+				check = false;
+				if (smt.Head == NULL)
+				{
+					GoTo(73, 20);
+					cout << "Semester not exist";
+				}
+				//if ()
+				//{
+				//	GoTo(73, 20);
+				//	cout << "Semester: " << smt.Head->smt.STT;
+				//	GoTo(73, 21);
+				//	cout << "Date begin: " << smt.Head->smt.begin.day << "/" << smt.Head->smt.begin.month << "/" << smt.Head->smt.begin.year;
+				//	GoTo(73, 21);
+				//	cout << "Date end: " << smt.Head->smt.end.day << "/" << smt.Head->smt.end.month << "/" << smt.Head->smt.end.year;
+				//	_getch();
+				//}
+				if (CurTime.day == 1 && CurTime.month == 9)
+				{
+					BeginSemester(smt);
+				}
+				else if (CurTime.day == 31 && CurTime.month == 1)
+				{
+					EndSemester(smt);
+				}
+			}
+			break;
+		}
+		case 7: {
+			SetColor(15, 0);
+			GoTo(73, 18);
+			cout << "Curent time: " << CurTime.day << "/" << CurTime.month << "/" << CurTime.year;
+			GoTo(73, 19);
+			cout << "The begin school year time is usually early in September(1/9)";
+			GoTo(73, 19);
+			cout << "The school term begins on September 1st, March 1st, July 1st";
+			GoTo(73, 20);
+			cout << "The school term ends on January 31st, June 30th, August 31st";
+			do
+			{
+				ShowCur(true);
+				GoTo(74, 22);
+				cout << "Input new time: ";
+				int x = whereX();
+				cout << "  /  /     ";
+				GoTo(x, 22);
+				cin >> CurTime.day;
+				GoTo(x + 3, 22);
+				cin >> CurTime.month;
+				GoTo(x + 6, 22);
+				cin >> CurTime.year;
+				if (!laNgayHopLe(CurTime))
+				{
+					GoTo(74, 25);
+					string announce = "Date invalid";
+					for (int i = 0; i < announce.length(); i++)
+					{
+						cout << announce[i];
+						Sleep(50);
+					}
+				}
+			} while (!laNgayHopLe(CurTime));
+			string announce = "Change time successful";
+			ShowCur(false);
+			GoTo(74, 25);
+			for (int i = 0; i < announce.length(); i++)
+			{
+				cout << announce[i];
+				Sleep(50);
+			}
+			_getch();
+			break;
+		}
+		case 8: {
+			break;
+		}
 		}
 	}
 
@@ -627,7 +813,9 @@ void Staff2_2(ListClass& lcls)
 	ListClass namHai = lstClsInAYear(lcls, 2);
 	ListClass namBa = lstClsInAYear(lcls, 3);
 	ListClass namBon = lstClsInAYear(lcls, 4);
-	while (true)
+	int op = 0;
+
+	while (op != 5)
 	{
 		removeText(72, 17, 64, 31, 15, 15);//xóa option
 		SetColor(15, 0);
@@ -636,10 +824,10 @@ void Staff2_2(ListClass& lcls)
 		box(74, 28, 25, 2, 15, 0, "Third Year");
 		box(74, 31, 25, 2, 15, 0, "Fourth Year");
 		box(74, 34, 25, 2, 15, 0, "Quit");
-		int op = 0;
 		optionDaChon(74, 22, 25, 3, 5, op);
-		if (op == 1)
+		switch (op)
 		{
+		case 1: {
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
 			SetColor(15, 0);
 			int index = 0;
@@ -655,9 +843,9 @@ void Staff2_2(ListClass& lcls)
 			{
 				ViewListOfClass(namNhat, index, countClass(namNhat));
 			}
+			break;
 		}
-		else if (op == 2)
-		{
+		case 2: {
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
 			SetColor(15, 0);
 			int index = 0;
@@ -673,9 +861,9 @@ void Staff2_2(ListClass& lcls)
 			{
 				ViewListOfClass(namHai, index, countClass(namHai));
 			}
+			break;
 		}
-		else if (op == 3)
-		{
+		case 3: {
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
 			SetColor(15, 0);
 			int index = 0;
@@ -691,9 +879,9 @@ void Staff2_2(ListClass& lcls)
 			{
 				ViewListOfClass(namBa, index, countClass(namBa));
 			}
+			break;
 		}
-		else if (op == 4)
-		{
+		case 4: {
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
 			SetColor(15, 0);
 			int index = 0;
@@ -709,36 +897,61 @@ void Staff2_2(ListClass& lcls)
 			{
 				ViewListOfClass(namBon, index, countClass(namBon));
 			}
-		}
-		else if (op == 5)
-		{
 			break;
+		}
+		case 5: {
+			break;
+		}
 		}
 	}
 }
 
-void BeginSchoolYear2_6(ListClass& lcls)
+void BeginSchoolYear(ListClass& lcls)
 {
-	while (true)
+	int op = 0;
+	Academy aca;
+	removeText(39, 10, 132, 38, 15, 15);
+	image(84, 11, "imageStaff.txt", 15, 9);
+	do
+	{
+		removeText(72, 17, 64, 31, 15, 15);//xóa option
+		khungNho();
+		ShowCur(true);
+		SetColor(15, 0);
+		GoTo(73, 18);
+		cout << "Input YearBegin: ";
+		cin >> aca.begin;
+		GoTo(73, 19);
+		cout << "Input YearEnd: ";
+		cin >> aca.end;
+		if (aca.end - aca.begin != 1)
+		{
+			GoTo(73, 20);
+			cout << "Year Invalid";
+			_getch();
+		}
+	} while (aca.end - aca.begin != 1);
+	while (op != 3)
 	{
 		removeText(39, 10, 132, 38, 15, 15);
 		image(84, 11, "imageStaff.txt", 15, 9);
-		removeText(72, 17, 64, 31, 15, 15);//xóa option
 		khungNho();
+		addNodeAcademy(ListAcademy, createNodeAcademy(aca));
 		box(74, 22, 30, 2, 15, 0, "1.Add Class Of First Year");
 		box(74, 25, 30, 2, 15, 0, "2.View Class Of First Year");
 		box(74, 28, 30, 2, 15, 0, "3.Quit");
-		int op = 0;
 		optionDaChon(74, 22, 30, 3, 3, op);
-		if (op == 1)
+		switch (op)
 		{
+		case 1: {
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
 			GoTo(82, 22);
 			SetColor(15, 0);
 			cout << "Name Class: ";
 			ShowCur(true);
 			string nameClass;
-			getline(cin, nameClass);
+			cin >> nameClass;
+			cin.ignore();
 			Clas cls;
 			cls.nameClass = nameClass;
 			cls.lst.Head = NULL;
@@ -787,7 +1000,7 @@ void BeginSchoolYear2_6(ListClass& lcls)
 				string fileName;
 				getline(cin, fileName);
 
-				readFileCSV(fileName, cls, check);
+				readFileCSV(fileName, cls.lst, check);
 				string xuat[2] = { "ADD Student successful !","ADD Student Fail !" };
 				if (check)
 				{
@@ -812,9 +1025,9 @@ void BeginSchoolYear2_6(ListClass& lcls)
 			}
 			if (check)
 				addNodeClass(lcls, createNodeClass(cls));
+			break;
 		}
-		else if (op == 2)
-		{
+		case 2: {
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
 			int index = 0;
 			if (lcls.Head == NULL)
@@ -830,33 +1043,38 @@ void BeginSchoolYear2_6(ListClass& lcls)
 			{
 				ViewListOfClass(lcls, index, countClass(lcls));
 			}
-		}
-		else if (op == 3)
-		{
 			break;
 		}
+		case 3: {
+			break;
+		}
+		}
+
 	}
 }
 
 //xém xong (còn bug :3)
-void BeginSemester(ListSeme& lsm, bool& check)
+void BeginSemester(ListSeme& lsm)
 {
+	removeText(16, 10, 179, 38, 15, 15);
+	image(84, 11, "imageStaff.txt", 15, 9);
+	khungNho();
 	Semester smt;
-	while (true)
+	int op = 0;
+	bool kt = true;
+	if (lsm.Head == NULL)
 	{
-		int op = 0;
-		if (check)
+		box(92, 22, 25, 2, 15, 0, "1. Create Semester");
+		box(92, 25, 25, 2, 15, 0, "2. Quit");
+		int opt = 0;
+		optionDaChon(92, 22, 25, 3, 2, opt);
+		if (opt == 1)
 		{
-			removeText(72, 17, 64, 31, 15, 15);//xóa option
-			box(92, 22, 25, 2, 15, 0, "1. Create Semester ");
-			box(92, 25, 25, 2, 15, 0, "2. Quit");
-			optionDaChon(92, 22, 25, 3, 2, op);
-			if (op == 1)
+			while (kt)
 			{
 				removeText(72, 17, 64, 31, 15, 15);//xóa option
 				SetColor(15, 0);
 				ShowCur(true);
-				smt.lcrs.Head = NULL;
 				GoTo(92, 19);
 				cout << "Input Semester: ";
 				cin >> smt.STT;
@@ -888,33 +1106,33 @@ void BeginSemester(ListSeme& lsm, bool& check)
 						cout << announce[i];
 						Sleep(50);
 					}
-					check = false;
+					kt = false;
 				}
 			}
-			if (op == 2)
-			{
-				break;
-			}
-
 		}
 		else
 		{
-			removeText(16, 10, 179, 38, 15, 15);
-			image(84, 11, "imageStaff.txt", 15, 9);
-			khungNho();
-			box(92, 22, 25, 2, 15, 0, "1. ADD Course");
-			box(92, 25, 25, 2, 15, 0, "2. List of course");
-			box(92, 28, 25, 2, 15, 0, "3. Remove Course");
-			box(92, 31, 25, 2, 15, 0, "4. ADD Student to course");
-			box(92, 34, 25, 2, 15, 0, "5. Remove Student");
-			box(92, 37, 25, 2, 15, 0, "6. Quit");
-			optionDaChon(92, 22, 25, 3, 6, op);
-			SetColor(15, 0);
-			if (op == 6)
-			{
-				break;
-			}
-			else if (op == 1)
+			return;
+		}
+	}
+	while (op != 6)
+	{
+		removeText(16, 10, 179, 38, 15, 15);
+		image(84, 11, "imageStaff.txt", 15, 9);
+		khungNho();
+		box(92, 22, 25, 2, 15, 0, "1. ADD Course");
+		box(92, 25, 25, 2, 15, 0, "2. List of course");
+		box(92, 28, 25, 2, 15, 0, "3. Remove Course");
+		box(92, 31, 25, 2, 15, 0, "4. ADD Student to course");
+		box(92, 34, 25, 2, 15, 0, "5. Remove Student");
+		box(92, 37, 25, 2, 15, 0, "6. Quit");
+		optionDaChon(92, 22, 25, 3, 6, op);
+		SetColor(15, 0);
+		switch (op)
+		{
+
+		case 1: {
+			if (lsm.Head != NULL)
 			{
 				removeText(72, 17, 64, 31, 15, 15);//xóa option
 				SetColor(15, 0);
@@ -964,69 +1182,215 @@ void BeginSemester(ListSeme& lsm, bool& check)
 				addNodeCourse(lsm.Head->smt.lcrs, createNodeCourse(cour));
 				_getch();
 			}
-			else if (op == 2)
+
+			break;
+		}
+		case 2: {
+			removeText(72, 17, 64, 31, 15, 15);//xóa option
+			int index = 0;
+			if (lsm.Head == NULL || lsm.Head->smt.lcrs.Head == NULL)
 			{
-				removeText(72, 17, 64, 31, 15, 15);//xóa option
-				int index = 0;
-				if (lsm.Head->smt.lcrs.Head == NULL)
-				{
-					GoTo(82, 31);
-					SetColor(15, 0);
-					cout << "Courses not exist";
-					ShowCur(false);
-					box(82, 32, 35, 2, 15, 0, "Quit");
-					muiTen(82, 32, 35);
-					_getch();
-				}
-				else
-				{
-					removeText(71, 10, 5, 7, 15, 15);//xóa | login
-					removeText(134, 10, 5, 7, 15, 15);//xóa | login
-					removeText(71, 17, 66, 31, 15, 15);//xóa khung nho
-					khungLon();
-					ViewListOfCourse(lsm.Head->smt.lcrs, index, countCourse(lsm.Head->smt.lcrs));
-				}
-			}
-			else if (op == 3)
-			{
-				removeText(72, 17, 64, 31, 15, 15);//xóa option
+				GoTo(82, 31);
 				SetColor(15, 0);
-				GoTo(73, 18);
-				cout << "Course ID: ";
-				string courseID;
-				cin >> courseID;
-				cout << courseID;
+				cout << "Courses not exist";
+				ShowCur(false);
+				box(82, 32, 35, 2, 15, 0, "Quit");
+				muiTen(82, 32, 35);
+				_getch();
+			}
+			else
+			{
+				removeText(71, 10, 5, 7, 15, 15);//xóa | login
+				removeText(134, 10, 5, 7, 15, 15);//xóa | login
+				removeText(71, 17, 66, 31, 15, 15);//xóa khung nho
+				khungLon();
+				ViewListOfCourse(lsm.Head->smt.lcrs, index, countCourse(lsm.Head->smt.lcrs));
+			}
+			break;
+		}
+		case 3: {
+			removeText(72, 17, 64, 31, 15, 15);//xóa option
+			SetColor(15, 0);
+			GoTo(73, 18);
+			cout << "Course ID: ";
+			string courseID;
+			cin >> courseID;
+			if (lsm.Head != NULL)
+			{
 				removeCourse_IDCourse(lsm.Head->smt.lcrs, courseID);
 			}
-			else if (op == 4)
+			else
 			{
-				removeText(72, 17, 64, 31, 15, 15);//xóa option
-				GoTo(73, 18);
+				GoTo(82, 31);
 				SetColor(15, 0);
-				cout << "Course ID: ";
-				string courseID;
-				cin >> courseID;
+				cout << "Semester Init";
+				ShowCur(false);
+				box(82, 32, 35, 2, 15, 0, "Quit");
+				muiTen(82, 32, 35);
+				_getch();
+			}
+			break;
+		}
+		case 4: {
+			removeText(72, 17, 64, 31, 15, 15);//xóa option
+			GoTo(73, 18);
+			SetColor(15, 0);
+			cout << "Course ID: ";
+			string courseID;
+			cin >> courseID;
+			cin.ignore();
+			if (lsm.Head != NULL)
+			{
 				NodeCourse* temp = findCourseByID(lsm.Head->smt.lcrs, courseID);
 				if (temp != NULL)
-					inputStudent(temp->crs.sv);
-				else
-					cout << "NULL";
-			}
-			else if (op == 5)
-			{
-				cout << "Course ID: ";
-				string courseID;
-				cin >> courseID;
-				cin.ignore();
-				cout << "Student ID: ";
-				string stID;
-				getline(cin, stID);
-				removeStudentOfCourse(smt.lcrs, courseID, stID);
+				{
+					box(92, 20, 25, 2, 15, 0, "Manual input");
+					box(92, 23, 25, 2, 15, 0, "File csv input");
+					box(92, 26, 25, 2, 15, 0, "Quit");
+					int opt = 0;
+					optionDaChon(92, 20, 25, 3, 3, opt);
+					switch (opt)
+					{
+					case 1:
+						inputStudent(temp->crs.sv);
+						break;
+					case 2:
+					{
+						ShowCur(true);
+						GoTo(82, 22);
+						cout << "Nhap ten file csv: ";
+						string fileName;
+						getline(cin, fileName);
+						bool check;
+						readFileCSV(fileName, temp->crs.sv, check);
+						string xuat[2] = { "ADD Student successful !","ADD Student Fail !" };
+						if (check)
+						{
+							GoTo(90, 47);
+							for (int i = 0; i < xuat[0].length(); i++)
+							{
+								cout << xuat[0][i];
+								Sleep(50);
+							}
+						}
+						else
+						{
+							GoTo(90, 47);
+							for (int i = 0; i < xuat[1].length(); i++)
+							{
+								cout << xuat[1][i];
+								Sleep(50);
+							}
+						}
+						ShowCur(false);
+						_getch();
+						break;
+					}
+					case 3:
+						break;
+					}
 
+				}
+				else
+				{
+					GoTo(75, 25);
+					cout << "NULL";
+
+				}
 			}
+			else
+			{
+				GoTo(82, 31);
+				SetColor(15, 0);
+				cout << "Semester Init";
+				ShowCur(false);
+				box(82, 32, 35, 2, 15, 0, "Quit");
+				muiTen(82, 32, 35);
+				_getch();
+			}
+			break;
+		}
+		case 5: {
+			removeText(72, 17, 64, 31, 15, 15);//xóa option
+			GoTo(73, 18);
+			cout << "Course ID: ";
+			string courseID;
+			cin >> courseID;
+			cin.ignore();
+			cout << "Student ID: ";
+			string stID;
+			getline(cin, stID);
+			removeStudentOfCourse(smt.lcrs, courseID, stID);
+			break;
+		}
+		case 6: {
+			break;
+		}
 		}
 	}
 
+}
+
+void EndSemester(ListSeme& lsm)
+{
+	SetColor(15, 0);
+	box(87, 22, 35, 2, 15, 0, "1. Export listStudent in a course");
+	box(87, 25, 35, 2, 15, 0, "2. Import file scoreborad");
+	box(87, 28, 35, 2, 15, 0, "3. View scoreborad of a course");
+	box(87, 31, 35, 2, 15, 0, "4. Update a student's result");
+	box(87, 34, 35, 2, 15, 0, "5. View scoreboard of class");
+	box(87, 37, 35, 2, 15, 0, "6. Quit");
+	int op = 0;
+	optionDaChon(92, 22, 25, 3, 6, op);
+	switch (op)
+	{
+	case 1:
+	{
+		GoTo(73, 18);
+		cout << "Course ID: ";
+		string CourseID;
+		getline(cin, CourseID);
+		NodeCourse* crs = findCourseByID(lsm.Head->smt.lcrs, CourseID);
+		GoTo(73, 19);
+		cout << "File CSV name: ";
+		string fileName;
+		getline(cin, fileName);
+		writeCoure(fileName, crs->crs);
+		GoTo(73, 21);
+		cout << "Ghi file thanh cong";
+		break;
+	}
+	case 2:
+	{
+		GoTo(73, 18);
+		cout << "Input fileName: ";
+		string fileName;
+		getline(cin, fileName);
+		GoTo(73, 18);
+		cout << "Input CourseID: ";
+		string courseID;
+		getline(cin, courseID);
+		NodeCourse* crs = findCourseByID(lsm.Head->smt.lcrs, courseID);
+		readFileScoreboard(fileName, crs->crs);
+		break;
+	}
+	case 3:
+	{
+		GoTo(73, 18);
+		cout << "Course ID: ";
+		string CourseID;
+		getline(cin, CourseID);
+		break;
+	}
+	case 4:
+	{
+		GoTo(73, 18);
+		cout << "Student ID: ";
+		string studentID;
+		getline(cin, studentID);
+		break;
+	}
+	}
 }
 
 void inputStudent(ListStudent& lst)
@@ -1076,12 +1440,19 @@ void inputStudent(ListStudent& lst)
 			getline(cin, st.fullName);
 			GoTo(a[3] + 1, 21 + i * 2);
 			getline(cin, st.Gender);
-			GoTo(a[4] + 1, 21 + i * 2);
-			cin >> st.DoB.day;
-			GoTo(a[4] + 5, 21 + i * 2);
-			cin >> st.DoB.month;
-			GoTo(a[4] + 9, 21 + i * 2);
-			cin >> st.DoB.year;
+			do
+			{
+				string khoangTrang = string(a[5] - a[4] - 1, ' ');
+				GoTo(a[4] + 1, 21 + i * 2); cout << khoangTrang;
+				GoTo(a[4] + 3, 21 + i * 2); cout << "/";
+				GoTo(a[4] + 6, 21 + i * 2); cout << "/";
+				GoTo(a[4] + 1, 21 + i * 2);
+				cin >> st.DoB.day;
+				GoTo(a[4] + 4, 21 + i * 2);
+				cin >> st.DoB.month;
+				GoTo(a[4] + 7, 21 + i * 2);
+				cin >> st.DoB.year;
+			} while (!laNgayHopLe(st.DoB));
 			GoTo(a[5] + 1, 21 + i * 2);
 			cin.ignore();
 			getline(cin, st.socialID);
@@ -1258,8 +1629,6 @@ void displayStudent(ListStudent lst, int index, int n)
 	cout << "BACK";
 	muiTen(102, 46, 5);
 }
-
-// 72:lên ; 80:xuống ; 75:trái ; 77:phải
 void ViewStudenOfClass(ListStudent cls, int& index, int n)
 {
 	ShowCur(false);
@@ -1380,8 +1749,6 @@ void displayClass(ListClass lcls, int index, int n)
 	cout << "BACK";
 	muiTen(102, 46, 5);
 }
-
-// 72:lên ; 80:xuống ; 75:trái ; 77:phải
 void ViewListOfClass(ListClass lcls, int& index, int n)
 {
 	ShowCur(false);
@@ -1461,7 +1828,7 @@ void displayCourse(ListCourse lcrs, int index, int n)
 			break;
 		}
 		int stt = index + i;
-		if (index > 0)
+		if (index > 11)
 		{
 			stt = index + i - 1;
 		}
@@ -1518,7 +1885,6 @@ void displayCourse(ListCourse lcrs, int index, int n)
 	cout << "BACK";
 	muiTen(102, 46, 5);
 }
-
 void ViewListOfCourse(ListCourse lcrs, int& index, int n)
 {
 	ShowCur(false);
@@ -1571,6 +1937,161 @@ void ViewListOfCourse(ListCourse lcrs, int& index, int n)
 		}
 	}
 }
+
+void displayScoreboardCourse(ListStudent lst, int index, int n)
+{
+	SetColor(15, 0);
+	int a[7] = { 47, 52,65,109,124,138,151 };
+	int dong = soDong(index, n, 12);
+	board(47, 19, 116, 12, dong, a, 7);
+	SetColor(15, 0);
+	GoTo(a[0] + 1, 20); cout << "STT";
+	GoTo(a[1] + 1, 20); cout << "Student ID";
+	GoTo(a[2] + 16, 20); cout << "Full name";
+	GoTo(a[3] + 1, 20); cout << "Regular mark";
+	GoTo(a[4] + 1, 20); cout << "Midterm mark";
+	GoTo(a[5] + 1, 20); cout << "Final mark";
+	GoTo(a[6] + 1, 20); cout << "Total mark";
+	if (n > 12 && n - index <= 12)
+	{
+		dong++;
+	}
+	NodeStudent* st = findStudentByPos(lst, index);
+	for (int i = 1; i <= dong; i++)
+	{
+		if (st == NULL)
+		{
+			break;
+		}
+		GoTo(a[0] + 1, 20 + i * 2); cout << st->sv.STT;
+		GoTo(a[1] + 1, 20 + i * 2); cout << st->sv.studentID;
+		GoTo(a[2] + 1, 20 + i * 2); cout << st->sv.fullName;
+		GoTo(a[3] + 1, 20 + i * 2);
+		if (st->sv.regularMark < 0 || st->sv.regularMark>10)
+		{
+			cout << "None";
+		}
+		else
+		{
+			cout << st->sv.regularMark;
+		}
+		GoTo(a[4] + 1, 20 + i * 2);
+		if (st->sv.midtermMark < 0 || st->sv.midtermMark>10)
+		{
+			cout << "None";
+		}
+		else
+		{
+			cout << st->sv.midtermMark;
+		}
+		GoTo(a[5] + 1, 20 + i * 2);
+		if (st->sv.finalMark < 0 || st->sv.finalMark >10)
+		{
+			cout << "None";
+		}
+		else
+		{
+			cout << st->sv.finalMark;
+		}
+		GoTo(a[6] + 1, 20 + i * 2);
+		if (st->sv.totalMark < 0 || st->sv.totalMark >10)
+		{
+			cout << "None";
+		}
+		else
+		{
+			cout << st->sv.totalMark;
+		}
+		st = st->Next;
+	}
+	int maxPage = (n + 12 - 1) / 12;
+	int curPage = (index + 12 - 1) / 12;
+	if (index == 0)
+	{
+		curPage = 1;
+	}
+
+	if (maxPage == 1)
+	{
+		GoTo(104, 46);
+		cout << 0;
+	}
+	else if (curPage == 1)
+	{
+		GoTo(104, 46);
+		cout << 1;
+		cout << " ";
+		cout << char(175);
+	}
+	else if (curPage == maxPage)
+	{
+		GoTo(102, 46);
+		cout << char(174) << " ";
+		cout << curPage;
+	}
+	else
+	{
+		GoTo(102, 46);
+		cout << char(174) << " " << curPage << " " << char(175);
+	}
+	GoTo(103, 47);
+	cout << "BACK";
+	muiTen(102, 46, 5);
+}
+void ViewScoreboardCourse(ListStudent lst, int& index, int n)
+{
+	ShowCur(false);
+	bool kt = true;
+	while (true)
+	{
+		if (kt == true)
+		{
+			removeText(40, 18, 129, 30, 15, 15);
+			displayScoreboardCourse(lst, index, n);
+			kt = false;
+		}
+		if (_kbhit())
+		{
+			char c = _getch();
+			if (c == -32)
+			{
+				if (n > 12)
+				{
+					kt = true;
+					c = _getch();
+					if (c == 75)
+					{
+						if (index > 13)
+						{
+							index -= 12;
+						}
+						else if (index == 13)
+						{
+							index -= 13;
+						}
+					}
+					else if (c == 77)
+					{
+						if (index == 0)
+						{
+							index += 13;
+						}
+						else if (index < (n - n % 12) && (n - index >= 12))
+						{
+							index += 12;
+						}
+					}
+				}
+			}
+			else if (c == 13)
+			{
+				break;
+			}
+		}
+	}
+}
+
+void displayScoreboardClass(ListStudent lst, int index, int n);
 
 //Mảng a là tọa độ các cột từ trái qua phải của bảng, không có cột cuối cùng bên phải :v
 void board(int x, int y, int w, int maxLine, int numLine, int ax[], int n)
@@ -1824,7 +2345,6 @@ int optionDaChon1(int x, int y, int w, int h, int sl)
 	return (xp - x) / wx + 1;
 }
 
-
 void muiTen(int x, int y, int w)
 {
 	SetColor(15, 4);
@@ -1855,11 +2375,4 @@ void removeText(int x, int y, int w, int h, int b_color, int t_color)
 		GoTo(x + 1, iy);
 		cout << khoangTrang;
 	}
-}
-
-void textcolor(int x)
-{
-	HANDLE mau;
-	mau = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(mau, x);
 }
