@@ -66,6 +66,7 @@ struct Course
 {
 	string courseID;
 	string courseName;
+	string className;
 	ListStudent sv;
 	string teacher;
 	int acaCrd;
@@ -83,6 +84,7 @@ struct ListCourse {
 };
 struct Semester {
 	ListCourse lcrs;
+	int STT;
 	Date begin;
 	Date end;
 };
@@ -100,6 +102,14 @@ struct Academy {
 	ListSeme lsm;
 	int begin, end;
 };
+struct NodeAca {
+	Academy acm;
+	NodeAca* Next;
+};
+struct ListAca {
+	NodeAca* Head;
+	ListAca() :Head(NULL) {}
+};
 struct Account {
 	string fullName;
 	Date born;
@@ -115,4 +125,10 @@ struct ListAccount {
 	NodeAccount* Head;
 	ListAccount() :Head(NULL) {}
 };
+
+extern Date CurTime;
+extern ListAccount LStaff;
+extern ListAccount LStudent;
+extern ListAca ListAcademy;
+
 #endif
