@@ -48,11 +48,13 @@ int countClass(ListClass lCls);
 
 NodeStudent* findStudentByPos(ListStudent lStd, int pos);
 
+NodeStudent* findStudentByID(ListStudent lst, string ID);
+
 NodeClass* findClassByPos(ListClass lcls, int pos);
 
 NodeClass* findClassByName(ListClass lcls, string name);
 
-void readFileCSV(string fileName, Clas& cls, bool &check);
+void readFileCSV(string fileName, ListStudent& lst, bool& check);
 
 ListClass lstClsInAYear(ListClass lst, int year);
 
@@ -89,5 +91,15 @@ void removeCourse_IDCourse(ListCourse& lcr, string IDcourse);
 void changePassword(Account& acc);
 
 void changePasswordInListAccount(ListAccount& lAcc, Account Acc);
+
+void readFileScoreboard(string fileName, Course& crs);
+
+NodeAca* createNodeAcademy(Academy acm);
+
+void addNodeAcademy(ListAca& lta, NodeAca* aca);
+
+double GPA_one_Seme(Semester sms, string StudentID);
+
+double* GPA_three_Seme(ListSeme lsm, string StudentID);
 
 #endif
