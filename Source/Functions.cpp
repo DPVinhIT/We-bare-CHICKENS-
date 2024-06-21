@@ -1,6 +1,6 @@
 #include "Functions.h"
 
-bool laNgayHopLe(Date t) 
+bool laNgayHopLe(Date t)
 {
 	if (t.year < 0 || t.month < 1 || t.month > 12)
 		return false;
@@ -435,20 +435,19 @@ void writeCoure(string fileName, Course cour)
 	fout.open(fileName);
 	if (!fout.is_open())
 	{
-		cout << "Tao file khong thanh cong" << endl;
 		return;
 	}
 	NodeStudent* st = cour.sv.Head;
 	int i = 1;
 	while (st != NULL)
 	{
-		fout << i << ";";
-		fout << st->sv.studentID << ";";
-		fout << st->sv.fullName << ";";
-		fout << st->sv.Gender << ";";
+		fout << i << ",";
+		fout << st->sv.studentID << ",";
+		fout << st->sv.fullName << ",";
+		fout << st->sv.Gender << ",";
 		fout << st->sv.DoB.day << "/";
 		fout << st->sv.DoB.month << "/";
-		fout << st->sv.DoB.year << ";";
+		fout << st->sv.DoB.year << ",";
 		fout << st->sv.socialID;
 		if (st->Next != NULL)
 		{
@@ -686,7 +685,7 @@ void printTheStudentCourses(string mssv, ListCourse lstCrs) {
 	}
 }
 
-int countStudent(ListStudent lStd) 
+int countStudent(ListStudent lStd)
 {
 	if (lStd.Head == NULL) {
 		return 0;
@@ -700,7 +699,7 @@ int countStudent(ListStudent lStd)
 	return cnt;
 }
 
-int countClass(ListClass lCls) 
+int countClass(ListClass lCls)
 {
 	if (lCls.Head == NULL) {
 		return 0;
@@ -714,7 +713,7 @@ int countClass(ListClass lCls)
 	return cnt;
 }
 
-NodeStudent* findStudentByPos(ListStudent lStd, int pos) 
+NodeStudent* findStudentByPos(ListStudent lStd, int pos)
 {
 	if (pos > countStudent(lStd)) {
 		return NULL;
@@ -724,6 +723,19 @@ NodeStudent* findStudentByPos(ListStudent lStd, int pos)
 		nStd = nStd->Next;
 	}
 	return nStd;
+}
+
+NodeStudent* findStudentByID(ListStudent lst, string ID)
+{
+	NodeStudent* temp = lst.Head;
+	while (temp != NULL)
+	{
+		if (temp->sv.studentID == ID)
+		{
+			return temp;
+		}
+	}
+	return NULL;
 }
 
 NodeClass* findClassByPos(ListClass lcls, int pos)
@@ -749,7 +761,7 @@ NodeClass* findClassByName(ListClass lcls, string name)
 	NodeClass* temp = lcls.Head;
 	while (temp != NULL)
 	{
-		if (temp->cls.nameClass==name)
+		if (temp->cls.nameClass == name)
 		{
 			return temp;
 		}
@@ -758,7 +770,7 @@ NodeClass* findClassByName(ListClass lcls, string name)
 	return NULL;
 }
 
-void readFileCSV(string fileName, Clas& cls,bool &check)
+void readFileCSV(string fileName, ListStudent &lst, bool& check)
 {
 	ifstream fin;
 	fin.open(fileName);
@@ -783,8 +795,9 @@ void readFileCSV(string fileName, Clas& cls,bool &check)
 		fin.ignore();
 		getline(fin, st.socialID, '\n');
 		splitName(st);
-		addNodeStudent(cls.lst, createNodeStudent(st));
+		addNodeStudent(lst, createNodeStudent(st));
 	}
+	check = true;
 	fin.close();
 }
 
@@ -803,34 +816,11 @@ ListClass lstClsInAYear(ListClass lst, int year)
 	return lClasInYear;
 }
 
-int check_Seme(Semester smt, Date cur) 
+int check_Seme(Semester smt, Date cur)
 {
 	if (cur.day == smt.begin.day && cur.month == smt.begin.month && cur.year == smt.begin.year) return -1;
 	else if (cur.day == smt.end.day && cur.month == smt.end.month && cur.year == smt.end.year) return 1;
 	else return 0;
-}
-
-void changePassword(Account& acc) {
-	string newPassword;
-	cout << "Nhap mat moi: \n";
-	cin >> newPassword;
-	while (newPassword == acc.password) {
-		cout << "Mat khau moi trung voi mat khau cu\n";
-		cout << "Nhap mat moi: \n";
-		cin >> newPassword;
-	}
-	acc.password = newPassword;
-}
-void changePasswordInListAccount(ListAccount& lAcc, Account Acc) {
-	changePassword(Acc);
-	NodeAccount* nAcc = lAcc.Head;
-	while (nAcc != NULL) {
-		if (nAcc->acc.username == Acc.username) {
-			nAcc->acc = Acc;
-			break;
-		}
-		nAcc = nAcc->Next;
-	}
 }
 
 int countCourse(ListCourse lCrs)
@@ -851,7 +841,7 @@ NodeCourse* findCourseByPos(ListCourse lcrs, int pos)
 	}
 	NodeCourse* temp = lcrs.Head;
 	for (int i = 1; i < pos; i++) {
-		temp=temp->Next;
+		temp = temp->Next;
 	}
 	return temp;
 }
@@ -887,7 +877,7 @@ NodeCourse* createNodeCourse(Course crs)
 	return tmp;
 }
 
-NodeCourse* findCourseByID(ListCourse lcrs,string courseID)
+NodeCourse* findCourseByID(ListCourse lcrs, string courseID)
 {
 	NodeCourse* temp = lcrs.Head;
 	if (lcrs.Head == NULL)
@@ -921,7 +911,7 @@ void addNodeCourse(ListCourse& lcrs, NodeCourse* crs)
 	temp->Next = crs;
 }
 
-NodeStudent* check_Course_and_MSSV(ListCourse lcr, string IDcourse, string MSSV) 
+NodeStudent* check_Course_and_MSSV(ListCourse lcr, string IDcourse, string MSSV)
 {
 	NodeCourse* tmp1 = lcr.Head;
 	while (tmp1 != NULL) {
@@ -965,10 +955,10 @@ void removeStudentOfCourse(ListCourse& lcrs, string courseID, string studentID)
 	}
 	temp->Next = dele->Next;
 	delete dele;
-	dele= NULL;
+	dele = NULL;
 }
 
-void inputScore_Student(ListCourse& lcr, string IDcourse, string MSSV) 
+void inputScore_Student(ListCourse& lcr, string IDcourse, string MSSV)
 {
 	NodeStudent* tmp = check_Course_and_MSSV(lcr, IDcourse, MSSV);
 	if (tmp == NULL) {
@@ -976,7 +966,7 @@ void inputScore_Student(ListCourse& lcr, string IDcourse, string MSSV)
 	}
 	cin >> tmp->sv.regularMark >> tmp->sv.midtermMark >> tmp->sv.finalMark >> tmp->sv.totalMark;
 }
-void removeFirst(ListCourse& lcr) 
+void removeFirst(ListCourse& lcr)
 {
 	NodeCourse* tmp = lcr.Head;
 	if (tmp == NULL) {
@@ -985,12 +975,12 @@ void removeFirst(ListCourse& lcr)
 	lcr.Head = lcr.Head->Next;
 	delete tmp;
 }
-void removeLast(ListCourse& lcr) 
+void removeLast(ListCourse& lcr)
 {
 	NodeCourse* tmp = lcr.Head;
 	NodeCourse* tmp1 = lcr.Head;
 	if (tmp == NULL) return;
-	while (tmp->Next!= NULL) {
+	while (tmp->Next != NULL) {
 		tmp1 = tmp;
 		tmp = tmp->Next;
 	}
@@ -1014,18 +1004,17 @@ void removeCourse(ListCourse& lcr, int pos)
 		removeLast(lcr);
 		return;
 	}
-	for (int i = 1; i < pos-1; i++) {
+	for (int i = 1; i < pos - 1; i++) {
 		tmp = tmp->Next;
 	}
 	NodeCourse* nodeToDelete = tmp->Next;
 	tmp->Next = nodeToDelete->Next;
 	delete nodeToDelete;
 }
-void removeCourse_IDCourse(ListCourse& lcr, string IDcourse) 
+void removeCourse_IDCourse(ListCourse& lcr, string IDcourse)
 {
 	NodeCourse* tmp = lcr.Head;
 	int pos = 1;
-
 	while (tmp != NULL) {
 		if (tmp->crs.courseID == IDcourse) {
 			removeCourse(lcr, pos);
@@ -1034,30 +1023,113 @@ void removeCourse_IDCourse(ListCourse& lcr, string IDcourse)
 		tmp = tmp->Next;
 		pos++;
 	}
-	cout << "Khong tim thay khoa hoc co ID: " << IDcourse << endl;
 }
 
-//void changePassword(Account& acc) 
-//{
-//	string newPassword;
-//	cout << "Nhap mat moi: \n";
-//	cin >> newPassword;
-//	while (newPassword == acc.password) {
-//		cout << "Mat khau moi trung voi mat khau cu\n";
-//		cout << "Nhap mat moi: \n";
-//		cin >> newPassword;
-//	}
-//	acc.password = newPassword;
-//}
-//void changePasswordInListAccount(ListAccount& lAcc, Account Acc) 
-//{
-//	changePassword(Acc);
-//	NodeAccount* nAcc = lAcc.Head;
-//	while (nAcc != NULL) {
-//		if (nAcc->acc.username == Acc.username) {
-//			nAcc->acc = Acc;
-//			break;
-//		}
-//		nAcc = nAcc->Next;
-//	}
-//}
+
+void changePassword(Account& acc) {
+	string newPassword;
+	cout << "Nhap mat moi: \n";
+	cin >> newPassword;
+	while (newPassword == acc.password) {
+		cout << "Mat khau moi trung voi mat khau cu\n";
+		cout << "Nhap mat moi: \n";
+		cin >> newPassword;
+	}
+	acc.password = newPassword;
+}
+void changePasswordInListAccount(ListAccount& lAcc, Account Acc) {
+	NodeAccount* nAcc = lAcc.Head;
+	while (nAcc != NULL) {
+		if (nAcc->acc.username == Acc.username) {
+			nAcc->acc = Acc;
+			break;
+		}
+		nAcc = nAcc->Next;
+	}
+}
+
+void readFileScoreboard(string fileName, Course& crs)
+{
+	ifstream fin;
+	fin.open(fileName);
+	if (!fin.is_open())
+	{
+		return;
+	}
+	while (!fin.eof())
+	{
+		Student temp;
+		fin >> temp.STT;
+		fin.ignore();
+		getline(fin, temp.studentID, ',');
+		getline(fin, temp.fullName, ',');
+		fin >> temp.regularMark;
+		fin.ignore();
+		fin >> temp.midtermMark;
+		fin.ignore();
+		fin >> temp.finalMark;
+		fin.ignore();
+		fin >> temp.totalMark;
+		NodeStudent* st = findStudentByID(crs.sv, temp.studentID);
+		if (st != NULL)
+		{
+			st->sv.totalMark = temp.totalMark;
+			st->sv.finalMark = temp.finalMark;
+			st->sv.midtermMark = temp.midtermMark;
+			st->sv.regularMark = temp.regularMark;
+		}
+	}
+	fin.close();
+}
+
+NodeAca* createNodeAcademy(Academy acm) {
+	NodeAca* tmp = new NodeAca;
+	tmp->acm = acm;
+	tmp->Next = NULL;
+	return tmp;
+}
+void addNodeAcademy(ListAca& lta, NodeAca* aca) {
+	if (lta.Head == NULL)
+	{
+		lta.Head = aca;
+		lta.Head->Next = NULL;
+		return;
+	}
+	NodeAca* tmp = lta.Head;
+	while (tmp->Next != NULL)
+	{
+		tmp = tmp->Next;
+	}
+	tmp->Next = aca;
+}
+
+double GPA_one_Seme(Semester sms, string StudentID)
+{
+	int sum = 0;
+	int credit = 0;
+	NodeCourse* tmp = sms.lcrs.Head;
+	for (NodeCourse* i = tmp; i != NULL; i = i->Next) {
+		NodeStudent* studentTmp = i->crs.sv.Head;
+		while (studentTmp != NULL) {
+			if (studentTmp->sv.studentID == StudentID) {
+				sum += studentTmp->sv.totalMark * i->crs.acaCrd;
+				credit += i->crs.acaCrd;
+				break;
+			}
+			studentTmp = studentTmp->Next;
+		}
+	}
+	return 1.0 * sum / credit;
+}
+
+double* GPA_three_Seme(ListSeme lsm, string StudentID)
+{
+	double* GPA = new double[3];
+	NodeSeme* tmp = lsm.Head;
+	int index = 0;
+	for (NodeSeme* i = tmp; i != NULL && index < 3; i = i->Next) {
+		GPA[index] = GPA_one_Seme(i->smt, StudentID);
+		++index;
+	}
+	return GPA;
+}
