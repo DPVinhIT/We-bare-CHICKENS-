@@ -3,6 +3,7 @@
 
 #include"Struct.h"
 bool laNgayHopLe(Date t);
+int dayOfMonth(Date d);
 void createAca(Academy acd);
 int chooseClass();
 int chooseSemester();
@@ -27,7 +28,7 @@ void removeFirst(ListStudent& lst);
 void removeLast(ListStudent& lst);
 int getSize(ListStudent lst);
 void removeStudent(ListStudent& lst, int pos);
-void removeStudent_MSSV(ListStudent& lst);
+void removeStudent_MSSV(ListStudent& lst, string studentID);
 void updateCourse(Course& crs);
 void writeCoure(string fileName, Course cour);
 void printListStudentScore(Course crs);
@@ -56,9 +57,11 @@ NodeClass* findClassByName(ListClass lcls, string name);
 
 void readFileCSV(string fileName, ListStudent& lst, bool& check);
 
-ListClass lstClsInAYear(ListClass lst, int year);
+ListClass lstClsInAYear(Academy aca, ListClass lst, int year);
 
 int check_Seme(Semester smt, Date cur);
+
+int checkSemester(Date cur);
 
 int countCourse(ListCourse lCrs);
 
