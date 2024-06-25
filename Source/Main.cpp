@@ -2,14 +2,23 @@
 #include"DoHoa.h"
 
 Date CurTime;
+
 ListAccount LStaff;
 ListAccount LStudent;
+
 ListAca ListAcademy;
 
+ListClass Freshman;
+ListClass Sophomore;
+ListClass Junior;
+ListClass Senior;
+
+NodeAca* CurAcademy;
+NodeSeme* CurSemester;
 
 int main()
 {
-	Academy acd;
+
 	ListClass cls;
 	string fileName[] = { "23CTT1.csv", "21CTT2.csv", "23CTT3.csv", "23CTT4.csv", "23CTT5.csv", "23CLC01.csv",
 	"23CLC02.csv", "23APCS1.csv", "23APCS2.csv" };
@@ -21,13 +30,19 @@ int main()
 	//DisableResizeWindow();
 	maximizeConsoleWindow();
 
-	CurTime.day = 20;
-	CurTime.month = 6;
-	CurTime.year = 2024;
+	CurTime.day = 1;
+	CurTime.month = 9;
+	CurTime.year = 2023;
 
-	SetConsoleBackgroundColor(15);
+	CurAcademy = ListAcademy.Head;
+	CurAcademy = new NodeAca;
+	if (CurAcademy != NULL)
+	{
+		CurAcademy->acm.lsm.Head = NULL;
+		CurSemester = CurAcademy->acm.lsm.Head;
+	}
 
-	menuLogin(cls);
+	//menuLogin(cls, CurAcademy);
 
 	_getch();
 	GoTo(0, 45);
