@@ -130,5 +130,11 @@ extern Date CurTime;
 extern ListAccount LStaff;
 extern ListAccount LStudent;
 extern ListAca ListAcademy;
+extern ListClass Freshman;
+extern ListClass Sophomore;
+extern ListClass Junior;
+extern ListClass Senior;
+extern NodeAca* CurAcademy;
+extern NodeSeme* CurSemester;
 
 #endif
