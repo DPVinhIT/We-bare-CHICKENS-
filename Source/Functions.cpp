@@ -20,6 +20,24 @@ bool laNgayHopLe(Date t)
 		return (t.day >= 1 && t.day <= 31);
 	}
 }
+
+int dayOfMonth(Date d)
+{
+	if (d.month == 4 || d.month == 6 || d.month == 9 || d.month == 11)
+	{
+		return 30;
+	}
+	else if (d.month == 2)
+	{
+		if (d.year % 400 == 0 || (d.year % 4 == 0 && d.year % 100 != 0))
+		{
+			return 29;
+		}
+		return 28;
+	}
+	return 31;
+}
+
 void createAca(Academy acd) {
 	cout << "\nNhap nam bat dau: ";
 	cin >> acd.begin;
@@ -376,9 +394,9 @@ void updateCourse(Course& crs) {
 			Student sv = inputStudent();
 			addNodeStudent(crs.sv, createNodeStudent(sv));
 		}
-		if (chon == 2) {
-			removeStudent_MSSV(crs.sv);
-		}
+		//if (chon == 2) {
+		//	removeStudent_MSSV(crs.sv);
+		//}
 		break;
 	}
 	case 4: {
@@ -484,23 +502,17 @@ void removeStudent(ListStudent& lst, int pos) {
 	tmp->Next = nodeToDelete->Next;
 	delete nodeToDelete;
 }
-void removeStudent_MSSV(ListStudent& lst) {
-	string MSSV;
-	cout << "\nSinh vien ban muon xoa co MSSV la: ";
-	cin >> MSSV;
+void removeStudent_MSSV(ListStudent& lst,string studentID) {
 	NodeStudent* tmp = lst.Head;
 	int pos = 1;
-
 	while (tmp != nullptr) {
-		if (tmp->sv.studentID == MSSV) {
+		if (tmp->sv.studentID == studentID) {
 			removeStudent(lst, pos);
 			return;
 		}
 		tmp = tmp->Next;
 		pos++;
 	}
-
-	cout << "Khong tim thay sinh vien co MSSV: " << MSSV << endl;
 }
 void inputPersonScore(Student& psc) {
 	cout << "\nSTT: ";
@@ -734,6 +746,7 @@ NodeStudent* findStudentByID(ListStudent lst, string ID)
 		{
 			return temp;
 		}
+		temp = temp->Next;
 	}
 	return NULL;
 }
@@ -801,14 +814,13 @@ void readFileCSV(string fileName, ListStudent &lst, bool& check)
 	fin.close();
 }
 
-ListClass lstClsInAYear(ListClass lst, int year)
+ListClass lstClsInAYear(Academy aca,ListClass lst, int year)
 {
 	ListClass lClasInYear;
-	lClasInYear.Head = NULL;
 	NodeClass* lCls = lClasInYear.Head;
 	NodeClass* tmp = lst.Head;
 	while (tmp != NULL) {
-		if (tmp->cls.nameClass[1] == '4' - year) {
+		if ((tmp->cls.nameClass[0]-'0' )* 10 + tmp->cls.nameClass[1]-'0' == (aca.end % 2000) - year) {
 			addNodeClass(lClasInYear, createNodeClass(tmp->cls));
 		}
 		tmp = tmp->Next;
@@ -821,6 +833,25 @@ int check_Seme(Semester smt, Date cur)
 	if (cur.day == smt.begin.day && cur.month == smt.begin.month && cur.year == smt.begin.year) return -1;
 	else if (cur.day == smt.end.day && cur.month == smt.end.month && cur.year == smt.end.year) return 1;
 	else return 0;
+}
+
+int checkSemester(Date cur)
+{
+	if (cur.day == 1)
+	{
+		if (cur.month == 9 || cur.month == 2 || cur.month == 7)
+		{
+			return -1;
+		}
+	}
+	if (cur.month == 1 || cur.month == 6 || cur.month == 8)
+	{
+		if (cur.day == dayOfMonth(cur))
+		{
+			return 1;
+		}
+	}
+	return 0;
 }
 
 int countCourse(ListCourse lCrs)
@@ -931,31 +962,12 @@ NodeStudent* check_Course_and_MSSV(ListCourse lcr, string IDcourse, string MSSV)
 
 void removeStudentOfCourse(ListCourse& lcrs, string courseID, string studentID)
 {
-	NodeStudent* dele = check_Course_and_MSSV(lcrs, courseID, studentID);
-	if (dele == NULL)
-	{
-		return;
-	}
 	NodeCourse* crs = findCourseByID(lcrs, courseID);
-	NodeStudent* temp = crs->crs.sv.Head;
-	if (temp == dele)
+	if (crs == NULL)
 	{
-		temp = temp->Next;
-		crs->crs.sv.Head = temp;
-		delete dele;
 		return;
 	}
-	while (temp->Next != NULL)
-	{
-		if (temp->Next == dele)
-		{
-			break;
-		}
-		temp = temp->Next;
-	}
-	temp->Next = dele->Next;
-	delete dele;
-	dele = NULL;
+	removeStudent_MSSV(crs->crs.sv, studentID);
 }
 
 void inputScore_Student(ListCourse& lcr, string IDcourse, string MSSV)
@@ -1077,6 +1089,10 @@ void readFileScoreboard(string fileName, Course& crs)
 			st->sv.finalMark = temp.finalMark;
 			st->sv.midtermMark = temp.midtermMark;
 			st->sv.regularMark = temp.regularMark;
+		}
+		else
+		{
+			continue;
 		}
 	}
 	fin.close();
