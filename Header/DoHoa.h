@@ -47,7 +47,7 @@ void SetConsoleBackgroundColor(int bgColor);
 //Lấy kích thước cửa sổ hiện tại
 void getConsoleSize(int& width, int& height);
 
-void menuLogin(ListClass &lcls);
+void menuLogin(ListClass& lcls, NodeAca*& aca);
 
 void inputStudent(ListStudent& lst);
 
@@ -55,15 +55,15 @@ void khungLon();
 
 void khungNho();
 
-void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt);
+void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt, NodeAca*& aca);
 
-void Staff2_2(ListClass& lcls);
+void Staff2_2(Academy aca, ListClass& lcls);
 
-void BeginSchoolYear(ListClass& lcls);
+void BeginSchoolYear(ListClass& lcls, NodeAca*& aca);
 
-void BeginSemester(ListSeme& lsm);
+void BeginSemester(NodeSeme*& seme, NodeAca*& aca);
 
-void EndSemester(ListSeme& lsm);
+void EndSemester(NodeSeme*& seme, NodeAca*& aca);
 
 void displayStudent(ListStudent lst, int index, int n);
 void ViewStudenOfClass(ListStudent cls, int& index, int n);
