@@ -511,7 +511,7 @@ void menuLogin(ListClass& lcls, NodeAca*& aca)
 		{
 			if (check == 1)
 			{
-				menuStaff(acc, lcls, CurAcademy->acm.lsm,aca);
+				menuStaff(acc, lcls, CurAcademy->acm.lsm, aca);
 			}
 			else
 			{
@@ -544,7 +544,14 @@ void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt, NodeAca*& aca)
 		GoTo(74, 20); cout << "Academy: ";
 		if (aca != NULL)
 		{
-			cout << aca->acm.begin << "-" << aca->acm.end;
+			if (aca->acm.begin > 0 && aca->acm.begin < 2025 && aca->acm.end>0 && aca->acm.end < 2025)
+			{
+				cout << aca->acm.begin << "-" << aca->acm.end;
+			}
+			else
+			{
+				cout << "NONE";
+			}
 		}
 		else
 		{
@@ -690,7 +697,7 @@ void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt, NodeAca*& aca)
 				removeText(71, 10, 5, 7, 15, 15);//xóa | login
 				removeText(134, 10, 5, 7, 15, 15);//xóa | login
 				int n = 0;
-				ViewStudenOfClass(cls->cls.lst, index, countStudent(cls->cls.lst));
+				ViewStudenOfClass(cls->cls.lst, index, countStudent(cls->cls.lst), 10);
 			}
 			break;
 		}
@@ -705,7 +712,11 @@ void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt, NodeAca*& aca)
 			}
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
 			SetColor(15, 0);
-			ViewListOfCourse(CurSemester->smt.lcrs, index, countCourse(CurSemester->smt.lcrs));
+			ViewListOfCourse(CurSemester->smt.lcrs, index, countCourse(CurSemester->smt.lcrs), 10);
+			SetColor(15, 0);
+			GoTo(100, 46);
+			cout << 123;
+			cout << CurSemester->smt.lcrs.Head->crs.sv.nameClass << endl;
 			break;
 		}
 		case 5: {
@@ -734,7 +745,7 @@ void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt, NodeAca*& aca)
 			else
 			{
 
-				ViewStudenOfClass(cour->crs.sv, index, countStudent(cour->crs.sv));
+				ViewStudenOfClass(cour->crs.sv.lst, index, countStudent(cour->crs.sv.lst), 10);
 			}
 			break;
 		}
@@ -743,7 +754,7 @@ void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt, NodeAca*& aca)
 			SetColor(15, 0);
 			if (check)
 			{
-				BeginSchoolYear(lcls,aca);
+				BeginSchoolYear(lcls, aca);
 				check = false;
 			}
 			else
@@ -756,11 +767,11 @@ void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt, NodeAca*& aca)
 				}
 				if (checkSemester(CurTime) == -1)
 				{
-					BeginSemester(CurSemester,aca);
+					BeginSemester(CurSemester, aca);
 				}
 				else if (checkSemester(CurTime) == 1)
 				{
-					EndSemester(CurSemester,aca);
+					EndSemester(aca, lcls);
 				}
 				else if (checkSemester(CurTime) == 1 && smt.Head != NULL)
 				{
@@ -870,7 +881,7 @@ void Staff2_2(Academy aca, ListClass& lcls)
 			}
 			else
 			{
-				ViewListOfClass(Freshman, index, countClass(Freshman));
+				ViewListOfClass(Freshman, index, countClass(Freshman), 10);
 			}
 			break;
 		}
@@ -888,7 +899,7 @@ void Staff2_2(Academy aca, ListClass& lcls)
 			}
 			else
 			{
-				ViewListOfClass(Sophomore, index, countClass(Sophomore));
+				ViewListOfClass(Sophomore, index, countClass(Sophomore), 10);
 			}
 			break;
 		}
@@ -906,7 +917,7 @@ void Staff2_2(Academy aca, ListClass& lcls)
 			}
 			else
 			{
-				ViewListOfClass(Junior, index, countClass(Junior));
+				ViewListOfClass(Junior, index, countClass(Junior), 10);
 			}
 			break;
 		}
@@ -924,7 +935,7 @@ void Staff2_2(Academy aca, ListClass& lcls)
 			}
 			else
 			{
-				ViewListOfClass(Senior, index, countClass(Senior));
+				ViewListOfClass(Senior, index, countClass(Senior), 10);
 			}
 			break;
 		}
@@ -935,7 +946,7 @@ void Staff2_2(Academy aca, ListClass& lcls)
 	}
 }
 
-void BeginSchoolYear(ListClass& lcls,NodeAca*& aca)
+void BeginSchoolYear(ListClass& lcls, NodeAca*& aca)
 {
 	int op = 0;
 	Academy acad;
@@ -1071,7 +1082,7 @@ void BeginSchoolYear(ListClass& lcls,NodeAca*& aca)
 			}
 			else
 			{
-				ViewListOfClass(lcls, index, countClass(lcls));
+				ViewListOfClass(lcls, index, countClass(lcls), 10);
 			}
 			break;
 		}
@@ -1083,8 +1094,7 @@ void BeginSchoolYear(ListClass& lcls,NodeAca*& aca)
 	}
 }
 
-//xém xong (còn bug :3)
-void BeginSemester(NodeSeme*& seme,NodeAca*&aca)
+void BeginSemester(NodeSeme*& seme, NodeAca*& aca)
 {
 	removeText(16, 10, 179, 38, 15, 15);
 	image(84, 11, "imageStaff.txt", 15, 9);
@@ -1236,7 +1246,7 @@ void BeginSemester(NodeSeme*& seme,NodeAca*&aca)
 				removeText(134, 10, 5, 7, 15, 15);//xóa | login
 				removeText(71, 17, 66, 31, 15, 15);//xóa khung nho
 				khungLon();
-				ViewListOfCourse(seme->smt.lcrs, index, countCourse(seme->smt.lcrs));
+				ViewListOfCourse(seme->smt.lcrs, index, countCourse(seme->smt.lcrs), 10);
 			}
 			break;
 		}
@@ -1286,7 +1296,7 @@ void BeginSemester(NodeSeme*& seme,NodeAca*&aca)
 					{
 					case 1:
 						removeText(72, 17, 64, 31, 15, 15);//xóa option
-						inputStudent(temp->crs.sv);
+						inputStudent(temp->crs.sv.lst);
 						break;
 					case 2:
 					{
@@ -1297,8 +1307,9 @@ void BeginSemester(NodeSeme*& seme,NodeAca*&aca)
 						cout << "Nhap ten file csv: ";
 						string fileName;
 						getline(cin, fileName);
+						temp->crs.sv.nameClass = fileName.substr(0, fileName.find_first_of('.'));
 						bool check;
-						readFileCSV(fileName, temp->crs.sv, check);
+						readFileCSV(fileName, temp->crs.sv.lst, check);
 						string xuat[2] = { "ADD Student successful !","ADD Student Fail !" };
 						if (check)
 						{
@@ -1372,7 +1383,7 @@ void BeginSemester(NodeSeme*& seme,NodeAca*&aca)
 
 }
 
-void EndSemester(NodeSeme*& seme,NodeAca*&aca)
+void EndSemester(NodeAca*& aca, ListClass lcls)
 {
 	int op = 0;
 	while (op != 6)
@@ -1397,8 +1408,9 @@ void EndSemester(NodeSeme*& seme,NodeAca*&aca)
 			GoTo(73, 18);
 			cout << "Course ID: ";
 			string CourseID;
-			getline(cin, CourseID);
-			NodeCourse* crs = findCourseByID(seme->smt.lcrs, CourseID);
+			cin >> CourseID;
+			cin.ignore();
+			NodeCourse* crs = findCourseByID(CurSemester->smt.lcrs, CourseID);
 			GoTo(73, 19);
 			cout << "File CSV name: ";
 			string fileName;
@@ -1420,7 +1432,7 @@ void EndSemester(NodeSeme*& seme,NodeAca*&aca)
 			cout << "Input fileName: ";
 			string fileName;
 			getline(cin, fileName);
-			NodeCourse* crs = findCourseByID(seme->smt.lcrs, courseID);
+			NodeCourse* crs = findCourseByID(CurSemester->smt.lcrs, courseID);
 			if (crs != NULL) {
 				readFileScoreboard(fileName, crs->crs);
 				GoTo(73, 25);
@@ -1440,13 +1452,14 @@ void EndSemester(NodeSeme*& seme,NodeAca*&aca)
 			GoTo(73, 18);
 			cout << "Course ID: ";
 			string CourseID;
-			getline(cin, CourseID);
-			NodeCourse* crs = findCourseByID(seme->smt.lcrs, CourseID);
+			cin >> CourseID;
+			cin.ignore();
+			NodeCourse* crs = findCourseByID(CurSemester->smt.lcrs, CourseID);
 			if (crs != NULL)
 			{
 				int index = 0;
 				khungLon();
-				ViewScoreboardCourse(crs->crs.sv, index, countStudent(crs->crs.sv));
+				ViewScoreboardCourse(crs->crs.sv.lst, index, countStudent(crs->crs.sv.lst), 10);
 			}
 			else
 			{
@@ -1458,14 +1471,85 @@ void EndSemester(NodeSeme*& seme,NodeAca*&aca)
 		}
 		case 4:
 		{
+			int index = 0;
 			SetColor(15, 0);
 			GoTo(73, 18);
 			cout << "Student ID: ";
 			string studentID;
 			cin >> studentID;
 			cin.ignore();
-			
+			ListCourse lcr = RegisteredCourse(studentID);
+			if (lcr.Head == NULL)
+			{
+				GoTo(73, 25);
+				cout << "Student not exist";
+				_getch();
+			}
+			else
+			{
+				ViewListOfCourse(lcr, index, countCourse(lcr), 10);
+				GoTo(100, 47);
+				cout << "Input courseID: ";
+				string courseID;
+				getline(cin, courseID);
+				NodeCourse* cr = findCourseByID(lcr, courseID);
+				ListStudent lt;
+				lt.Head = createNodeStudent(findStudentByID(cr->crs.sv.lst, studentID)->sv);
+				lt.Head->Next = NULL;
+				index = 0;
+				removeText(40, 18, 129, 30, 15, 15);//xoa option
+				displayScoreboardCourse(lt, index, countStudent(lt), 10);
+				int a[7] = { 47, 52,65,109,124,138,151 };
+				GoTo(a[3] + 1, 22);
+				cout << "         ";
+				GoTo(a[4] + 1, 22);
+				cout << "         ";
+				GoTo(a[5] + 1, 22);
+				cout << "         ";
+				GoTo(a[6] + 1, 22);
+				cout << "         ";
+				ShowCur(true);
+
+				GoTo(a[3] + 1, 22);
+				cin >> lt.Head->sv.regularMark;
+				GoTo(a[4] + 1, 22);
+				cin >> lt.Head->sv.midtermMark;
+				GoTo(a[5] + 1, 22);
+				cin >> lt.Head->sv.finalMark;
+				GoTo(a[6] + 1, 22);
+				cin >> lt.Head->sv.totalMark;
+				NodeStudent* st = findStudentByID(cr->crs.sv.lst, studentID);
+				if (st != NULL)
+				{
+					st->sv = lt.Head->sv;
+				}
+			}
 			break;
+		}
+		case 5: {
+			int index = 0;
+			SetColor(15, 0);
+			GoTo(73, 18);
+			cout << "Class name : ";
+			string className;
+			cin >> className;
+			cin.ignore();
+			ListCourse lcr = CourseOfClass(className);
+			removeText(40, 18, 129, 30, 15, 15);//xoa option
+			ViewListOfCourse(lcr, index, countCourse(lcr), 10);
+			SetColor(15, 0);
+			GoTo(100, 47);
+			cout << "Input CourseID: ";
+			string courseID;
+			getline(cin, courseID);
+			NodeCourse* cr = findCourseByID(lcr, courseID);
+			if (cr != NULL)
+			{
+				index = 0;
+				removeText(40, 18, 130, 30, 15, 15);//xoa option
+				khungLon();
+				ViewScoreBoadClass(cr->crs.sv.lst, index, countStudent(cr->crs.sv.lst), 10);
+			}
 		}
 		case 6:
 			break;
@@ -1615,7 +1699,7 @@ void khungNho()
 }
 
 //max 13 dòng
-void displayStudent(ListStudent lst, int index, int n)
+void displayStudent(ListStudent lst, int index, int n, int maxline)
 {
 	SetConsoleOutputCP(437);
 	khungLon();
@@ -1626,8 +1710,8 @@ void displayStudent(ListStudent lst, int index, int n)
 	//goctrentrai 218 : goctrenphai 191 : gocduoitrai 192 : gocduoiphai 217	: doc  179 : ngang 196 
 	//Tọa độ các cột
 	int a[7] = { 47, 52,65,107,120,129,145 };
-	int dong = soDong(index, n, 12);
-	board(47, 19, 116, 12, dong, a, 7);
+	int dong = soDong(index, n, maxline);
+	board(47, 19, 116, maxline, dong, a, 7);
 
 	//trên 194 dọc trái 195 dọc phải 180 dưới 193 cong 197
 	GoTo(a[0] + 1, 20);
@@ -1644,7 +1728,7 @@ void displayStudent(ListStudent lst, int index, int n)
 	cout << " Date of birth ";
 	GoTo(a[6] + 4, 20);
 	cout << " Social ID ";
-	if (n > 12 && n - index <= 12)
+	if (n > maxline && n - index <= maxline)
 	{
 		dong++;
 	}
@@ -1675,8 +1759,8 @@ void displayStudent(ListStudent lst, int index, int n)
 		cout << temp->sv.socialID;
 		temp = temp->Next;
 	}
-	int maxPage = (n + 12 - 1) / 12;
-	int curPage = (index + 12 - 1) / 12;
+	int maxPage = (n + maxline - 1) / maxline;
+	int curPage = (index + maxline - 1) / maxline;
 	if (index == 0)
 	{
 		curPage = 1;
@@ -1710,7 +1794,7 @@ void displayStudent(ListStudent lst, int index, int n)
 	cout << "BACK";
 	muiTen(102, 46, 5);
 }
-void ViewStudenOfClass(ListStudent cls, int& index, int n)
+void ViewStudenOfClass(ListStudent cls, int& index, int n, int maxline)
 {
 	ShowCur(false);
 	bool kt = true;
@@ -1719,7 +1803,7 @@ void ViewStudenOfClass(ListStudent cls, int& index, int n)
 		if (kt == true)
 		{
 			removeText(40, 18, 129, 30, 15, 15);
-			displayStudent(cls, index, n);
+			displayStudent(cls, index, n, maxline);
 			kt = false;
 		}
 		if (_kbhit())
@@ -1727,30 +1811,30 @@ void ViewStudenOfClass(ListStudent cls, int& index, int n)
 			char c = _getch();
 			if (c == -32)
 			{
-				if (n > 12)
+				if (n > maxline)
 				{
 					kt = true;
 					c = _getch();
 					if (c == 75)
 					{
-						if (index > 13)
+						if (index > maxline + 1)
 						{
-							index -= 12;
+							index -= maxline;
 						}
-						else if (index == 13)
+						else if (index == maxline + 1)
 						{
-							index -= 13;
+							index -= maxline + 1;
 						}
 					}
 					else if (c == 77)
 					{
 						if (index == 0)
 						{
-							index += 13;
+							index += maxline + 1;
 						}
-						else if (index < (n - n % 12) && (n - index >= 12))
+						else if (index < (n - n % maxline) && (n - index >= maxline))
 						{
-							index += 12;
+							index += maxline;
 						}
 					}
 				}
@@ -1763,17 +1847,17 @@ void ViewStudenOfClass(ListStudent cls, int& index, int n)
 	}
 }
 
-void displayClass(ListClass lcls, int index, int n)
+void displayClass(ListClass lcls, int index, int n, int maxline)
 {
 	SetColor(15, 0);
 	int a[2] = { 96,100 };
-	int dong = soDong(index, n, 12);
-	board(96, 19, 20, 12, dong, a, 2);
+	int dong = soDong(index, n, maxline);
+	board(96, 19, 20, maxline, dong, a, 2);
 	GoTo(a[0] + 1, 20);
 	cout << "STT";
 	GoTo(a[1] + 1, 20);
 	cout << "Class Name";
-	if (n > 12 && n - index <= 12)
+	if (n > maxline && n - index <= maxline)
 	{
 		dong++;
 	}
@@ -1788,7 +1872,7 @@ void displayClass(ListClass lcls, int index, int n)
 		int stt = i + index;
 		if (index > 0)
 		{
-			stt - 1;
+			stt -= 1;
 		}
 		cout << stt;
 		GoTo(a[1] + 1, 20 + i * 2);
@@ -1796,8 +1880,8 @@ void displayClass(ListClass lcls, int index, int n)
 		cls = cls->Next;
 	}
 
-	int maxPage = (n + 12 - 1) / 12;
-	int curPage = (index + 12 - 1) / 12;
+	int maxPage = (n + maxline - 1) / maxline;
+	int curPage = (index + maxline - 1) / maxline;
 	if (index == 0)
 	{
 		curPage = 1;
@@ -1830,7 +1914,7 @@ void displayClass(ListClass lcls, int index, int n)
 	cout << "BACK";
 	muiTen(102, 46, 5);
 }
-void ViewListOfClass(ListClass lcls, int& index, int n)
+void ViewListOfClass(ListClass lcls, int& index, int n, int maxline)
 {
 	ShowCur(false);
 	bool kt = true;
@@ -1839,7 +1923,7 @@ void ViewListOfClass(ListClass lcls, int& index, int n)
 		if (kt == true)
 		{
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
-			displayClass(lcls, index, n);
+			displayClass(lcls, index, n, maxline);
 			kt = false;
 		}
 		if (_kbhit())
@@ -1847,30 +1931,30 @@ void ViewListOfClass(ListClass lcls, int& index, int n)
 			char c = _getch();
 			if (c == -32)
 			{
-				if (n > 12)
+				if (n > maxline)
 				{
 					kt = true;
 					c = _getch();
 					if (c == 75)
 					{
-						if (index > 13)
+						if (index > maxline + 1)
 						{
-							index -= 12;
+							index -= maxline;
 						}
-						else if (index == 13)
+						else if (index == maxline + 1)
 						{
-							index -= 13;
+							index -= maxline + 1;
 						}
 					}
 					else if (c == 77)
 					{
 						if (index == 0)
 						{
-							index += 13;
+							index += maxline + 1;
 						}
-						else if (index < (n - n % 12) && (n - index >= 12))
+						else if (index < (n - n % maxline) && (n - index >= maxline))
 						{
-							index += 12;
+							index += maxline;
 						}
 					}
 				}
@@ -1883,12 +1967,12 @@ void ViewListOfClass(ListClass lcls, int& index, int n)
 	}
 }
 
-void displayCourse(ListCourse lcrs, int index, int n)
+void displayCourse(ListCourse lcrs, int index, int n, int maxline)
 {
 	SetColor(15, 0);
 	int a[8] = { 41,45,58,89,100,133,140,152 };
-	int dong = soDong(index, n, 12);
-	board(41, 19, 128, 12, dong, a, 8);
+	int dong = soDong(index, n, maxline);
+	board(41, 19, 128, maxline, dong, a, 8);
 	GoTo(a[0] + 1, 20); cout << "STT";
 	GoTo(a[1] + 1, 20); cout << "CourseID";
 	GoTo(a[2] + 1, 20); cout << "Course name";
@@ -1897,7 +1981,7 @@ void displayCourse(ListCourse lcrs, int index, int n)
 	GoTo(a[5] + 1, 20); cout << "Credit";
 	GoTo(a[6] + 1, 20); cout << "Max Student";
 	GoTo(a[7] + 1, 20); cout << "Session";
-	if (n > 12 && n - index <= 12)
+	if (n > maxline && n - index <= maxline)
 	{
 		dong++;
 	}
@@ -1909,7 +1993,7 @@ void displayCourse(ListCourse lcrs, int index, int n)
 			break;
 		}
 		int stt = index + i;
-		if (index > 11)
+		if (index > maxline)
 		{
 			stt = index + i - 1;
 		}
@@ -1931,8 +2015,8 @@ void displayCourse(ListCourse lcrs, int index, int n)
 		cout << crs->crs.cld.Day << " - " << crs->crs.cld.Time;
 		crs = crs->Next;
 	}
-	int maxPage = (n + 12 - 1) / 12;
-	int curPage = (index + 12 - 1) / 12;
+	int maxPage = (n + maxline - 1) / maxline;
+	int curPage = (index + maxline - 1) / maxline;
 	if (index == 0)
 	{
 		curPage = 1;
@@ -1966,7 +2050,7 @@ void displayCourse(ListCourse lcrs, int index, int n)
 	cout << "BACK";
 	muiTen(102, 46, 5);
 }
-void ViewListOfCourse(ListCourse lcrs, int& index, int n)
+void ViewListOfCourse(ListCourse lcrs, int& index, int n, int maxline)
 {
 	ShowCur(false);
 	bool kt = true;
@@ -1975,7 +2059,7 @@ void ViewListOfCourse(ListCourse lcrs, int& index, int n)
 		if (kt == true)
 		{
 			removeText(40, 18, 129, 30, 15, 15);
-			displayCourse(lcrs, index, n);
+			displayCourse(lcrs, index, n, maxline);
 			kt = false;
 		}
 		if (_kbhit())
@@ -1983,30 +2067,30 @@ void ViewListOfCourse(ListCourse lcrs, int& index, int n)
 			char c = _getch();
 			if (c == -32)
 			{
-				if (n > 12)
+				if (n > maxline)
 				{
 					kt = true;
 					c = _getch();
 					if (c == 75)
 					{
-						if (index > 13)
+						if (index > maxline + 1)
 						{
-							index -= 12;
+							index -= maxline;
 						}
-						else if (index == 13)
+						else if (index == maxline + 1)
 						{
-							index -= 13;
+							index -= maxline + 1;
 						}
 					}
 					else if (c == 77)
 					{
 						if (index == 0)
 						{
-							index += 13;
+							index += maxline + 1;
 						}
-						else if (index < (n - n % 12) && (n - index >= 12))
+						else if (index < (n - n % maxline) && (n - index >= maxline))
 						{
-							index += 12;
+							index += maxline;
 						}
 					}
 				}
@@ -2019,12 +2103,12 @@ void ViewListOfCourse(ListCourse lcrs, int& index, int n)
 	}
 }
 
-void displayScoreboardCourse(ListStudent lst, int index, int n)
+void displayScoreboardCourse(ListStudent lst, int index, int n, int maxline)
 {
 	SetColor(15, 0);
 	int a[7] = { 47, 52,65,109,124,138,151 };
-	int dong = soDong(index, n, 12);
-	board(47, 19, 116, 12, dong, a, 7);
+	int dong = soDong(index, n, maxline);
+	board(47, 19, 116, maxline, dong, a, 7);
 	SetColor(15, 0);
 	GoTo(a[0] + 1, 20); cout << "STT";
 	GoTo(a[1] + 1, 20); cout << "Student ID";
@@ -2033,7 +2117,7 @@ void displayScoreboardCourse(ListStudent lst, int index, int n)
 	GoTo(a[4] + 1, 20); cout << "Midterm mark";
 	GoTo(a[5] + 1, 20); cout << "Final mark";
 	GoTo(a[6] + 1, 20); cout << "Total mark";
-	if (n > 12 && n - index <= 12)
+	if (n > maxline && n - index <= maxline)
 	{
 		dong++;
 	}
@@ -2085,8 +2169,8 @@ void displayScoreboardCourse(ListStudent lst, int index, int n)
 		}
 		st = st->Next;
 	}
-	int maxPage = (n + 12 - 1) / 12;
-	int curPage = (index + 12 - 1) / 12;
+	int maxPage = (n + maxline - 1) / maxline;
+	int curPage = (index + maxline - 1) / maxline;
 	if (index == 0)
 	{
 		curPage = 1;
@@ -2119,7 +2203,7 @@ void displayScoreboardCourse(ListStudent lst, int index, int n)
 	cout << "BACK";
 	muiTen(102, 46, 5);
 }
-void ViewScoreboardCourse(ListStudent lst, int& index, int n)
+void ViewScoreboardCourse(ListStudent lst, int& index, int n, int maxline)
 {
 	ShowCur(false);
 	bool kt = true;
@@ -2128,7 +2212,7 @@ void ViewScoreboardCourse(ListStudent lst, int& index, int n)
 		if (kt == true)
 		{
 			removeText(40, 18, 129, 30, 15, 15);
-			displayScoreboardCourse(lst, index, n);
+			displayScoreboardCourse(lst, index, n, maxline);
 			kt = false;
 		}
 		if (_kbhit())
@@ -2136,30 +2220,30 @@ void ViewScoreboardCourse(ListStudent lst, int& index, int n)
 			char c = _getch();
 			if (c == -32)
 			{
-				if (n > 12)
+				if (n > maxline)
 				{
 					kt = true;
 					c = _getch();
 					if (c == 75)
 					{
-						if (index > 13)
+						if (index > maxline + 1)
 						{
-							index -= 12;
+							index -= maxline;
 						}
-						else if (index == 13)
+						else if (index == maxline + 1)
 						{
-							index -= 13;
+							index -= maxline + 1;
 						}
 					}
 					else if (c == 77)
 					{
 						if (index == 0)
 						{
-							index += 13;
+							index += maxline + 1;
 						}
-						else if (index < (n - n % 12) && (n - index >= 12))
+						else if (index < (n - n % maxline) && (n - index >= maxline))
 						{
-							index += 12;
+							index += maxline;
 						}
 					}
 				}
@@ -2172,7 +2256,315 @@ void ViewScoreboardCourse(ListStudent lst, int& index, int n)
 	}
 }
 
-void displayScoreboardClass(ListStudent lst, int index, int n);
+void displayScoreboardClass(ListStudent lst, int index, int n, int maxline)
+{
+	SetColor(15, 0);
+	int a[6] = { 51, 56,69,113,128,143 };
+	int dong = soDong(index, n, maxline);
+	board(51, 19, 107, maxline, dong, a, 6);
+	GoTo(a[0] + 1, 20); cout << "STT";
+	GoTo(a[1] + 1, 20); cout << "Student ID";
+	GoTo(a[2] + 1, 20); cout << "Full Name";
+	GoTo(a[3] + 1, 20); cout << "Total mark";
+	GoTo(a[4] + 1, 20); cout << "GPA";
+	GoTo(a[5] + 1, 20); cout << "Total GPA";
+
+	if (n > maxline && n - index <= maxline)
+	{
+		dong++;
+	}
+	NodeStudent* st = findStudentByPos(lst, index);
+	for (int i = 1; i <= dong; i++)
+	{
+		if (st == NULL)
+		{
+			break;
+		}
+		GoTo(a[0] + 1, 20 + i * 2);
+		cout << st->sv.STT;
+		GoTo(a[1] + 1, 20 + i * 2);
+		cout << st->sv.studentID;
+		GoTo(a[2] + 1, 20 + i * 2);
+		cout << st->sv.fullName;
+		GoTo(a[3] + 1, 20 + i * 2);
+		if (st->sv.totalMark >= 0 && st->sv.totalMark <= 11)
+		{
+			cout << st->sv.totalMark;
+		}
+		else
+		{
+			cout << "None";
+		}
+		GoTo(a[4] + 1, 20 + i * 2);
+		int numCredit = 0;
+		double gpa= GpaOfSemester(st->sv.studentID, numCredit);
+		if (gpa >= 0 && gpa <= 5)
+		{
+			cout << gpa;
+		}
+		else
+		{
+			cout << "None";
+		}
+		GoTo(a[5] + 1, 20 + i * 2);
+		double tgpa= GpaTotal(st->sv.studentID);
+		if (tgpa >= 0 && tgpa <= 5)
+		{
+			cout << tgpa;
+		}
+		else
+		{
+			cout << "None";
+		}
+		st = st->Next;
+	}
+
+	int maxPage = (n + maxline - 1) / maxline;
+	int curPage = (index + maxline - 1) / maxline;
+	if (index == 0)
+	{
+		curPage = 1;
+	}
+
+	if (maxPage == 1)
+	{
+		GoTo(104, 46);
+		cout << 0;
+	}
+	else if (curPage == 1)
+	{
+		GoTo(104, 46);
+		cout << 1;
+		cout << " ";
+		cout << char(175);
+	}
+	else if (curPage == maxPage)
+	{
+		GoTo(102, 46);
+		cout << char(174) << " ";
+		cout << curPage;
+	}
+	else
+	{
+		GoTo(102, 46);
+		cout << char(174) << " " << curPage << " " << char(175);
+	}
+
+	GoTo(103, 47);
+	cout << "BACK";
+	muiTen(102, 46, 5);
+}
+void ViewScoreBoadClass(ListStudent lst, int &index, int n, int maxline)
+{
+	ShowCur(false);
+	bool kt = true;
+	while (true)
+	{
+		if (kt == true)
+		{
+			removeText(40, 18, 129, 30, 15, 15);
+			displayScoreboardClass(lst, index, n, maxline);
+			kt = false;
+		}
+		if (_kbhit())
+		{
+			char c = _getch();
+			if (c == -32)
+			{
+				if (n > maxline)
+				{
+					kt = true;
+					c = _getch();
+					if (c == 75)
+					{
+						if (index > maxline + 1)
+						{
+							index -= maxline;
+						}
+						else if (index == maxline + 1)
+						{
+							index -= maxline + 1;
+						}
+					}
+					else if (c == 77)
+					{
+						if (index == 0)
+						{
+							index += maxline + 1;
+						}
+						else if (index < (n - n % maxline) && (n - index >= maxline))
+						{
+							index += maxline;
+						}
+					}
+				}
+			}
+			else if (c == 13)
+			{
+				break;
+			}
+		}
+	}
+}
+
+void displayMyScoreBoard(ListCourse lcr,string studentID, int index, int n, int maxline)
+{
+	SetColor(15, 0);
+	int a[7] = { 41,56,89,100,117,134,151 };
+	int dong = soDong(index, n, maxline);
+	board(41, 19, 127, maxline, dong, a, 7);
+	GoTo(a[0] + 1, 20); cout << "CourseID";
+	GoTo(a[1] + 1, 20); cout << "Course name";
+	GoTo(a[2] + 1, 20); cout << "Class name";
+	GoTo(a[3] + 1, 20); cout << "Regular mark";
+	GoTo(a[4] + 1, 20); cout << "Midterm mark";
+	GoTo(a[5] + 1, 20); cout << "Finnal mark";
+	GoTo(a[6] + 1, 20); cout << "Total mark";
+	if (n > maxline && n - index <= maxline)
+	{
+		dong++;
+	}
+	NodeCourse* cr = lcr.Head;
+	for (int i = 1; i <= dong; i++)
+	{
+		if (cr == NULL)
+		{
+			break;
+		}
+		NodeStudent* st = findStudentByID(cr->crs.sv.lst, studentID);
+		GoTo(a[0] + 1, 20 + i * 2); cout << cr->crs.courseID;
+		GoTo(a[1] + 1, 20 + i * 2); cout << cr->crs.courseName;
+		GoTo(a[2] + 1, 20 + i * 2); cout << cr->crs.className;
+		if (st == NULL)
+		{
+			continue;
+		}
+		GoTo(a[3] + 1, 20 + i * 2);
+		if (st->sv.regularMark >= 0 && st->sv.regularMark <= 10)
+		{
+			cout << st->sv.regularMark;
+		}
+		else
+		{
+			cout << "None";
+		}
+		GoTo(a[4] + 1, 20 + i * 2);
+		if (st->sv.midtermMark >= 0 && st->sv.midtermMark <= 10)
+		{
+			cout << st->sv.midtermMark;
+		}
+		else
+		{
+			cout << "None";
+		}
+		GoTo(a[5] + 1, 20 + i * 2);
+		if (st->sv.finalMark >= 0 && st->sv.finalMark <= 10)
+		{
+			cout << st->sv.finalMark;
+		}
+		else
+		{
+			cout << "None";
+		}
+		GoTo(a[6] + 1, 20 + i * 2);
+		if (st->sv.totalMark >= 0 && st->sv.totalMark <= 10)
+		{
+			cout << st->sv.totalMark;
+		}
+		else
+		{
+			cout << "None";
+		}
+		cr = cr->Next;
+	}
+
+	int maxPage = (n + maxline - 1) / maxline;
+	int curPage = (index + maxline - 1) / maxline;
+	if (index == 0)
+	{
+		curPage = 1;
+	}
+
+	if (maxPage == 1)
+	{
+		GoTo(104, 46);
+		cout << 0;
+	}
+	else if (curPage == 1)
+	{
+		GoTo(104, 46);
+		cout << 1;
+		cout << " ";
+		cout << char(175);
+	}
+	else if (curPage == maxPage)
+	{
+		GoTo(102, 46);
+		cout << char(174) << " ";
+		cout << curPage;
+	}
+	else
+	{
+		GoTo(102, 46);
+		cout << char(174) << " " << curPage << " " << char(175);
+	}
+
+	GoTo(103, 47);
+	cout << "BACK";
+	muiTen(102, 46, 5);
+}
+void ViewMyScoreBoard(ListCourse lcr, string studentID, int& index, int n,int maxline)
+{
+	ShowCur(false);
+	bool kt = true;
+	while (true)
+	{
+		if (kt == true)
+		{
+			removeText(40, 18, 129, 30, 15, 15);
+			displayMyScoreBoard(lcr,studentID ,index, n, maxline);
+			kt = false;
+		}
+		if (_kbhit())
+		{
+			char c = _getch();
+			if (c == -32)
+			{
+				if (n > maxline)
+				{
+					kt = true;
+					c = _getch();
+					if (c == 75)
+					{
+						if (index > maxline + 1)
+						{
+							index -= maxline;
+						}
+						else if (index == maxline + 1)
+						{
+							index -= maxline + 1;
+						}
+					}
+					else if (c == 77)
+					{
+						if (index == 0)
+						{
+							index += maxline + 1;
+						}
+						else if (index < (n - n % maxline) && (n - index >= maxline))
+						{
+							index += maxline;
+						}
+					}
+				}
+			}
+			else if (c == 13)
+			{
+				break;
+			}
+		}
+	}
+}
 
 //Mảng a là tọa độ các cột từ trái qua phải của bảng, không có cột cuối cùng bên phải :v
 void board(int x, int y, int w, int maxLine, int numLine, int ax[], int n)
@@ -2247,69 +2639,176 @@ int soDong(int index, int n, int maxline)
 
 void menuStudent(Account& acc)
 {
+	bool check=false;
+	if (checkSeme() >= 0)
+	{
+		check = true;
+	}
 	while (true)
 	{
 		removeText(72, 17, 64, 31, 15, 15);//xóa option
 		image(74, 11, "imageStudent.txt", 15, 9);
 		SetColor(15, 0);
-		GoTo(74, 19); cout << "User: lht";
-		GoTo(74, 20); cout << "Saturday";
-		GoTo(74, 21); cout << "9/6/2024";
+		GoTo(74, 18); cout << "User: "; cout << acc.username;
+		GoTo(74, 19); cout << "Date: " << CurTime.day << "/" << CurTime.month << "/" << CurTime.year;
+		GoTo(74, 20); cout << "Academy: ";
+		if (CurAcademy  != NULL)
+		{
+			if (CurAcademy->acm.begin > 0 && CurAcademy->acm.begin < 2025 && CurAcademy->acm.end>0 && CurAcademy->acm.end < 2025)
+			{
+				cout << CurAcademy->acm.begin << "-" << CurAcademy->acm.end;
+			}
+			else
+			{
+				cout << "NONE";
+			}
+		}
+		else
+		{
+			cout << "NONE";
+		}
+		GoTo(74, 21); cout << "Semester: ";
+		if (CurSemester != NULL)
+		{
+			cout << CurSemester->smt.STT;
+		}
+		else
+		{
+			cout << "NONE";
+		}
+		int op = 0;
 		ShowCur(false);
 		box(74, 22, 25, 2, 15, 0, "1. User Account");
 		box(74, 25, 25, 2, 15, 0, "2. Registered Courses");
-		box(74, 28, 25, 2, 15, 0, "3. Log Out");
-		int op = 0;
-		optionDaChon(74, 22, 25, 3, 3, op);
+		if (check)
+		{
+			box(74, 28, 25, 2, 15, 0, "3. My Scoreboard");
+			box(74, 31, 25, 2, 15, 0, "4. Log Out");
+			optionDaChon(74, 22, 25, 3, 4, op);
+			if (op == 4)
+			{
+				return;
+			}
+		}
+		else
+		{
+			box(74, 28, 25, 2, 15, 0, "3. Log Out");
+			optionDaChon(74, 22, 25, 3, 3, op);
+			if (op == 3)
+			{
+				return;
+			}
+		}
 		if (op == 1)
 		{
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
 			SetColor(15, 0);
-			GoTo(74, 29);
+			GoTo(82, 20);
 			cout << "User name: " << acc.username;
-			GoTo(82, 30);
+			GoTo(82, 21);
 			cout << "Name: " << acc.fullName;
-			GoTo(82, 31);
+			GoTo(82, 22);
 			cout << "Gender: " << acc.gender;
-			GoTo(82, 32);
+			GoTo(82, 23);
 			cout << "Date of birth: " << acc.born.day << "/" << acc.born.month << "/" << acc.born.year;
-			box(82, 35, 35, 2, 15, 0, "Quit");
-			muiTen(82, 35, 35);
-			while (true) {
-				if (_kbhit())
-				{
-					char c = _getch();
-					if (c == 13)
+			box(82, 25, 25, 2, 15, 0, "Change Password");
+			box(82, 28, 25, 2, 15, 0, "Quit");
+			int opt = 0;
+			optionDaChon(82, 25, 25, 3, 2, opt);
+			switch (opt)
+			{
+			case 1:
+			{
+				removeText(72, 17, 64, 31, 15, 15);//xóa option
+				SetColor(15, 0);
+				string pass;
+				ShowCur(true);
+				do {
+					GoTo(82, 21);
+					cout << "Input curent password: ";
+					int x = whereX();
+					cout << "                     ";
+					GoTo(x, 21);
+					getline(cin, pass);
+					if (pass != acc.password)
 					{
-						break;
+						string announce = "Wrong password";
+						GoTo(82, 25);
+						for (int i = 0; i < announce.length(); i++)
+						{
+							cout << announce[i];
+							Sleep(50);
+						}
 					}
+					else
+					{
+						GoTo(82, 25);
+						cout << "                                 ";
+						string announce = "Correct password";
+						GoTo(82, 25);
+						for (int i = 0; i < announce.length(); i++)
+						{
+							cout << announce[i];
+							Sleep(50);
+						}
+					}
+				} while (pass != acc.password);
+				GoTo(82, 22);
+				cout << "Input new password: ";
+				getline(cin, pass);
+				acc.password = pass;
+				changePasswordInListAccount(LStudent, acc);
+				GoTo(82, 25);
+				cout << "                                 ";
+				string announce = "Change password successfull";
+				GoTo(82, 25);
+				for (int i = 0; i < announce.length(); i++)
+				{
+					cout << announce[i];
+					Sleep(50);
 				}
+				_getch();
+				break;
+			}
+			case 2:
+				break;
 			}
 		}
 		else if (op == 2)
 		{
+			int index = 0;
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
-			GoTo(74, 19);
 			SetColor(15, 0);
-			cout << "Alo Alo ";
-			box(74, 28, 25, 2, 15, 0, "Quit");
-			while (true) {
-				if (_kbhit())
-				{
-					char c = _getch();
-					if (c == 13)
-					{
-						break;
-					}
-				}
+			ListCourse mlc = RegisteredCourse(acc.username);
+			if (mlc.Head == NULL)
+			{
+				GoTo(74, 25);
+				cout << "Courses not exist";
+				_getch();
+			}
+			else
+			{
+				ViewListOfCourse(mlc, index, countCourse(mlc), 10);
 			}
 		}
-		else if (op == 3)
+		else if (op == 3&&check)
 		{
-			return;
+			int index = 0;
+			removeText(72, 17, 64, 31, 15, 15);//xóa option
+			SetColor(15, 0);
+			ListCourse mlc = RegisteredCourse(acc.username);
+			if (mlc.Head == NULL)
+			{
+				GoTo(74, 25);
+				cout << "Courses not exist";
+				_getch();
+			}
+			else
+			{
+				ViewMyScoreBoard(mlc, acc.username, index, countCourse(mlc), 10);
+			}
 		}
 	}
-	_getch();
 }
 
 // 72:lên ; 80:xuống ; 75:trái ; 77:phải
