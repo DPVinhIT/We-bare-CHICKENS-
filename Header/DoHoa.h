@@ -4,8 +4,6 @@
 #include"Functions.h"
 #define KEY_NONE -1
 
-
-
 void SetColor(int backgound_color, int text_color);
 
 void SetWindowSize(SHORT width, SHORT height);
@@ -63,21 +61,25 @@ void BeginSchoolYear(ListClass& lcls, NodeAca*& aca);
 
 void BeginSemester(NodeSeme*& seme, NodeAca*& aca);
 
-void EndSemester(NodeSeme*& seme, NodeAca*& aca);
+void EndSemester(NodeAca*& aca, ListClass lcls);
 
-void displayStudent(ListStudent lst, int index, int n);
-void ViewStudenOfClass(ListStudent cls, int& index, int n);
+void displayStudent(ListStudent lst, int index, int n, int maxline);
+void ViewStudenOfClass(ListStudent cls, int& index, int n,int maxline);
 
-void displayClass(ListClass lcls, int index, int n);
-void ViewListOfClass(ListClass lcls, int& index, int n);
+void displayClass(ListClass lcls, int index, int n, int maxline);
+void ViewListOfClass(ListClass lcls, int& index, int n,int maxline);
 
-void displayCourse(ListCourse lcrs, int index, int n);
-void ViewListOfCourse(ListCourse lcrs, int& index, int n);
+void displayCourse(ListCourse lcrs, int index, int n,int maxline);
+void ViewListOfCourse(ListCourse lcrs, int& index, int n,int maxline);
 
-void displayScoreboardCourse(ListStudent lst, int index, int n);
-void ViewScoreboardCourse(ListStudent lst, int& index, int n);
+void displayScoreboardCourse(ListStudent lst, int index, int n,int maxline);
+void ViewScoreboardCourse(ListStudent lst, int& index, int n,int maxline);
 
-void displayScoreboardClass(ListStudent lst, int index, int n);
+void displayScoreboardClass(ListStudent lst, int index, int n,int maxline);
+void ViewScoreBoadClass(ListStudent lst, int &index, int n, int maxline);
+
+void displayMyScoreBoard(ListCourse lcr, string studentID, int index, int n, int maxline);
+void ViewMyScoreBoard(ListCourse lcr, string studentID, int& index, int n, int maxline);
 
 void board(int x, int y, int w, int maxLine, int numLine, int ax[], int n);
 
