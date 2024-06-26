@@ -67,7 +67,7 @@ struct Course
 	string courseID;
 	string courseName;
 	string className;
-	ListStudent sv;
+	Clas sv;
 	string teacher;
 	int acaCrd;
 	int maxStudent;
