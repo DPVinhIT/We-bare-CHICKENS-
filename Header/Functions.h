@@ -19,15 +19,16 @@ int countStudent(ListStudent lStd);
 void removeStudent(ListStudent& lst, int pos);
 void removeStudent_MSSV(ListStudent& lst, string studentID);
 void readFileCSV(string fileName, ListStudent& lst, bool& check);
+void removeListStudent(ListStudent& lst);
 
 //Hàm xử lí dữ liệu clas
 NodeClass* createNodeClass(Clas cls);
 NodeClass* findClassByPos(ListClass lcls, int pos);
 NodeClass* findClassByName(ListClass lcls, string name);
 void addNodeClass(ListClass& lcls, NodeClass* cls);
-void readFileStudent(string fileName[], ListClass& lcls);
+void readFileStudent(string fileName[], ListClass& lcls,int n);
 int countClass(ListClass lCls);
-ListClass lstClsInAYear(Academy aca, ListClass lst, int year);
+ListClass lstClsInAYear(ListClass lst, int year);
 
 //Hàm xử lí tài khoản
 NodeAccount* createNodeAccount(Account acc);
@@ -55,19 +56,20 @@ void writeCoure(string fileName, Course cour);
 //Hàm xử lí thời gian
 int checkSeme();
 int checkSemester(Date cur);
+int changeNewDay(Date newdate);
 
 //Hàm xử lí năm học và học kì
 NodeSeme* createNodeSeme(Semester sms);
 void addNodeSeme(ListSeme& lsm, NodeSeme* ns);	
 NodeAca* createNodeAcademy(Academy acm);
 void addNodeAcademy(ListAca& lta, NodeAca* aca);
-bool checkSemester(int stt, Date start, Date end, NodeAca* CurAcademy);
+bool checkDateOfSemester(int stt, Date start, Date end);
 
 //Đọc file bảng điểm
 void readFileScoreboard(string fileName, Course& crs);
 
 //Tính gpa
-double GpaOfSemester(string StudentID, int& numCredit);
+double GpaOfSemester(string StudentID, NodeSeme* smt);
 double GpaTotal(string StudentID);
 
 #endif
