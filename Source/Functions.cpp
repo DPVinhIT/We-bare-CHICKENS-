@@ -201,6 +201,13 @@ void readFileCSV(string fileName, ListStudent& lst, bool& check)
 	check = true;
 	fin.close();
 }
+void removeListStudent(ListStudent& lst) {
+	if (lst.Head == NULL) return;
+	while (lst.Head != NULL) {
+		removeFirst(lst);
+	}
+	lst.Head = NULL;
+}
 
 //Hàm xử lí dữ liệu clas
 NodeClass* createNodeClass(Clas cls)
@@ -255,15 +262,14 @@ void addNodeClass(ListClass& lcls, NodeClass* cls)
 	}
 	temp->Next = cls;
 }
-void readFileStudent(string fileName[], ListClass& lcls)
+void readFileStudent(string fileName[], ListClass& lcls,int n)
 {
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i <n; i++)
 	{
 		ifstream fin;
 		fin.open(fileName[i]);
 		if (!fin.is_open())
 		{
-			cout << "Mo file khong thanh cong" << endl;
 			return;
 		}
 		ListStudent lst;
@@ -297,8 +303,8 @@ void readFileStudent(string fileName[], ListClass& lcls)
 		cls.lst.Head = new NodeStudent;
 		cls.lst = lst;
 		addNodeClass(lcls, createNodeClass(cls));
+		fin.close();
 	}
-
 }
 int countClass(ListClass lCls)
 {
@@ -313,13 +319,13 @@ int countClass(ListClass lCls)
 	}
 	return cnt;
 }
-ListClass lstClsInAYear(Academy aca, ListClass lst, int year)
+ListClass lstClsInAYear(ListClass lst, int year)
 {
 	ListClass lClasInYear;
 	NodeClass* lCls = lClasInYear.Head;
 	NodeClass* tmp = lst.Head;
 	while (tmp != NULL) {
-		if ((tmp->cls.nameClass[0] - '0') * 10 + tmp->cls.nameClass[1] - '0' == (aca.end % 2000) - year) {
+		if ((tmp->cls.nameClass[0] - '0') * 10 + tmp->cls.nameClass[1] - '0' == (CurAcademy->acm.end % 2000) - year) {
 			addNodeClass(lClasInYear, createNodeClass(tmp->cls));
 		}
 		tmp = tmp->Next;
@@ -675,8 +681,12 @@ void addNodeAcademy(ListAca& lta, NodeAca* aca) {
 	}
 	tmp->Next = aca;
 }
-bool checkSemester(int stt, Date start, Date end, NodeAca* CurAcademy)
+bool checkDateOfSemester(int stt, Date start, Date end)
 {
+	if (!laNgayHopLe(start) || !laNgayHopLe(end))
+	{
+		return false;
+	}
 	if (stt == 1) {
 		if ((start.day == 1 && start.month == 9) && (end.day == 31 && end.month == 1)) {
 			if (start.year == CurAcademy->acm.begin && end.year == CurAcademy->acm.end) {
@@ -685,7 +695,7 @@ bool checkSemester(int stt, Date start, Date end, NodeAca* CurAcademy)
 		}
 	}
 	else if (stt == 2) {
-		if ((start.day == 1 && start.month == 2) && (end.day == 31 && end.month == 6)) {
+		if ((start.day == 1 && start.month == 2) && (end.day == 30 && end.month == 6)) {
 			if (start.year == CurAcademy->acm.end && end.year == CurAcademy->acm.end) {
 				return true;
 			}
@@ -741,11 +751,11 @@ void readFileScoreboard(string fileName, Course& crs)
 }
 
 //Tính gpa
-double GpaOfSemester(string StudentID, int& numCredit)
+double GpaOfSemester(string StudentID, NodeSeme* smt)
 {
 	double sum = 0;
 	int credit = 0;
-	NodeCourse* tmp = CurSemester->smt.lcrs.Head;
+	NodeCourse* tmp = smt->smt.lcrs.Head;
 	for (NodeCourse* i = tmp; i != NULL; i = i->Next) {
 		NodeStudent* studentTmp = i->crs.sv.lst.Head;
 		while (studentTmp != NULL) {
@@ -754,7 +764,7 @@ double GpaOfSemester(string StudentID, int& numCredit)
 				{
 					break;
 				}
-				sum += 1.0*studentTmp->sv.totalMark * i->crs.acaCrd;
+				sum += 1.0 * studentTmp->sv.totalMark * i->crs.acaCrd;
 				credit += i->crs.acaCrd;
 				break;
 			}
@@ -765,8 +775,7 @@ double GpaOfSemester(string StudentID, int& numCredit)
 	{
 		return 0;
 	}
-	numCredit = credit;
-	return 1.0 * sum / credit;
+	return 4.0 * sum / (10.0 * credit);
 }
 double GpaTotal(string StudentID)
 {
@@ -778,21 +787,48 @@ double GpaTotal(string StudentID)
 		NodeSeme* sm = aca->acm.lsm.Head;
 		while (sm != NULL)
 		{
-			int numCredit = 0;
-			double gpa = 0;
-			gpa = GpaOfSemester(StudentID, numCredit);
-			if (gpa >=0 && gpa<=4)
-			{
-				Cgpa += gpa * numCredit;
-				sumCredit += numCredit;
-			}
+			double gpa = GpaOfSemester(StudentID, sm);
+			Cgpa += gpa;
+			++sumCredit;
 			sm = sm->Next;
 		}
 		aca = aca->Next;
 	}
-	if (sumCredit == 0)
-	{
-		return 0;
-	}
 	return 1.0 * Cgpa / sumCredit;
+}
+int changeNewDay(Date newdate) {
+	if (!laNgayHopLe(newdate))
+		return -1;
+	if (newdate.year > CurTime.year && newdate.month == 9 && newdate.day == 1) {
+		CurAcademy->Next = new NodeAca;
+		CurAcademy = CurAcademy->Next;
+		CurAcademy->acm.begin = newdate.year;
+		CurAcademy->acm.end = newdate.year + 1;
+		CurAcademy->Next = NULL;
+		CurAcademy->acm.lsm.Head = new NodeSeme;
+		CurSemester = CurAcademy->acm.lsm.Head;
+		CurSemester->smt.STT = 1;
+		CurSemester->smt.begin.day = 1; CurSemester->smt.begin.month = 9; CurSemester->smt.begin.year = newdate.year;
+		CurSemester->smt.end.day = 31; CurSemester->smt.end.month = 1; CurSemester->smt.end.year = newdate.year+1;
+		return 1;
+	}
+	if (CurSemester->smt.STT == 1 && newdate.year > CurTime.year && laNgayHopLe(newdate) && newdate.month >= 2 && newdate.month <= 6) {
+		CurSemester->Next = new NodeSeme;
+		CurSemester = CurSemester->Next;
+		CurSemester->smt.STT = 2;
+		CurSemester->smt.begin.day = 1; CurSemester->smt.begin.month = 2; CurSemester->smt.begin.year = newdate.year;
+		CurSemester->smt.end.day = 30; CurSemester->smt.end.month = 6; CurSemester->smt.end.year = newdate.year;
+		CurSemester->Next = NULL;
+		return 1;
+	}
+	if (CurSemester->smt.STT==2&&newdate.year == CurTime.year && laNgayHopLe(newdate) && newdate.month >= 7 && newdate.month <= 8) {
+		CurSemester->Next = new NodeSeme;
+		CurSemester = CurSemester->Next;
+		CurSemester->smt.STT = 3;
+		CurSemester->smt.begin.day = 1; CurSemester->smt.begin.month = 7; CurSemester->smt.begin.year = newdate.year;
+		CurSemester->smt.end.day = 31; CurSemester->smt.end.month = 8; CurSemester->smt.end.year = newdate.year;
+		CurSemester->Next = NULL;
+		return 1;
+	}
+	return 0;
 }
