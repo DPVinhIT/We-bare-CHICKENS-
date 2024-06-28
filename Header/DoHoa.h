@@ -53,15 +53,21 @@ void khungLon();
 
 void khungNho();
 
+void loginSession(Account acc);
+
+void OptionAnnounce(string option, int y);
+
+void slowText(string announce);
+
 void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt, NodeAca*& aca);
 
 void Staff2_2(Academy aca, ListClass& lcls);
 
 void BeginSchoolYear(ListClass& lcls, NodeAca*& aca);
 
-void BeginSemester(NodeSeme*& seme, NodeAca*& aca);
+void BeginSemester(NodeSeme*& seme, NodeAca*& aca, Account acc);
 
-void EndSemester(NodeAca*& aca, ListClass lcls);
+void EndSemester(NodeAca*& aca, ListClass lcls, Account acc);
 
 void displayStudent(ListStudent lst, int index, int n, int maxline);
 void ViewStudenOfClass(ListStudent cls, int& index, int n,int maxline);
