@@ -81,6 +81,15 @@ NodeStudent* findStudentByID(ListStudent lst, string ID)
 	}
 	return NULL;
 }
+void updateNo(ListStudent& lst) {
+	NodeStudent* tmp = lst.Head;
+	int i = 1;
+	while (tmp != NULL) {
+		tmp->sv.STT = i;
+		i++;
+		tmp = tmp->Next;
+	}
+}
 void addNodeStudent(ListStudent& lst, NodeStudent* st)
 {
 	if (lst.Head == NULL)
@@ -95,6 +104,7 @@ void addNodeStudent(ListStudent& lst, NodeStudent* st)
 		temp = temp->Next;
 	}
 	temp->Next = st;
+	updateNo(lst);
 }
 void removeFirst(ListStudent& lst) {
 	NodeStudent* tmp = lst.Head;
@@ -466,6 +476,7 @@ void removeStudentOfCourse(ListCourse& lcrs, string courseID, string studentID)
 		return;
 	}
 	removeStudent_MSSV(crs->crs.sv.lst, studentID);
+	updateNo(lcrs.Head->crs.sv.lst);
 }
 void removeFirst(ListCourse& lcr)
 {
