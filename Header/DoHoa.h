@@ -1,4 +1,4 @@
-#ifndef DoHoa_h
+﻿#ifndef DoHoa_h
 #define DoHoa_h
 #include"Struct.h"
 #include"Functions.h"
@@ -70,19 +70,19 @@ void BeginSemester(NodeSeme*& seme, NodeAca*& aca, Account acc);
 void EndSemester(NodeAca*& aca, ListClass lcls, Account acc);
 
 void displayStudent(ListStudent lst, int index, int n, int maxline);
-void ViewStudenOfClass(ListStudent cls, int& index, int n,int maxline);
+void ViewStudenOfClass(ListStudent cls, int& index, int n, int maxline);
 
 void displayClass(ListClass lcls, int index, int n, int maxline);
-void ViewListOfClass(ListClass lcls, int& index, int n,int maxline);
+void ViewListOfClass(ListClass lcls, int& index, int n, int maxline);
 
-void displayCourse(ListCourse lcrs, int index, int n,int maxline);
-void ViewListOfCourse(ListCourse lcrs, int& index, int n,int maxline);
+void displayCourse(ListCourse lcrs, int index, int n, int maxline);
+void ViewListOfCourse(ListCourse lcrs, int& index, int n, int maxline);
 
-void displayScoreboardCourse(ListStudent lst, int index, int n,int maxline);
-void ViewScoreboardCourse(ListStudent lst, int& index, int n,int maxline);
+void displayScoreboardCourse(ListStudent lst, int index, int n, int maxline);
+void ViewScoreboardCourse(ListStudent lst, int& index, int n, int maxline);
 
-void displayScoreboardClass(ListStudent lst, int index, int n,int maxline);
-void ViewScoreBoadClass(ListStudent lst, int &index, int n, int maxline);
+void displayScoreboardClass(ListStudent lst, int index, int n, int maxline);
+void ViewScoreBoadClass(ListStudent lst, int& index, int n, int maxline);
 
 void displayMyScoreBoard(ListCourse lcr, string studentID, int index, int n, int maxline);
 void ViewMyScoreBoard(ListCourse lcr, string studentID, int& index, int n, int maxline);

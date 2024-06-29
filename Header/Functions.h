@@ -1,4 +1,4 @@
-#ifndef Functions_h
+﻿#ifndef Functions_h
 #define Functions_h
 
 #include"Struct.h"
@@ -26,9 +26,10 @@ NodeClass* createNodeClass(Clas cls);
 NodeClass* findClassByPos(ListClass lcls, int pos);
 NodeClass* findClassByName(ListClass lcls, string name);
 void addNodeClass(ListClass& lcls, NodeClass* cls);
-void readFileStudent(string fileName[], ListClass& lcls,int n);
+void readFileStudent(string fileName[], ListClass& lcls, int n);
 int countClass(ListClass lCls);
 ListClass lstClsInAYear(ListClass lst, int year);
+void updateNo(ListStudent& lst);
 
 //Hàm xử lí tài khoản
 NodeAccount* createNodeAccount(Account acc);
@@ -60,13 +61,13 @@ int changeNewDay(Date newdate);
 
 //Hàm xử lí năm học và học kì
 NodeSeme* createNodeSeme(Semester sms);
-void addNodeSeme(ListSeme& lsm, NodeSeme* ns);	
+void addNodeSeme(ListSeme& lsm, NodeSeme* ns);
 NodeAca* createNodeAcademy(Academy acm);
 void addNodeAcademy(ListAca& lta, NodeAca* aca);
 bool checkDateOfSemester(int stt, Date start, Date end);
 
 //Đọc file bảng điểm
-void readFileScoreboard(string fileName, Course& crs);
+bool readFileScoreboard(string fileName, Course& crs);
 
 //Tính gpa
 double GpaOfSemester(string StudentID, NodeSeme* smt);
