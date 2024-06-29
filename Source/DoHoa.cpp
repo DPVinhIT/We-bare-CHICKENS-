@@ -1328,6 +1328,7 @@ void BeginSemester(NodeSeme*& seme, NodeAca*& aca, Account acc)
 				cin >> cr->crs.courseName;
 				cin.ignore();
 				GoTo(73 + strlen("Class Name: "), 25);
+				//cin.ignore();
 				getline(cin, cr->crs.className);
 				GoTo(73 + strlen("Teacher Name: "), 28);
 				getline(cin, cr->crs.teacher);
