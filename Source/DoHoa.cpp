@@ -461,7 +461,7 @@ void menuLogin(ListClass& lcls, NodeAca*& aca)
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
 			SetColor(15, 0);
 			GoTo(80, 20);
-			cout << "Contact emai:..." << endl;
+			cout << "Contact emai: webareChickens@gmail.com" << endl;
 			ShowCur(false);
 			box(94, 30, 20, 2, 15, 0, "Quit");
 			muiTen(94, 30, 20);
