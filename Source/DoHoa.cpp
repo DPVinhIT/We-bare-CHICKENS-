@@ -1,4 +1,4 @@
-#include"DoHoa.h"
+﻿#include"DoHoa.h"
 #include"Functions.h"
 
 //Date CurTime;
@@ -624,7 +624,7 @@ void menuStaff(Account& acc, ListClass& lcls, ListSeme& smt, NodeAca*& aca)
 						GoTo(80, 19);
 						slowText("                 ");
 						GoTo(x, 20);
-						cout<<"                     ";
+						cout << "                     ";
 					}
 					else
 					{
@@ -1037,14 +1037,34 @@ void BeginSchoolYear(ListClass& lcls, NodeAca*& aca)
 				GoTo(92, 19);
 				cout << "Class: " << cls.nameClass;
 				ShowCur(true);
-
 				inputStudent(cls.lst);
-
-				addNodeClass(lcls, createNodeClass(cls));
-				GoTo(90, 47);
-				slowText("ADD Student successful !");
-				ShowCur(false);
-				_getch();
+				NodeClass* tmp1 = findClassByName(lcls, cls.nameClass);
+				if (tmp1 != NULL) {
+					NodeStudent* st1 = tmp1->cls.lst.Head;
+					if (st1 != NULL) {
+						while (st1->Next != NULL) {
+							st1 = st1->Next;
+						}
+						st1->Next = cls.lst.Head;
+					}
+					else {
+						st1 = cls.lst.Head;
+					}
+					updateNo(tmp1->cls.lst);
+					check = false;
+					GoTo(90, 47);
+					slowText("ADD Student successful !");
+					ShowCur(false);
+					_getch();
+				}
+				else {
+					addNodeClass(lcls, createNodeClass(cls));
+					check = false;
+					GoTo(90, 47);
+					slowText("ADD Student successful !");
+					ShowCur(false);
+					_getch();
+				}
 			}
 			else if (opt == 2)
 			{
@@ -1060,18 +1080,45 @@ void BeginSchoolYear(ListClass& lcls, NodeAca*& aca)
 				if (check)
 				{
 					GoTo(90, 47);
-					slowText("ADD Student successful !");
+					slowText("ADD Student Successful !");
 				}
 				else
 				{
 					GoTo(90, 47);
-					slowText("ADD Student Fail !");
+					slowText("ADD Student Failed !");
 				}
 				ShowCur(false);
 				_getch();
 			}
-			if (check)
-				addNodeClass(lcls, createNodeClass(cls));
+			if (check) {
+				NodeClass* tmp1 = findClassByName(lcls, cls.nameClass);
+				if (tmp1 != NULL) {
+					NodeStudent* st1 = tmp1->cls.lst.Head;
+					if (st1 != NULL) {
+						while (st1->Next != NULL) {
+							st1 = st1->Next;
+						}
+						st1->Next = cls.lst.Head;
+					}
+					else {
+						st1 = cls.lst.Head;
+					}
+					updateNo(tmp1->cls.lst);
+					check = false;
+					GoTo(90, 47);
+					slowText("ADD Student successful !");
+					ShowCur(false);
+					_getch();
+				}
+				else {
+					addNodeClass(lcls, createNodeClass(cls));
+					check = false;
+					GoTo(90, 47);
+					slowText("ADD Student successful !");
+					ShowCur(false);
+					_getch();
+				}
+			}
 			break;
 		}
 		case 2: {
@@ -1181,7 +1228,7 @@ void BeginSemester(NodeSeme*& seme, NodeAca*& aca, Account acc)
 		removeText(16, 10, 179, 38, 15, 15);
 		image(84, 11, "imageStaff.txt", 15, 9);
 		khungNho();
-		string ann = "BEGIN Semester " +to_string(CurSemester->smt.STT);
+		string ann = "BEGIN Semester " + to_string(CurSemester->smt.STT);
 		OptionAnnounce(ann, 18);
 		loginSession(acc);
 		box(92, 22, 25, 2, 15, 0, "ADD Course");
@@ -1325,10 +1372,8 @@ void BeginSemester(NodeSeme*& seme, NodeAca*& aca, Account acc)
 				boxNoText(whereX(), 33, 62 - strlen("Student maximum:"), 2, 15, 0);
 
 				GoTo(73 + strlen("Course Name: "), 22);
-				cin >> cr->crs.courseName;
-				cin.ignore();
+				getline(cin,cr->crs.courseName);
 				GoTo(73 + strlen("Class Name: "), 25);
-				//cin.ignore();
 				getline(cin, cr->crs.className);
 				GoTo(73 + strlen("Teacher Name: "), 28);
 				getline(cin, cr->crs.teacher);
@@ -1502,7 +1547,7 @@ void BeginSemester(NodeSeme*& seme, NodeAca*& aca, Account acc)
 						else
 						{
 							GoTo(88, 46);
-							slowText("ADD Student Fail !");
+							slowText("ADD Student Failed !");
 						}
 						ShowCur(false);
 						_getch();
@@ -1667,14 +1712,25 @@ void EndSemester(NodeAca*& aca, ListClass lcls, Account acc)
 			cout << "Input fileName: ";
 			string fileName;
 			getline(cin, fileName);
-			readFileScoreboard(fileName, crs->crs);
-			GoTo(80, 19);
-			slowText("Read file successful");
-			ShowCur(false);
-			box(94, 30, 20, 2, 15, 0, "Quit");
-			muiTen(94, 30, 20);
-			_getch();
-			break;
+			if (readFileScoreboard(fileName, crs->crs)) {
+				GoTo(80, 19);
+				slowText("Read file successful");
+				ShowCur(false);
+				box(94, 30, 20, 2, 15, 0, "Quit");
+				muiTen(94, 30, 20);
+				_getch();
+				break;
+			}
+			else {
+				GoTo(80, 19);
+				slowText("Read file failed");
+				ShowCur(false);
+				box(94, 30, 20, 2, 15, 0, "Quit");
+				muiTen(94, 30, 20);
+				_getch();
+				break;
+
+			}
 		}
 		case 3: {
 			OptionAnnounce("View scoreborad of a course", 18);
@@ -3096,7 +3152,7 @@ void menuStudent(Account& acc)
 			if (mlc.Head == NULL)
 			{
 				GoTo(80, 19);
-				slowText( "The student is not registered for the course");
+				slowText("The student is not registered for the course");
 				ShowCur(false);
 				box(94, 30, 20, 2, 15, 0, "Quit");
 				muiTen(94, 30, 20);
@@ -3114,7 +3170,7 @@ void menuStudent(Account& acc)
 		{
 			int index = 0;
 			removeText(72, 17, 64, 31, 15, 15);//xóa option
-			OptionAnnounce("My Scoreboard",18);
+			OptionAnnounce("My Scoreboard", 18);
 			SetColor(15, 0);
 			ListCourse mlc = RegisteredCourse(acc.username);
 			if (mlc.Head == NULL)
@@ -3133,7 +3189,7 @@ void menuStudent(Account& acc)
 				OptionAnnounce("My Scoreboard", 18);
 				SetColor(15, 0);
 				GoTo(42, 19);
-				cout << "GPA: " << GpaOfSemester(acc.username,CurSemester);
+				cout << "GPA: " << GpaOfSemester(acc.username, CurSemester);
 				cout << " / " << "Total GPA: " << GpaTotal(acc.username);
 				ViewMyScoreBoard(mlc, acc.username, index, countCourse(mlc), 10);
 			}

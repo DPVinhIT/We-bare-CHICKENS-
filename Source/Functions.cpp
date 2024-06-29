@@ -1,4 +1,4 @@
-#include "Functions.h"
+﻿#include "Functions.h"
 
 bool laNgayHopLe(Date t)
 {
@@ -190,10 +190,17 @@ void readFileCSV(string fileName, ListStudent& lst, bool& check)
 		check = false;
 		return;
 	}
+	int tmp = 1;
 	while (!fin.eof())
 	{
 		Student st;
 		fin >> st.STT;
+		if (tmp == st.STT) {
+			tmp++;
+		}
+		else {
+			break;
+		}
 		fin.ignore();
 		getline(fin, st.studentID, ',');
 		getline(fin, st.fullName, ',');
@@ -272,9 +279,9 @@ void addNodeClass(ListClass& lcls, NodeClass* cls)
 	}
 	temp->Next = cls;
 }
-void readFileStudent(string fileName[], ListClass& lcls,int n)
+void readFileStudent(string fileName[], ListClass& lcls, int n)
 {
-	for (int i = 0; i <n; i++)
+	for (int i = 0; i < n; i++)
 	{
 		ifstream fin;
 		fin.open(fileName[i]);
@@ -723,18 +730,25 @@ bool checkDateOfSemester(int stt, Date start, Date end)
 }
 
 //Đọc file bảng điểm
-void readFileScoreboard(string fileName, Course& crs)
+bool readFileScoreboard(string fileName, Course& crs)
 {
 	ifstream fin;
 	fin.open(fileName);
 	if (!fin.is_open())
 	{
-		return;
+		return false;
 	}
+	int tmp = 1;
 	while (!fin.eof())
 	{
 		Student temp;
 		fin >> temp.STT;
+		if (tmp == temp.STT) {
+			tmp++;
+		}
+		else {
+			break;
+		}
 		fin.ignore();
 		getline(fin, temp.studentID, ',');
 		getline(fin, temp.fullName, ',');
@@ -758,6 +772,7 @@ void readFileScoreboard(string fileName, Course& crs)
 			continue;
 		}
 	}
+	return true;
 	fin.close();
 }
 
@@ -820,7 +835,7 @@ int changeNewDay(Date newdate) {
 		CurSemester = CurAcademy->acm.lsm.Head;
 		CurSemester->smt.STT = 1;
 		CurSemester->smt.begin.day = 1; CurSemester->smt.begin.month = 9; CurSemester->smt.begin.year = newdate.year;
-		CurSemester->smt.end.day = 31; CurSemester->smt.end.month = 1; CurSemester->smt.end.year = newdate.year+1;
+		CurSemester->smt.end.day = 31; CurSemester->smt.end.month = 1; CurSemester->smt.end.year = newdate.year + 1;
 		return 1;
 	}
 	if (CurSemester->smt.STT == 1 && newdate.year > CurTime.year && laNgayHopLe(newdate) && newdate.month >= 2 && newdate.month <= 6) {
@@ -832,7 +847,7 @@ int changeNewDay(Date newdate) {
 		CurSemester->Next = NULL;
 		return 1;
 	}
-	if (CurSemester->smt.STT==2&&newdate.year == CurTime.year && laNgayHopLe(newdate) && newdate.month >= 7 && newdate.month <= 8) {
+	if (CurSemester->smt.STT == 2 && newdate.year == CurTime.year && laNgayHopLe(newdate) && newdate.month >= 7 && newdate.month <= 8) {
 		CurSemester->Next = new NodeSeme;
 		CurSemester = CurSemester->Next;
 		CurSemester->smt.STT = 3;
@@ -842,4 +857,12 @@ int changeNewDay(Date newdate) {
 		return 1;
 	}
 	return 0;
+}
+NodeClass* find_nameClass(ListClass lcls, string nameClass) {
+	if (lcls.Head == NULL) return NULL;
+	NodeClass* tmp = lcls.Head;
+	for (NodeClass* i = tmp; i != NULL; i = i->Next) {
+		if (i->cls.nameClass == nameClass) return i;
+	}
+	return NULL;
 }
