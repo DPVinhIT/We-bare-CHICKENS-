@@ -1,4 +1,4 @@
-﻿#include "Functions.h"
+#include "Functions.h"
 
 bool laNgayHopLe(Date t)
 {
@@ -81,15 +81,6 @@ NodeStudent* findStudentByID(ListStudent lst, string ID)
 	}
 	return NULL;
 }
-void updateNo(ListStudent& lst) {
-	NodeStudent* tmp = lst.Head;
-	int i = 1;
-	while (tmp != NULL) {
-		tmp->sv.STT = i;
-		i++;
-		tmp = tmp->Next;
-	}
-}
 void addNodeStudent(ListStudent& lst, NodeStudent* st)
 {
 	if (lst.Head == NULL)
@@ -104,7 +95,6 @@ void addNodeStudent(ListStudent& lst, NodeStudent* st)
 		temp = temp->Next;
 	}
 	temp->Next = st;
-	updateNo(lst);
 }
 void removeFirst(ListStudent& lst) {
 	NodeStudent* tmp = lst.Head;
@@ -190,17 +180,10 @@ void readFileCSV(string fileName, ListStudent& lst, bool& check)
 		check = false;
 		return;
 	}
-	int tmp = 1;
 	while (!fin.eof())
 	{
 		Student st;
 		fin >> st.STT;
-		if (tmp == st.STT) {
-			tmp++;
-		}
-		else {
-			break;
-		}
 		fin.ignore();
 		getline(fin, st.studentID, ',');
 		getline(fin, st.fullName, ',');
@@ -279,9 +262,9 @@ void addNodeClass(ListClass& lcls, NodeClass* cls)
 	}
 	temp->Next = cls;
 }
-void readFileStudent(string fileName[], ListClass& lcls, int n)
+void readFileStudent(string fileName[], ListClass& lcls,int n)
 {
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i <n; i++)
 	{
 		ifstream fin;
 		fin.open(fileName[i]);
@@ -483,7 +466,6 @@ void removeStudentOfCourse(ListCourse& lcrs, string courseID, string studentID)
 		return;
 	}
 	removeStudent_MSSV(crs->crs.sv.lst, studentID);
-	updateNo(lcrs.Head->crs.sv.lst);
 }
 void removeFirst(ListCourse& lcr)
 {
@@ -655,6 +637,42 @@ int checkSemester(Date cur)
 	}
 	return 0;
 }
+int changeNewDay(Date newdate) {
+	if (!laNgayHopLe(newdate))
+		return -1;
+	if (newdate.year > CurTime.year && newdate.month == 9 && newdate.day == 1) {
+		CurAcademy->Next = new NodeAca;
+		CurAcademy = CurAcademy->Next;
+		CurAcademy->acm.begin = newdate.year;
+		CurAcademy->acm.end = newdate.year + 1;
+		CurAcademy->Next = NULL;
+		CurAcademy->acm.lsm.Head = new NodeSeme;
+		CurSemester = CurAcademy->acm.lsm.Head;
+		CurSemester->smt.STT = 1;
+		CurSemester->smt.begin.day = 1; CurSemester->smt.begin.month = 9; CurSemester->smt.begin.year = newdate.year;
+		CurSemester->smt.end.day = 31; CurSemester->smt.end.month = 1; CurSemester->smt.end.year = newdate.year + 1;
+		return 1;
+	}
+	if (CurSemester->smt.STT == 1 && newdate.year > CurTime.year && laNgayHopLe(newdate) && (newdate.month >= 2 && newdate.month <= 6)) {
+		CurSemester->Next = new NodeSeme;
+		CurSemester = CurSemester->Next;
+		CurSemester->smt.STT = 2;
+		CurSemester->smt.begin.day = 1; CurSemester->smt.begin.month = 2; CurSemester->smt.begin.year = newdate.year;
+		CurSemester->smt.end.day = 30; CurSemester->smt.end.month = 6; CurSemester->smt.end.year = newdate.year;
+		CurSemester->Next = NULL;
+		return 1;
+	}
+	if (CurSemester->smt.STT == 2 && newdate.year == CurTime.year && laNgayHopLe(newdate) && (newdate.month >= 7 && newdate.month <= 8)) {
+		CurSemester->Next = new NodeSeme;
+		CurSemester = CurSemester->Next;
+		CurSemester->smt.STT = 3;
+		CurSemester->smt.begin.day = 1; CurSemester->smt.begin.month = 7; CurSemester->smt.begin.year = newdate.year;
+		CurSemester->smt.end.day = 31; CurSemester->smt.end.month = 8; CurSemester->smt.end.year = newdate.year;
+		CurSemester->Next = NULL;
+		return 1;
+	}
+	return 0;
+}
 
 //Hàm xử lí năm học và học kì
 NodeSeme* createNodeSeme(Semester sms)
@@ -730,25 +748,18 @@ bool checkDateOfSemester(int stt, Date start, Date end)
 }
 
 //Đọc file bảng điểm
-bool readFileScoreboard(string fileName, Course& crs)
+void readFileScoreboard(string fileName, Course& crs)
 {
 	ifstream fin;
 	fin.open(fileName);
 	if (!fin.is_open())
 	{
-		return false;
+		return;
 	}
-	int tmp = 1;
 	while (!fin.eof())
 	{
 		Student temp;
 		fin >> temp.STT;
-		if (tmp == temp.STT) {
-			tmp++;
-		}
-		else {
-			break;
-		}
 		fin.ignore();
 		getline(fin, temp.studentID, ',');
 		getline(fin, temp.fullName, ',');
@@ -772,7 +783,6 @@ bool readFileScoreboard(string fileName, Course& crs)
 			continue;
 		}
 	}
-	return true;
 	fin.close();
 }
 
@@ -821,48 +831,4 @@ double GpaTotal(string StudentID)
 		aca = aca->Next;
 	}
 	return 1.0 * Cgpa / sumCredit;
-}
-int changeNewDay(Date newdate) {
-	if (!laNgayHopLe(newdate))
-		return -1;
-	if (newdate.year > CurTime.year && newdate.month == 9 && newdate.day == 1) {
-		CurAcademy->Next = new NodeAca;
-		CurAcademy = CurAcademy->Next;
-		CurAcademy->acm.begin = newdate.year;
-		CurAcademy->acm.end = newdate.year + 1;
-		CurAcademy->Next = NULL;
-		CurAcademy->acm.lsm.Head = new NodeSeme;
-		CurSemester = CurAcademy->acm.lsm.Head;
-		CurSemester->smt.STT = 1;
-		CurSemester->smt.begin.day = 1; CurSemester->smt.begin.month = 9; CurSemester->smt.begin.year = newdate.year;
-		CurSemester->smt.end.day = 31; CurSemester->smt.end.month = 1; CurSemester->smt.end.year = newdate.year + 1;
-		return 1;
-	}
-	if (CurSemester->smt.STT == 1 && newdate.year > CurTime.year && laNgayHopLe(newdate) && newdate.month >= 2 && newdate.month <= 6) {
-		CurSemester->Next = new NodeSeme;
-		CurSemester = CurSemester->Next;
-		CurSemester->smt.STT = 2;
-		CurSemester->smt.begin.day = 1; CurSemester->smt.begin.month = 2; CurSemester->smt.begin.year = newdate.year;
-		CurSemester->smt.end.day = 30; CurSemester->smt.end.month = 6; CurSemester->smt.end.year = newdate.year;
-		CurSemester->Next = NULL;
-		return 1;
-	}
-	if (CurSemester->smt.STT == 2 && newdate.year == CurTime.year && laNgayHopLe(newdate) && newdate.month >= 7 && newdate.month <= 8) {
-		CurSemester->Next = new NodeSeme;
-		CurSemester = CurSemester->Next;
-		CurSemester->smt.STT = 3;
-		CurSemester->smt.begin.day = 1; CurSemester->smt.begin.month = 7; CurSemester->smt.begin.year = newdate.year;
-		CurSemester->smt.end.day = 31; CurSemester->smt.end.month = 8; CurSemester->smt.end.year = newdate.year;
-		CurSemester->Next = NULL;
-		return 1;
-	}
-	return 0;
-}
-NodeClass* find_nameClass(ListClass lcls, string nameClass) {
-	if (lcls.Head == NULL) return NULL;
-	NodeClass* tmp = lcls.Head;
-	for (NodeClass* i = tmp; i != NULL; i = i->Next) {
-		if (i->cls.nameClass == nameClass) return i;
-	}
-	return NULL;
 }
