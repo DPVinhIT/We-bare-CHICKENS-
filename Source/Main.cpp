@@ -18,6 +18,8 @@ NodeSeme* CurSemester;
 
 int main()
 {
+	//Thiết lập Default Terminal Application thành Windows Console Host
+	slowText("Set \"Default Terminal Application\" to \"Window Console Host\" ");
 
 	ListClass cls;
 	string fileName[] = { "23CTT1.csv", "23CTT2.csv", "23CTT3.csv", "23CTT4.csv", "23CTT5.csv", "23CLC01.csv",
@@ -26,9 +28,6 @@ int main()
 	readFileStudent(fileName, cls, sizeof(fileName) / sizeof(fileName[0]));
 	SetConsoleTitle("WeBearCHICKEN");
 
-	//ShowCur(false);
-	//DisableSelection();
-	//DisableResizeWindow();
 	maximizeConsoleWindow();
 
 	CurTime.day = 1;
