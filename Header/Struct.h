@@ -17,9 +17,11 @@ using namespace std;
 #define _CRT_SECURE_NO_DEPRECATE
 #define _CRT_SECURE_NO_WARNINGS
 
+//Ngày
 struct Date {
 	int day, month, year;
 };
+//Sinh viên
 struct Student {
 	int STT;
 	string studentID;
@@ -32,36 +34,38 @@ struct Student {
 	double midtermMark;
 	double regularMark;
 };
-
+//Danh sach sinh vien
 struct NodeStudent {
 	Student sv;
 	NodeStudent* Next;
 };
-//Danh sach sinh vien
 struct ListStudent
 {
 	NodeStudent* Head;
 	ListStudent() : Head(NULL) {}
 };
+//Lớp học
 struct Clas
 {
 	string nameClass;
 	ListStudent lst;
 };
+//Danh sach lop hoc
 struct NodeClass {
 	Clas cls;
 	NodeClass* Next;
 };
-//Danh sach lop
 struct ListClass {
 	NodeClass* Head;
 	ListClass() : Head(NULL) {}
 };
+//Thời gian học
 struct Calendar
 {
 	string Day;
 	string Time;
 };
+//Khóa học
 struct Course
 {
 	string courseID;
@@ -73,35 +77,38 @@ struct Course
 	int maxStudent;
 	Calendar cld;
 };
+//Danh sach kha hoc
 struct NodeCourse {
 	Course crs;
 	NodeCourse* Next;
 };
-//Danh sach khoa hoc
 struct ListCourse {
 	NodeCourse* Head;
 	ListCourse() : Head(NULL) {}
 };
+//Học kì
 struct Semester {
 	ListCourse lcrs;
 	int STT;
 	Date begin;
 	Date end;
 };
+//Danh sach hoc ky
 struct NodeSeme
 {
 	Semester smt;
 	NodeSeme* Next;
 };
-//Danh sach hoc ky
 struct ListSeme {
 	NodeSeme* Head;
 	ListSeme() :Head(NULL) {}
 };
+//Năm học
 struct Academy {
 	ListSeme lsm;
 	int begin, end;
 };
+//Danh sach nam hoc
 struct NodeAca {
 	Academy acm;
 	NodeAca* Next;
@@ -110,6 +117,7 @@ struct ListAca {
 	NodeAca* Head;
 	ListAca() :Head(NULL) {}
 };
+//Tài khoản
 struct Account {
 	string fullName;
 	Date born;
@@ -117,6 +125,7 @@ struct Account {
 	string username;
 	string password;
 };
+//Danh sach tai khoan
 struct NodeAccount {
 	Account acc;
 	NodeAccount* Next;
